@@ -2,20 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@layer base {
+	body {
+		@apply bg-[#fdfdfd] font-inter text-dark;
+	}
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@layer components {
+	.btn {
+		@apply shadow-none;
+	}
+	.btn-primary {
+		@apply text-[#fdfdfd];
+	}
+
+	.btn-accent {
+		@apply text-dark;
+	}
+
+	.btn-secondary {
+		@apply text-primary;
+	}
+
+	.btn-w-outline {
+		@apply bg-transparent border-secondary text-secondary;
+	}
+
+	.available {
+		@media only screen and (width > 500px) {
+			display: none;
+		}
+	}
+
+	.not-available {
+		@media only screen and (width <= 500px) {
+			display: none;
+		}
+	}
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+	.filter-none {
+		filter: none;
+	}
+	.filter-grayscale {
+		filter: grayscale(100%);
+	}
 }
