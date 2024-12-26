@@ -25,6 +25,7 @@ export default {
 					secondary: "#fdfdfd",
 					accent: "#E1E1E1",
 					dark: "#090808",
+					success: "#386D38",
 				},
 			},
 		],
