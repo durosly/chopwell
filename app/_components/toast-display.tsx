@@ -14,7 +14,7 @@ function ToastDisplay() {
 					<p className="text-[12px]">Pick-up starts at 1:00 PM today</p>
 				</div>
 			</div>
-			<Link className="ml-auto rotate-180" href="/order">
+			<Link className="ml-auto rotate-180" href="/orders/1">
 				<IconArrowLeft className="w-5 h-5" />
 			</Link>
 		</div>
