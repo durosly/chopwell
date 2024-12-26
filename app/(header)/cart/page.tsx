@@ -1,5 +1,9 @@
+import IconApple from "@/icons/apple";
 import IconArrowLeft from "@/icons/arrow-left";
+import IconCardAdd from "@/icons/card-add";
+import IconMoney from "@/icons/money";
 import IconTrash from "@/icons/trash";
+import IconUser from "@/icons/user";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -74,10 +78,10 @@ function CartPage() {
 				</div>
 			</div>
 
-			<dialog className="modal modal-open">
+			{/* <dialog className="modal modal-open">
 				<div className="modal-box">
 					<form method="dialog">
-						{/* if there is a button in form, it will close the modal */}
+					
 						<button className="btn btn-sm btn-square border-none bg-secondary/80 text-[#292D32] rounded-[8px] p-1 absolute right-2 top-2">
 							✕
 						</button>
@@ -87,9 +91,84 @@ function CartPage() {
 						<button className="btn btn-primary btn-block rounded-full mb-2">Yes, delete</button>
 
 						<form method="dialog">
-							{/* if there is a button in form, it will close the modal */}
+							
 							<button className="btn btn-secondary rounded-full text-dark btn-block">Cancel</button>
 						</form>
+					</div>
+				</div>
+			</dialog> */}
+			<dialog className="modal modal-open modal-bottom">
+				<div className="modal-box">
+					<form method="dialog">
+						{/* if there is a button in form, it will close the modal */}
+						<button className="btn btn-sm btn-square border-none bg-secondary/80 text-[#292D32] rounded-[8px] p-1 absolute right-2 top-2">
+							✕
+						</button>
+					</form>
+					{/* <div>
+						<h3 className="font-bold text-[28px] mb-8">Pay with</h3>
+
+						<form action="">
+							<div className="form-control mb-5">
+								<label className="label cursor-pointer border-y first:border-t-0 last:border-b-0">
+									<span className="label-text flex items-center gap-1">
+										<IconUser className="w-5 h-5 " />
+										<span>Chopwell credit</span>
+									</span>
+									<input type="radio" name="radio-10" className="radio checked:bg-primary" />
+								</label>
+								<label className="label cursor-pointer border-y first:border-t-0 last:border-b-0">
+									<span className="label-text flex items-center gap-1">
+										<IconCardAdd className="w-5 h-5 " />
+										<span>Debit Card</span>
+									</span>
+									<input type="radio" name="radio-10" className="radio checked:bg-primary" />
+								</label>
+								<label className="label cursor-pointer border-y first:border-t-0 last:border-b-0">
+									<span className="label-text flex items-center gap-1">
+										<IconMoney className="w-5 h-5 " />
+										<span>On Delivery</span>
+									</span>
+									<input type="radio" name="radio-10" className="radio checked:bg-primary" />
+								</label>
+								<label className="label cursor-pointer border-y first:border-t-0 last:border-b-0">
+									<span className="label-text flex items-center gap-1">
+										<IconApple className="w-5 h-5 " />
+										<span>Apple Pay</span>
+									</span>
+									<input type="radio" name="radio-10" className="radio checked:bg-primary" defaultChecked />
+								</label>
+							</div>
+
+							<button className="btn btn-neutral btn-block border-none bg-neutral">Next</button>
+						</form>
+					</div> */}
+
+					<div>
+						<h3 className="font-bold text-[28px] mb-8">Payment method</h3>
+						<div className="mb-5">
+							<div className="flex items-center gap-2 bg-neutral p-2 rounded-md mb-2">
+								<IconCardAdd className="w-5 h-5" />
+								<span>***0945</span>
+
+								<Link className="btn btn-sm btn-ghost ml-auto" href="/">
+									<IconArrowLeft className="w-5 h-5 rotate-180" />
+								</Link>
+							</div>
+							<Link href="/profile/add-card" className="flex flex-col items-center bg-neutral p-2 rounded-md">
+								<span className="font-bold">+ Add new card</span>
+								<span className="text-[12px] text-[#797373]">use any type of debit card</span>
+							</Link>
+						</div>
+
+						<div className="flex items-center justify-between gap-5">
+							<div className="flex flex-col">
+								<span className="font-bold">NG 2,500</span>
+								<span className="text-[12px]">Sub total</span>
+							</div>
+
+							<button className="btn btn-primary rounded-3xl">Place Order</button>
+						</div>
 					</div>
 				</div>
 			</dialog>
