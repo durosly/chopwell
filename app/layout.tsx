@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ToastWrapper from "./_components/toast-wrapper";
+import QueryWrapper from "./_components/query-wrapper";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -22,8 +23,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.variable} antialiased`}>
-				{children}
-				<ToastWrapper />
+				<QueryWrapper>
+					{children}
+					<ToastWrapper />
+				</QueryWrapper>
 			</body>
 		</html>
 	);
