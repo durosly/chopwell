@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import NotAvailable from "./_components/not-available";
 import "./globals.css";
 
 const inter = Inter({
@@ -21,10 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${inter.variable} antialiased`}>
-				<div className="available h-screen">{children}</div>
-				<NotAvailable />
-			</body>
+			<body className={`${inter.variable} antialiased`}>{children}</body>
 		</html>
 	);
 }
