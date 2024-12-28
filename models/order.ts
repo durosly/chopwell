@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import UserModel from "./user";
+import FoodModel from "./food";
 
 const orderSchema = new mongoose.Schema(
 	{
@@ -23,7 +24,7 @@ const orderSchema = new mongoose.Schema(
 		payment_status: { type: Boolean, default: false },
 		products: [
 			{
-				_productId: String,
+				_productId: { type: mongoose.Types.ObjectId, ref: FoodModel },
 				price: String,
 				quantity: Number,
 				hasReview: { type: Boolean, default: false },
