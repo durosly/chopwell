@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import UserModel from "./user";
 
 const categorySchema = new mongoose.Schema(
 	{
 		name: String,
-		_creatorId: mongoose.Types.ObjectId,
+		_creatorId: { type: mongoose.Types.ObjectId, ref: UserModel },
 	},
 	{ timestamps: true }
 );
