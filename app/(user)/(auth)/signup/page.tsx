@@ -1,5 +1,6 @@
 import IconArrowLeft from "@/icons/arrow-left";
 import IconGoogle from "@/icons/google-icon";
+import GoogleButton from "../_components/google-button";
 
 function SignupPage() {
 	return (
@@ -54,10 +55,10 @@ function SignupPage() {
 			</form>
 
 			<hr className="my-10" />
-			<button className="btn btn-block rounded-full border-accent ">
+			<GoogleButton>
 				<IconGoogle className="w-5 h-5" />
 				<p>Signup with google</p>
-			</button>
+			</GoogleButton>
 		</div>
 	);
 }
