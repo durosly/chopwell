@@ -9,12 +9,15 @@ const userSchema = new mongoose.Schema(
 		password: String,
 		phone: String,
 		is_admin: { type: Boolean, default: false },
+		emailVerifed: { type: Date, default: null },
+		phoneVerified: { type: Date, default: null },
 		type: {
 			type: String,
 			enum: ["admin", "customer", "employee"],
 			default: "customer",
 		},
 		auth_method: { type: String, enum: ["auth", "google-auth"], default: "auth" },
+		disabled: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 );
