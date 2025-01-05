@@ -6,12 +6,19 @@ const { auth } = NextAuth(nextAuthConfig);
 export default auth((req) => {
 	const isLoggedIn = !!req.auth;
 	const pathname = req.nextUrl.pathname;
-	// console.log(req.token)
+	const isAdmin = req.auth?.user.is_admin;
+	// console.log(req.auth);
 
-	if (pathname.startsWith("/admin") && isLoggedIn) {
+	if (!pathname.startsWith("/dashboard") && isLoggedIn && isAdmin) {
 		// TODO: check if this is an admin user
 		return Response.redirect(new URL("/dashboard", req.nextUrl));
 	}
+
+	if (pathname.startsWith("/dashboard") && !isAdmin) {
+		// redirect to landing page is user is not an admin
+		return Response.redirect(new URL("/", req.nextUrl));
+	}
+
 	if (!req.auth && req.nextUrl.pathname !== "/login") {
 		// const newUrl = new URL("/login", req.nextUrl.origin);
 		// return Response.redirect(newUrl);
