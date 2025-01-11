@@ -1,7 +1,9 @@
+import NavLink from "@/app/_components/nav-link";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { LuBell, LuBox, LuConciergeBell, LuCookingPot, LuGrid2X2Check, LuLayoutGrid, LuLogOut, LuMenu, LuNetwork } from "react-icons/lu";
+import BreadCrump from "./dashboard/_components/bread-crump";
 
 function AdminDashboardLayout({
 	children,
@@ -71,7 +73,11 @@ function AdminDashboardLayout({
 						</div>
 					</div>
 				</div>
-				<main className="p-4">{children}</main>
+				<main className="px-4 py-2">
+					<BreadCrump />
+
+					{children}
+				</main>
 			</div>
 			<div className="drawer-side">
 				<label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
@@ -83,34 +89,34 @@ function AdminDashboardLayout({
 					<ul>
 						{/* Sidebar content here */}
 						<li>
-							<Link href="/dashboard">
+							<NavLink path="/dashboard" className="flex gap-2 items-center" activeClassName="font-bold">
 								<LuLayoutGrid className="h-5 w-5" />
 								Home
-							</Link>
+							</NavLink>
 						</li>
 						<li>
-							<Link href="/dashboard/orders">
+							<NavLink path="/dashboard/orders" className="flex gap-2 items-center" activeClassName="font-bold">
 								<LuConciergeBell className="h-5 w-5" />
 								Orders
-							</Link>
+							</NavLink>
 						</li>
 						<li>
-							<Link href="/dashboard/food">
+							<NavLink path="/dashboard/food" className="flex gap-2 items-center" activeClassName="font-bold">
 								<LuCookingPot className="h-5 w-5" />
 								Food
-							</Link>
+							</NavLink>
 						</li>
 						<li>
-							<Link href="/dashboard/categories">
+							<NavLink path="/dashboard/categories" className="flex gap-2 items-center" activeClassName="font-bold">
 								<LuGrid2X2Check className="h-5 w-5" />
 								Categories
-							</Link>
+							</NavLink>
 						</li>
 						<li>
-							<Link href="/dashboard/employees">
+							<NavLink path="/dashboard/employees" className="flex gap-2 items-center" activeClassName="font-bold">
 								<LuNetwork className="h-5 w-5" />
 								Employees
-							</Link>
+							</NavLink>
 						</li>
 						<li>
 							<button className="btn btn-sm btn-error">
