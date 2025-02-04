@@ -7,6 +7,7 @@ async function getCategories(req: NextRequest) {
 	try {
 		const searchParams = req.nextUrl.searchParams;
 		const newPage = searchParams.get("page");
+		const q = searchParams.get("query");
 
 		if (!Number(newPage)) {
 			return Response.json(
@@ -17,16 +18,24 @@ async function getCategories(req: NextRequest) {
 
 		const page = Number(newPage);
 
+		const query: { name?: string | { $regex: string; $options: string } } = {};
+
+		if (!!q && q !== "all") {
+			query.name = { $regex: q, $options: "i" };
+		}
+
 		await connectMongo();
 
-		const categories = await CategoryModel.paginate(
-			{},
-			{
-				page,
-				sort: "-createdAt",
-				populate: { path: "_creatorId", select: ["_id", "firstname"] },
-			}
-		);
+		const categories = await CategoryModel.paginate(query, {
+			page,
+			sort: "-createdAt",
+			populate: {
+				path: "_creatorId",
+				select: ["_id", "firstname", "lastname"],
+			},
+			lean: true,
+			leanWithId: true, // This option is required to return the _id field as a string
+		});
 
 		return Response.json(categories);
 	} catch (error: unknown) {

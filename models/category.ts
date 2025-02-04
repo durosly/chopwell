@@ -39,7 +39,7 @@ categorySchema.plugin(mongoosePaginate);
 // Define TypeScript interfaces for the schema
 export interface CategoryData {
 	name: string;
-	_creatorId: Types.ObjectId | { _id: string; fullname: string };
+	_creatorId: Types.ObjectId | { _id: string; firstname: string; lastname: string };
 	cover_image: string;
 	coverImagePlaceholder: string;
 }

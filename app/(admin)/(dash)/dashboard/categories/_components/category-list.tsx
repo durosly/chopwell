@@ -2,28 +2,58 @@
 import { CategoryDocument } from "@/models/category";
 import { PaginateResult } from "mongoose";
 import Image from "next/image";
+import commaNumber from "comma-number";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getCategories } from "@/api";
 import { useState } from "react";
 import { handleError } from "@/lib/handleError";
 import { format } from "date-fns";
+import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 
 function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDocument> }) {
 	console.log(initialData);
-	// const [query, setQuery] = useState("");
+	const [query, setQuery] = useState("");
 	const [page, setPage] = useState(1);
 	const { isPending, isError, error, data, isFetching } = useQuery({
-		queryKey: ["categories", page],
-		queryFn: () => getCategories(page),
+		queryKey: ["categories", page, query],
+		queryFn: ({ signal }) => getCategories(page, query, signal),
 		initialData,
 		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,
 	});
 
+	const { docs, totalDocs, limit, hasNextPage, hasPrevPage, isPlaceholderData } = data || {};
+
 	return (
 		<div className="card bg-base-100">
 			<div className="card-body">
 				<h2 className="card-title">Categories</h2>
+
+				<div className="text-right flex font-bold">
+					<div className="w-72 ml-auto pr-5">
+						{isPending ? (
+							<div className="skeleton h-10" />
+						) : (
+							<span>
+								{Math.max(1, limit * (page - 1))} -{" "}
+								{limit * (page - 1) +
+									docs?.length || 0}{" "}
+								of {commaNumber(totalDocs)}
+							</span>
+						)}
+					</div>
+				</div>
+				<form action="" className="px-5 mb-5 mt-5">
+					<div className="form-control">
+						<input
+							type="search"
+							className="input input-bordered"
+							placeholder="Category name..."
+							value={query}
+							onChange={(e) => setQuery(e.target.value)}
+						/>
+					</div>
+				</form>
 				<div className="overflow-x-auto">
 					<table className="table">
 						{/* head */}
@@ -79,7 +109,7 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 									) => (
 										<tr
 											key={
-												category._id
+												category.id
 											}>
 											<td>
 												{
@@ -125,11 +155,14 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 												</span>
 											</td>
 											<td>
-												{
-													category
-														._creatorId
-														.firstname
-												}
+												{typeof category._creatorId ===
+													"object" &&
+												"firstname" in
+													category._creatorId
+													? category
+															._creatorId
+															.firstname
+													: "Admin Control"}
 											</td>
 											<th>
 												<button className="btn btn-xs btn-error">
@@ -178,6 +211,35 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 							</tr>
 						</tbody>
 					</table>
+				</div>
+
+				{isFetching ? (
+					<div className="text-center mt-5">
+						<span className="loading loading-spinner"></span>
+						<span className="animate-pulse"> Loading...</span>
+					</div>
+				) : null}
+
+				<div className="text-center space-x-5 mt-5 mb-20">
+					<button
+						disabled={!hasPrevPage}
+						className="btn btn-sm btn-outline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-neutral"
+						onClick={() =>
+							setPage((old) => Math.max(old - 1, 0))
+						}>
+						<LuArrowLeft />
+					</button>
+					<span className="">Page {page}</span>
+					<button
+						disabled={!hasNextPage || isPlaceholderData}
+						className="btn btn-sm btn-outline cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-neutral"
+						onClick={() => {
+							if (!isPlaceholderData && hasNextPage) {
+								setPage((old) => old + 1);
+							}
+						}}>
+						<LuArrowRight />
+					</button>
 				</div>
 			</div>
 		</div>
