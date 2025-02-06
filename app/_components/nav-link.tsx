@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
+import { cn } from "@/utils/cn";
 
 type PropType = {
 	path: string;
@@ -14,11 +15,12 @@ function NavLink({ path, children, className, activeClassName }: PropType) {
 	const pathname = usePathname();
 
 	return (
-		<nav>
-			<Link className={`${className} ${pathname === path ? activeClassName : ""}`} href={path}>
-				{children}
-			</Link>
-		</nav>
+		<Link
+			// className={`${className} ${pathname === path ? activeClassName : ""}`}
+			className={cn(className, pathname === path ? activeClassName : "")}
+			href={path}>
+			{children}
+		</Link>
 	);
 }
 
