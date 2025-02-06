@@ -1,36 +1,50 @@
+import NavLink from "@/app/_components/nav-link";
 import IconCart from "@/icons/cart";
 import IconDiscover from "@/icons/discover";
 import IconHeart from "@/icons/heart";
 import IconUser from "@/icons/user";
-import Link from "next/link";
 
 function BottomNav() {
 	return (
-		<nav className="sticky bottom-0 left-0 right-0 bg-base-100 py-3 border-t">
+		<nav className="sticky bottom-0 left-0 right-0 bg-base-100 py-3 px-10 border-t">
 			<ul className="flex justify-between items-center px-2">
 				<li>
-					<Link className="flex flex-col items-center" href="/">
+					<NavLink
+						className="flex flex-col items-center text-[#797373]"
+						activeClassName="text-primary"
+						path="/">
 						<IconDiscover className="w-8 h-8" />
-						<span className="text-xs capitalize text-[#797373]">discover</span>
-					</Link>
+						<span className="text-xs capitalize">discover</span>
+					</NavLink>
 				</li>
 				<li>
-					<Link className="flex flex-col items-center" href={"/"}>
+					<NavLink
+						className="flex flex-col items-center text-[#797373]"
+						activeClassName="text-primary"
+						path={"/browse"}>
 						<IconCart className="w-8 h-8" />
-						<span className="text-xs capitalize text-[#797373]">Browse</span>
-					</Link>
+						<span className="text-xs capitalize">Browse</span>
+					</NavLink>
 				</li>
 				<li>
-					<Link className="flex flex-col items-center" href={"/"}>
+					<NavLink
+						className="flex flex-col items-center text-[#797373]"
+						activeClassName="text-primary"
+						path={"/favourites"}>
 						<IconHeart className="w-8 h-8" />
-						<span className="text-xs capitalize text-[#797373]">Favourites</span>
-					</Link>
+						<span className="text-xs capitalize">
+							Favourites
+						</span>
+					</NavLink>
 				</li>
 				<li>
-					<Link className="flex flex-col items-center" href="/">
+					<NavLink
+						className="flex flex-col items-center text-[#797373]"
+						activeClassName="text-primary"
+						path="/user">
 						<IconUser className="w-8 h-8" />
-						<span className="text-xs capitalize text-[#797373]">Me</span>
-					</Link>
+						<span className="text-xs capitalize ">Me</span>
+					</NavLink>
 				</li>
 			</ul>
 		</nav>
