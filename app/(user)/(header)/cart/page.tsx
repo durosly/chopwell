@@ -22,7 +22,9 @@ function CartPage() {
 					{Array(7)
 						.fill(3)
 						.map((_, i) => (
-							<li key={i} className="flex gap-5 items-start">
+							<li
+								key={i}
+								className="flex gap-5 items-start">
 								<div className="relative w-[117px] flex-none aspect-square rounded-3xl overflow-hidden">
 									<Image
 										src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -33,7 +35,9 @@ function CartPage() {
 								</div>
 
 								<div className="space-y-2">
-									<h3 className="text-xl font-bold">Hot Jollof Rice</h3>
+									<h3 className="text-xl font-bold">
+										Hot Jollof Rice
+									</h3>
 									<ul className="text-[10px] text-[#3A3939]">
 										<li>Extra salad</li>
 										<li>Extra salad</li>
@@ -47,8 +51,12 @@ function CartPage() {
 									</form>
 
 									<div className="flex justify-between gap-5">
-										<span className="font-bold ">NG 2,000</span>
-										<button className="btn btn-xs btn-accent w-[117px]">Add</button>
+										<span className="font-bold ">
+											NG 2,000
+										</span>
+										<button className="btn btn-xs btn-accent w-[117px]">
+											Add
+										</button>
 										{/* <div className="flex bg-accent h-6 rounded-xl">
                                                 <button className="h-full  flex items-center px-2 text-2xl">&#45;</button>
                                                 <span className="flex items-center justify-center flex-1">1</span>
@@ -68,12 +76,15 @@ function CartPage() {
 				</div>
 				<div className="bg-primary text-neutral p-2 rounded-full flex justify-between  font-bold">
 					<div className="space-x-2">
-						<span className="badge badge-secondary text-primary rounded-full aspect-square">1</span>
+						<span className="badge badge-secondary text-primary rounded-full aspect-square">
+							1
+						</span>
 						<span>N 2,500</span>
 					</div>
 
 					<Link className="flex gap-2 items-center" href="/cart">
-						Checkout <IconArrowLeft className="w-5 h-5 rotate-180" />
+						Checkout{" "}
+						<IconArrowLeft className="w-5 h-5 rotate-180" />
 					</Link>
 				</div>
 			</div>
@@ -145,29 +156,45 @@ function CartPage() {
 					</div> */}
 
 					<div>
-						<h3 className="font-bold text-[28px] mb-8">Payment method</h3>
+						<h3 className="font-bold text-[28px] mb-8">
+							Payment method
+						</h3>
 						<div className="mb-5">
 							<div className="flex items-center gap-2 bg-neutral p-2 rounded-md mb-2">
 								<IconCardAdd className="w-5 h-5" />
 								<span>***0945</span>
 
-								<Link className="btn btn-sm btn-ghost ml-auto" href="/">
+								<Link
+									className="btn btn-sm btn-ghost ml-auto"
+									href="/">
 									<IconArrowLeft className="w-5 h-5 rotate-180" />
 								</Link>
 							</div>
-							<Link href="/profile/add-card" className="flex flex-col items-center bg-neutral p-2 rounded-md">
-								<span className="font-bold">+ Add new card</span>
-								<span className="text-[12px] text-[#797373]">use any type of debit card</span>
+							<Link
+								href="/profile/add-card"
+								className="flex flex-col items-center bg-neutral p-2 rounded-md">
+								<span className="font-bold">
+									+ Add new card
+								</span>
+								<span className="text-[12px] text-[#797373]">
+									use any type of debit card
+								</span>
 							</Link>
 						</div>
 
 						<div className="flex items-center justify-between gap-5">
 							<div className="flex flex-col">
-								<span className="font-bold">NG 2,500</span>
-								<span className="text-[12px]">Sub total</span>
+								<span className="font-bold">
+									NG 2,500
+								</span>
+								<span className="text-[12px]">
+									Sub total
+								</span>
 							</div>
 
-							<button className="btn btn-primary rounded-3xl">Place Order</button>
+							<button className="btn btn-primary rounded-3xl">
+								Place Order
+							</button>
 						</div>
 					</div>
 				</div>
