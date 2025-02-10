@@ -1,5 +1,5 @@
-import BottomNav from "../(header)/(bottom)/_components/bottom-nav";
-import BrowseList from "../(header)/(bottom)/_components/browse-list";
+import BottomNav from "../_components/bottom-nav";
+import BrowseList from "../_components/browse-list";
 // import NoFavourites from "./_components/no-favourites";
 
 function UserFavouritesPage() {

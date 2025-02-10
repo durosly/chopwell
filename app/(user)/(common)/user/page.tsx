@@ -8,7 +8,7 @@ import IconTruck from "@/icons/truck";
 import IconUser from "@/icons/user";
 import IconWallet from "@/icons/wallet";
 import Link from "next/link";
-import BottomNav from "../(header)/(bottom)/_components/bottom-nav";
+import BottomNav from "../_components/bottom-nav";
 import LogoutModal from "./_components/logout-modal";
 
 function UserPage() {

@@ -4,10 +4,15 @@ import Image from "next/image";
 
 function BrowseList() {
 	return (
-		<div className="grid grid-cols-1 px-5 gap-2 py-3 w-screen mb-10">
+		<div className="grid grid-cols-1 px-5 gap-2 py-3 w-full mb-10">
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -32,7 +37,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -57,7 +67,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -82,7 +97,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -107,7 +127,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -132,7 +157,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -157,7 +187,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -182,7 +217,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -207,7 +247,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">
@@ -232,7 +277,12 @@ function BrowseList() {
 			</div>
 			<div className="shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
 				<div className="relative h-[200px]">
-					<Image src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp" alt="Burger" fill className="object-cover" />
+					<Image
+						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
+						alt="Burger"
+						fill
+						className="object-cover"
+					/>
 					<div className="absolute top-0 w-full flex justify-between p-4">
 						<div></div>
 						<button className="btn btn-sm btn-square border-none bg-[#797373] text-secondary rounded-full p-1">

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
 import ToastWrapper from "./_components/toast-wrapper";
 import QueryWrapper from "./_components/query-wrapper";
@@ -22,7 +24,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${inter.variable} antialiased`}>
+			<body className={`${inter.variable} antialiased bg-gray-100`}>
 				<QueryWrapper>
 					{children}
 					<ToastWrapper />

@@ -6,7 +6,7 @@ import IconUser from "@/icons/user";
 
 function BottomNav() {
 	return (
-		<nav className="sticky bottom-0 left-0 right-0 bg-base-100 py-3 px-10 border-t">
+		<nav className="sm:hidden sticky bottom-0 left-0 right-0 bg-base-100 py-3 px-10 border-t">
 			<ul className="flex justify-between items-center px-2">
 				<li>
 					<NavLink
