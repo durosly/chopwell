@@ -1,8 +1,25 @@
 import lightLogo from "@/public/images/chopwell-logo-white.png";
+import darkLogo from "@/public/images/chopwell-logo-dark.png";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./_components/search-bar";
 import BottomNav from "./_components/bottom-nav";
+import {
+	LuAlignLeft,
+	LuChevronDown,
+	LuHandshake,
+	LuLayers,
+	LuOctagonAlert,
+	LuShieldAlert,
+	LuUserCheck,
+	LuX,
+} from "react-icons/lu";
+import IconUser from "@/icons/user";
+import IconHeart from "@/icons/heart";
+import IconTruck from "@/icons/truck";
+import IconNotification from "@/icons/notification";
+import IconWallet from "@/icons/wallet";
+import IconCart from "@/icons/cart";
 
 export default function CommonLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -14,26 +31,16 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 				<div className="drawer-content flex flex-col">
 					<div className="max-w-[1400px] w-full mx-auto bg-base-100">
 						{/* Navbar */}
-						<div className="sticky top-0 z-50 navbar bg-primary">
+						<div className="sticky top-0 z-50 navbar justify-between bg-primary py-4 mb-5">
 							<div className="flex-none lg:hidden">
 								<label
 									htmlFor="my-drawer-3"
 									aria-label="open sidebar"
-									className="btn btn-square btn-ghost">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										className="inline-block h-6 w-6 stroke-current">
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth="2"
-											d="M4 6h16M4 12h16M4 18h16"></path>
-									</svg>
+									className="btn btn-square btn-ghost text-primary-content">
+									<LuAlignLeft className="inline-block h-6 w-6 stroke-current" />
 								</label>
 							</div>
-							<div className="mx-2 flex-1 px-2">
+							<div className="mx-2 px-2">
 								<Link
 									href="/"
 									className="block relative h-10 w-[100px]">
@@ -45,27 +52,87 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 									/>
 								</Link>
 							</div>
-							<div>
-								<div className="hidden flex-none lg:block">
-									<ul className="menu menu-horizontal">
+							<SearchBar
+								showSubmitBtn
+								direction="row"
+								inputClassName="bg-base-100 border-none rounded-lg !outline-none min-w-[400px]"
+								btnClassName="bg-base-100 text-primary hover:bg-base-100/90"
+								parentClassName="max-lg:hidden"
+							/>
+							<div className="flex items-center gap-5">
+								<div className="hidden flex-none lg:flex items-center">
+									<ul className="menu menu-horizontal text-primary-content">
 										{/* Navbar menu content here */}
 										<li>
-											<a>
-												Navbar
-												Item
-												1
-											</a>
+											<Link href="/browse">
+												Browse
+											</Link>
 										</li>
 										<li>
-											<a>
-												Navbar
-												Item
-												2
-											</a>
+											<Link href="/category">
+												Categories
+											</Link>
 										</li>
 									</ul>
 								</div>
-								<div className="space-x-2">
+								<Link
+									className="relative text-primary-content"
+									href="/notifications">
+									<IconNotification className="w-6 h-6" />
+									{/* use animation on new notification: animate-bounce */}
+									<span className="absolute -top-1 -right-1 text-xs text-primary-content font-bold bg-primary rounded-full w-4 h-4 flex items-center justify-center ">
+										3
+									</span>
+								</Link>
+
+								<div className="dropdown dropdown-end">
+									<div
+										tabIndex={0}
+										role="button"
+										className="btn btn-sm btn-ghost text-primary-content">
+										<LuUserCheck className="w-6 h-6" />
+										<span>
+											Hi, Duro
+										</span>
+										<LuChevronDown className="w-5 h-5" />
+									</div>
+									<ul
+										tabIndex={0}
+										className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+										<li>
+											<Link href="/user">
+												<IconUser className="w-6 h-6	" />{" "}
+												Profile
+											</Link>
+										</li>
+										<li>
+											<Link href="/wallet">
+												<IconWallet className="w-6 h-6" />
+												Wallet
+											</Link>
+										</li>
+										<li>
+											<Link
+												href={`/favourites`}>
+												<IconHeart className="w-6 h-6" />{" "}
+												Favourites
+											</Link>
+										</li>
+										<li>
+											<Link href="/orders">
+												<IconTruck className="w-6 h-6" />
+												Orders
+											</Link>
+										</li>
+										<li className="mt-2">
+											<button className="btn btn-sm btn-error">
+												Logout
+											</button>
+										</li>
+									</ul>
+								</div>
+
+								{/* <div className="space-x-2">
 									<Link
 										className="btn btn-sm btn-secondary"
 										href="/signup">
@@ -76,11 +143,14 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 										href="/login">
 										Log in
 									</Link>
-								</div>
+								</div> */}
 							</div>
 						</div>
 
-						<SearchBar />
+						<SearchBar
+							parentClassName="lg:hidden w-full mb-5"
+							inputClassName="w-full"
+						/>
 						{/* Page content here */}
 						{children}
 
@@ -193,20 +263,60 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 						</div>
 					</div>
 				</div>
-				<div className="drawer-side">
+				<div className="drawer-side z-50">
 					<label
 						htmlFor="my-drawer-3"
 						aria-label="close sidebar"
 						className="drawer-overlay"></label>
-					<ul className="menu bg-base-200 min-h-full w-80 p-4">
-						{/* Sidebar content here */}
-						<li>
-							<a>Sidebar Item 1</a>
-						</li>
-						<li>
-							<a>Sidebar Item 2</a>
-						</li>
-					</ul>
+					<div className="relative menu bg-base-100 min-h-full w-80 p-4">
+						<label
+							htmlFor="my-drawer-3"
+							aria-label="close sidebar"
+							className="absolute top-1 right-1 btn btn-ghost z-10">
+							<LuX className="w-4 h-4" />
+						</label>
+						<div className="relative h-14 w-full mb-5">
+							<Image
+								src={darkLogo}
+								fill
+								className="object-contain"
+								alt="chopwell"
+							/>
+						</div>
+						<ul>
+							{/* Sidebar content here */}
+							<li>
+								<Link href="/browse">
+									<IconCart className="w-6 h-6" />
+									Browse
+								</Link>
+							</li>
+							<li>
+								<Link href="/category">
+									<LuLayers className="w-6 h-6" />
+									Categories
+								</Link>
+							</li>
+							<li>
+								<Link href="/about">
+									<LuHandshake className="w-6 h-6" />
+									About us
+								</Link>
+							</li>
+							<li>
+								<Link href="/terms">
+									<LuOctagonAlert className="w-6 h-6" />
+									Terms and conditions
+								</Link>
+							</li>
+							<li>
+								<Link href="/terms">
+									<LuShieldAlert className="w-6 h-6" />
+									Privacy policy
+								</Link>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</>
