@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
 				pathname: `/chopwell-test/**"`,
 				search: "",
 			},
+			{
+				protocol: "https",
+				hostname: "picsum.photos",
+				port: "",
+				pathname: `/**"`,
+				search: "",
+			},
 		],
 	},
 };
