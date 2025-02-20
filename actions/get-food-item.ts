@@ -17,9 +17,14 @@ async function getFoodItems({ limit, page, paginate, timeChoice, sortBy, order }
 	if (!paginate) {
 		const foodItems = await FoodModel.find(query)
 			.sort({ [sortBy || "price"]: order || "asc" })
-			.limit(limit || 10);
+			.limit(limit || 10)
+			.lean();
 
 		if (!foodItems || !foodItems.length) return null;
+
+		foodItems.forEach((item) => {
+			item._id = item._id.toString();
+		});
 
 		return foodItems;
 	} else {
