@@ -89,9 +89,9 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 									<div
 										tabIndex={0}
 										role="button"
-										className="btn btn-sm btn-ghost text-primary-content">
+										className="btn btn-sm btn-ghost flex-nowrap text-primary-content">
 										<LuUserCheck className="w-6 h-6" />
-										<span>
+										<span className="max-sm:hidden text-nowrap">
 											Hi, Duro
 										</span>
 										<LuChevronDown className="w-5 h-5" />
@@ -99,9 +99,15 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 									<ul
 										tabIndex={0}
 										className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+										<li className="sm:hidden">
+											<span className="font-bold">
+												Hi,
+												Duro
+											</span>
+										</li>
 										<li>
 											<Link href="/user">
-												<IconUser className="w-6 h-6	" />{" "}
+												<IconUser className="w-6 h-6" />{" "}
 												Profile
 											</Link>
 										</li>
