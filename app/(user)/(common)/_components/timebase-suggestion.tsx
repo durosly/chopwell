@@ -1,101 +1,66 @@
+import getFoodItems from "@/actions/get-food-item";
+import IconStar from "@/icons/star";
+import { FoodDocument } from "@/models/food";
 import Image from "next/image";
 import Link from "next/link";
 
-function TimebaseSuggestions() {
+async function TimebaseSuggestions() {
+	const getTimeChoice = () => {
+		const currentHour = new Date().getHours();
+		if (currentHour >= 5 && currentHour < 11) {
+			return "breakfast";
+		} else if (currentHour >= 11 && currentHour < 17) {
+			return "lunch";
+		} else {
+			return "dinner";
+		}
+	};
+
+	const timeChoice = getTimeChoice();
+	const foodItems = await getFoodItems({
+		limit: 6,
+		timeChoice,
+		sortBy: "average_rating",
+		order: "desc",
+	});
+
+	if (!foodItems || !foodItems.length) return null;
+
 	return (
 		<div className="mb-10">
 			<div className="flex flex-wrap items-center justify-between gap-5 px-5 mb-5">
-				<h2 className="text-xl font-bold">Top Pick for breakfast</h2>
-				<Link href="/" className="btn bg-neutral text-primary border-none rounded-[50px]">
+				<h2 className="text-xl font-bold">Top pick for {timeChoice}</h2>
+				<Link
+					href={`/browse?time=${timeChoice}`}
+					className="btn bg-neutral text-primary border-none rounded-[50px]">
 					See all
 				</Link>
 			</div>
 
-			<div className="carousel carousel-center h-[200px] px-5 gap-2">
-				<div className="carousel-item relative rounded-2xl overflow-hidden">
-					<Image
-						width={150}
-						height={200}
-						src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
-						alt="Burger"
-						className="object-cover"
-					/>
-					<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-						<p className="text-xs text-white">Jollof Rice with chicken and cold...</p>
-					</div>
-				</div>
-				<div className="carousel-item relative rounded-2xl overflow-hidden">
-					<Image
-						width={150}
-						className="object-cover"
-						height={200}
-						src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp"
-						alt="Burger"
-					/>
-					<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-						<p className="text-xs text-white">Jollof Rice with chicken and cold...</p>
-					</div>
-				</div>
-				<div className="carousel-item relative rounded-2xl overflow-hidden">
-					<Image
-						width={150}
-						className="object-cover"
-						height={200}
-						src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp"
-						alt="Burger"
-					/>
-					<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-						<p className="text-xs text-white">Jollof Rice with chicken and cold...</p>
-					</div>
-				</div>
-				<div className="carousel-item relative rounded-2xl overflow-hidden">
-					<Image
-						width={150}
-						className="object-cover"
-						height={200}
-						src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp"
-						alt="Burger"
-					/>
-					<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-						<p className="text-xs text-white">Jollof Rice with chicken and cold...</p>
-					</div>
-				</div>
-				<div className="carousel-item relative rounded-2xl overflow-hidden">
-					<Image
-						width={150}
-						className="object-cover"
-						height={200}
-						src="https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.webp"
-						alt="Burger"
-					/>
-					<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-						<p className="text-xs text-white">Jollof Rice with chicken and cold...</p>
-					</div>
-				</div>
-				<div className="carousel-item relative rounded-2xl overflow-hidden">
-					<Image
-						width={150}
-						className="object-cover"
-						height={200}
-						src="https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.webp"
-						alt="Burger"
-					/>
-					<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-						<p className="text-xs text-white">Jollof Rice with chicken and cold...</p>
-					</div>
-				</div>
-				<div className="carousel-item relative rounded-2xl overflow-hidden">
-					<Image
-						width={150}
-						className="object-cover"
-						height={200}
-						src="https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.webp"
-						alt="Burger"
-					/>
-					<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-						<p className="text-xs text-white">Jollof Rice with chicken and cold...</p>
-					</div>
-				</div>
+			<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 px-5 gap-2">
+				{Array.isArray(foodItems) &&
+					foodItems.map((food: FoodDocument) => (
+						<Link
+							href={`/product/${food._id}`}
+							key={food._id as string}
+							className="block h-[250px] relative rounded-2xl overflow-hidden group">
+							<div className="badge badge-xs bg-transparent text-white border-none absolute top-2 left-1 z-10">
+								<IconStar className="w-4 h-4 text-[#FFBB00]" />
+								<span>4.5</span>
+							</div>
+							<Image
+								fill
+								src={food.image}
+								alt={food.name}
+								className="object-cover group-hover:scale-105 transition-transform duration-300"
+							/>
+							<div className="flex items-end absolute inset-0 bg-black/40 p-2">
+								<p className="text-xs text-white  group-hover:line-clamp-none line-clamp-2 transition-[line-clamp] duration-300">
+									{food.short_desc}
+								</p>
+							</div>
+						</Link>
+					))}
 			</div>
 		</div>
 	);
