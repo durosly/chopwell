@@ -20,54 +20,35 @@ const settings = {
 	// customPaging: () => <a className="bg-dark flex-1">&nbsp;</a>,
 };
 
+const dummyImages = [
+	"https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp",
+	"https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp",
+	"https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
+	"https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp",
+];
+
 function ImageSlider() {
 	return (
 		<>
-			<div className="px-5 mb-10">
+			<div className="mb-10 flex-1">
 				<Slider
 					{...settings}
 					// className="w-full h-[calc(100vh_-_200px)] aspect-video rounded-2xl overflow-hidden mb-4"
 				>
-					<div className="relative w-full h-[calc(100vh_-_200px)] rounded-2xl overflow-hidden">
-						<Image
-							src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
-							// width={300}
-							// height={220}
-							className="object-cover"
-							fill
-							alt=""
-						/>
-					</div>
-					<div className="relative w-full h-[calc(100vh_-_200px)] rounded-2xl overflow-hidden">
-						<Image
-							src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-							// width={300}
-							// height={220}
-							className="object-cover"
-							fill
-							alt=""
-						/>
-					</div>
-					<div className="relative w-full h-[calc(100vh_-_200px)] rounded-2xl overflow-hidden">
-						<Image
-							src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-							// width={300}
-							// height={220}
-							className="object-cover"
-							fill
-							alt=""
-						/>
-					</div>
-					<div className="relative w-full h-[calc(100vh_-_200px)] rounded-2xl overflow-hidden">
-						<Image
-							src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
-							// width={300}
-							// height={220}
-							className="object-cover"
-							fill
-							alt=""
-						/>
-					</div>
+					{dummyImages.map((img, i) => (
+						<div key={i} className="px-4">
+							<div className="relative w-full h-full max-h-[400px] aspect-video rounded-2xl overflow-hidden">
+								<Image
+									src={img}
+									// width={300}
+									// height={220}
+									className="object-cover"
+									fill
+									alt=""
+								/>
+							</div>
+						</div>
+					))}
 				</Slider>
 			</div>
 		</>
