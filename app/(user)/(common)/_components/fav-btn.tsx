@@ -1,15 +1,47 @@
 "use client";
 
+import { addItemToFavourite, removeItemFromFavourite } from "@/api";
+import { handleError } from "@/lib/handleError";
+import useFavouriteStore from "@/store/favourite-store";
 import { cn } from "@/utils/cn";
+import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PropsWithChildren } from "react";
+import { toast } from "sonner";
 
-type FavBtnProps = PropsWithChildren<{ className?: string | undefined }>;
+type FavBtnProps = PropsWithChildren<{
+	className?: string | undefined;
+	foodId: string;
+	activeClassName?: string | undefined;
+}>;
 
-function FavBtn({ className, children }: FavBtnProps) {
+function FavBtn({ className, activeClassName, children, foodId }: FavBtnProps) {
+	const queryClient = useQueryClient();
+	const anonymousSession = getAnonymousSessionId();
+	const { isFavourite, addFavourite, removeFavourite } = useFavouriteStore();
+
+	const favourite = isFavourite(foodId);
+
+	const { isPending, mutate } = useMutation({
+		mutationFn: ({ foodId, sessionId }: { foodId: string; sessionId: string }) =>
+			favourite
+				? removeItemFromFavourite({ foodId, sessionId })
+				: addItemToFavourite({ foodId, sessionId }),
+		onError: (error) => {
+			const message = handleError(error);
+			toast.error("Favourite failed", { description: message });
+		},
+		onSuccess: () => {
+			(() => (favourite ? removeFavourite(foodId) : addFavourite(foodId)))();
+			queryClient.invalidateQueries({ queryKey: ["favourites"] });
+		},
+	});
+
 	return (
 		<button
-			onClick={() => console.log("Fav Button")}
-			className={cn("fav-btn", className)}>
+			disabled={isPending}
+			onClick={() => mutate({ foodId, sessionId: anonymousSession })}
+			className={cn("fav-btn", className, favourite && activeClassName)}>
 			{children}
 		</button>
 	);
