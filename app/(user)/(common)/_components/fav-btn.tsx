@@ -4,7 +4,6 @@ import { addItemToFavourite, removeItemFromFavourite } from "@/api";
 import { handleError } from "@/lib/handleError";
 import useFavouriteStore from "@/store/favourite-store";
 import { cn } from "@/utils/cn";
-import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PropsWithChildren } from "react";
 import { toast } from "sonner";
@@ -17,16 +16,15 @@ type FavBtnProps = PropsWithChildren<{
 
 function FavBtn({ className, activeClassName, children, foodId }: FavBtnProps) {
 	const queryClient = useQueryClient();
-	const anonymousSession = getAnonymousSessionId();
 	const { isFavourite, addFavourite, removeFavourite } = useFavouriteStore();
 
 	const favourite = isFavourite(foodId);
 
 	const { isPending, mutate } = useMutation({
-		mutationFn: ({ foodId, sessionId }: { foodId: string; sessionId: string }) =>
+		mutationFn: ({ foodId }: { foodId: string }) =>
 			favourite
-				? removeItemFromFavourite({ foodId, sessionId })
-				: addItemToFavourite({ foodId, sessionId }),
+				? removeItemFromFavourite({ foodId })
+				: addItemToFavourite({ foodId }),
 		onError: (error) => {
 			const message = handleError(error);
 			toast.error("Favourite failed", { description: message });
@@ -40,7 +38,7 @@ function FavBtn({ className, activeClassName, children, foodId }: FavBtnProps) {
 	return (
 		<button
 			disabled={isPending}
-			onClick={() => mutate({ foodId, sessionId: anonymousSession })}
+			onClick={() => mutate({ foodId })}
 			className={cn("fav-btn", className, favourite && activeClassName)}>
 			{children}
 		</button>

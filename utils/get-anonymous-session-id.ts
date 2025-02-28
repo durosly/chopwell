@@ -1,13 +1,24 @@
+"use server";
+import "server-only";
 import { v4 as uuidv4 } from "uuid";
+import { cookies } from "next/headers";
 
-function getAnonymousSessionId() {
-	if (typeof window === "undefined") return "";
+async function getAnonymousSessionId() {
+	const anonymousSessionName = "sessionId";
+	const cookieStore = await cookies();
 
-	let sessionId = localStorage.getItem("sessionId");
+	let sessionId = cookieStore.get(anonymousSessionName)?.value;
 	if (!sessionId) {
 		sessionId = uuidv4();
-		localStorage.setItem("sessionId", sessionId);
+		cookieStore.set({
+			name: anonymousSessionName,
+			value: sessionId,
+			httpOnly: true,
+			path: "/",
+			secure: process.env.NODE_ENV === "production",
+		});
 	}
+
 	return sessionId;
 }
 
