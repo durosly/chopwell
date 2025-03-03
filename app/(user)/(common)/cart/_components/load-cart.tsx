@@ -3,24 +3,36 @@ import IconTrash from "@/icons/trash";
 import { handleError } from "@/lib/handleError";
 import commaNumber from "@/utils/comma-number";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import { LuMinus, LuPencil, LuPlus } from "react-icons/lu";
+import { LuBadgeAlert, LuMinus, LuPencil, LuPlus } from "react-icons/lu";
+import { getCart } from "@/api";
+import LoadingCartAnimation from "./loading-cart";
 
 function LoaCart() {
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["cart-full-data"],
-		queryFn: async () => {
-			const res = await axios("/api/auth/cart", {
-				params: {},
-			});
-			return res.data;
-		},
+		queryFn: () => getCart(),
+		refetchOnWindowFocus: false,
 	});
 
-	if (isLoading) return <p>Loading...</p>;
-	if (isError) return <p>{handleError(error)}</p>;
+	if (isLoading) {
+		return (
+			<div className="flex flex-col items-center">
+				<LoadingCartAnimation />
+				<p>Loading...</p>
+			</div>
+		);
+	}
+
+	if (isError) {
+		return (
+			<div className="flex flex-col items-center">
+				<LuBadgeAlert className="w-20 h-20" />
+				<p>{handleError(error)}</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="px-5 md:px-10">
