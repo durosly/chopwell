@@ -1,85 +1,149 @@
-import IconApple from "@/icons/apple";
 import IconArrowLeft from "@/icons/arrow-left";
 import IconCardAdd from "@/icons/card-add";
-import IconMoney from "@/icons/money";
 import IconTrash from "@/icons/trash";
-import IconUser from "@/icons/user";
-import Image from "next/image";
 import Link from "next/link";
+import { LuBadgeAlert, LuBadgeInfo } from "react-icons/lu";
+import CartSummaryModal from "./_components/cart-summary-modal";
+import CartTitleCount from "./_components/cart-title-count";
+import LoaCart from "./_components/load-cart";
+import ShowSummaryModalButton from "./_components/show-summary-modal-btn";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import getCartDataAction from "@/actions/get-cart-action";
 
-function CartPage() {
+async function CartPage() {
+	const cart = await getCartDataAction();
+
+	if (cart.status === false) {
+		return (
+			<div className="flex flex-col items-center justify-center min-h-14 h-[40vh]">
+				<LuBadgeAlert className="w-20 h-20" />
+				<p>{cart.message}</p>
+			</div>
+		);
+	}
+
+	const queryClient = new QueryClient();
+
+	await queryClient.prefetchQuery({
+		queryKey: ["cart-full-data"],
+		queryFn: () => cart.data,
+	});
+
 	return (
-		<>
-			<div className="p-2">
-				<div className="flex flex-wrap items-center justify-between gap-5 px-5 mb-5 py-4">
-					<h2 className="text-xl font-bold">Today, within 20 min</h2>
-					<button className="btn btn-xs btn-square border-none">
-						<IconTrash />
-					</button>
-				</div>
-
-				<ul className="grid grid-cols-1 gap-5">
-					{Array(7)
-						.fill(3)
-						.map((_, i) => (
-							<li
-								key={i}
-								className="flex gap-5 items-start">
-								<div className="relative w-[117px] flex-none aspect-square rounded-3xl overflow-hidden">
-									<Image
-										src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
-										alt="Burger"
-										fill
-										className="object-cover"
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			{/* px-5 md:px-10 */}
+			<div className="">
+				<div className="flex">
+					<div className="py-2 flex-1">
+						<div className="flex flex-wrap items-center justify-between gap-5 mb-5 py-4 px-5 md:px-10">
+							<CartTitleCount />
+							<button className="btn btn-xs btn-square border-none">
+								<IconTrash />
+							</button>
+						</div>
+						<div className="pl-5 md:pl-10">
+							<hr className="mb-5" />
+						</div>
+						<LoaCart />
+					</div>
+					<div className="max-lg:hidden w-80 pt-3 border-l">
+						<div className="sticky top-28 ">
+							<div className="border-y px-5 py-5">
+								<h2 className="text-xl font-semibold uppercase mb-4">
+									Cart Summary
+								</h2>
+								<div className="flex justify-between gap-2">
+									<p>Subtotal</p>
+									<p className="text-xl font-bold">
+										N 2,500
+									</p>
+								</div>
+								<p className="text-xs flex item-center gap-1 text-gray-500 mb-4">
+									<LuBadgeInfo /> Delivery fee
+									not included yet
+								</p>
+								<button className="btn btn-primary btn-block">
+									Checkout (N2,300)
+								</button>
+							</div>
+							<form action="" className="p-5 border-b">
+								<div className="form-control mb-2">
+									<label
+										className="label"
+										htmlFor="promo-code">
+										<span className="label-text-alt">
+											Promo Code
+										</span>
+									</label>
+									<input
+										type="text"
+										name="promo-code"
+										id="promo-code"
+										className="input input-bordered"
 									/>
 								</div>
+								<button className="btn btn-primary">
+									Apply
+								</button>
+							</form>
+							<div className="border-b p-5">
+								<h2 className="text-xl font-semibold">
+									Returns
+								</h2>
+								<p className="text-xs text-gray-500">
+									Learn more about our return
+									policy{" "}
+									<Link
+										className="link"
+										href="/return-policy">
+										here
+									</Link>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className="p-3 my-3 mb-5 border-t bg-base-100 lg:hidden sticky bottom-0">
+				{/* <h2>Cart Summary</h2>
 
-								<div className="space-y-2">
-									<h3 className="text-xl font-bold">
-										Hot Jollof Rice
-									</h3>
-									<ul className="text-[10px] text-[#3A3939]">
-										<li>Extra salad</li>
-										<li>Extra salad</li>
-									</ul>
-									<form action="">
-										<label className="form-control">
-											<textarea
-												className="textarea textarea-sm textarea-bordered border-[#C2C2C2] h-10"
-												placeholder="Add special request here..."></textarea>
-										</label>
-									</form>
-
-									<div className="flex justify-between gap-5">
-										<span className="font-bold ">
-											NG 2,000
-										</span>
-										<button className="btn btn-xs btn-accent w-[117px]">
-											Add
+				<p className="text-sm mb-1">Subtotal</p> */}
+				<div className="bg-primary text-neutral p-2 rounded-full flex justify-between font-bold">
+					<div className="space-x-2">
+						<ShowSummaryModalButton>
+							<span className="badge badge-secondary text-primary rounded-full aspect-square">
+								1
+							</span>
+							<span>N 2,500</span>
+						</ShowSummaryModalButton>
+						<CartSummaryModal>
+							<dialog
+								className="modal modal-bottom"
+								id="cart-summary-modal">
+								<div className="modal-box">
+									<form method="dialog">
+										<button className="btn btn-sm btn-square border-none bg-secondary/80 text-[#292D32] rounded-[8px] p-1 absolute right-2 top-2">
+											✕
 										</button>
-										{/* <div className="flex bg-accent h-6 rounded-xl">
-                                                <button className="h-full  flex items-center px-2 text-2xl">&#45;</button>
-                                                <span className="flex items-center justify-center flex-1">1</span>
-                                                <button className="h-full  flex items-center px-2 text-2xl">&#43;</button>
-                                            </div> */}
+									</form>
+									<div>
+										<h3 className="font-bold text-[28px] mt-5 mb-8">
+											Remove this
+											delivery
+										</h3>
+										<button className="btn btn-primary btn-block rounded-full mb-2">
+											Yes, delete
+										</button>
+
+										<form method="dialog">
+											<button className="btn btn-secondary rounded-full text-dark btn-block">
+												Cancel
+											</button>
+										</form>
 									</div>
 								</div>
-							</li>
-						))}
-				</ul>
-			</div>
-
-			<div className="p-3 my-3 shadow-2xl mb-5 border-t bg-base-100 sticky bottom-0">
-				<div className="flex items-center justify-between gap-5 my-5">
-					<p className="text-xs">Delivery fee</p>
-					<p className="font-bold">NG 0</p>
-				</div>
-				<div className="bg-primary text-neutral p-2 rounded-full flex justify-between  font-bold">
-					<div className="space-x-2">
-						<span className="badge badge-secondary text-primary rounded-full aspect-square">
-							1
-						</span>
-						<span>N 2,500</span>
+							</dialog>
+						</CartSummaryModal>
 					</div>
 
 					<Link className="flex gap-2 items-center" href="/cart">
@@ -87,6 +151,9 @@ function CartPage() {
 						<IconArrowLeft className="w-5 h-5 rotate-180" />
 					</Link>
 				</div>
+				{/* <p className="text-xs flex item-center gap-1">
+					<LuBadgeInfo /> Delivery fee not included yet
+				</p> */}
 			</div>
 
 			{/* <dialog className="modal modal-open">
@@ -108,7 +175,7 @@ function CartPage() {
 					</div>
 				</div>
 			</dialog> */}
-			<dialog className="modal modal-open modal-bottom">
+			<dialog className="modal modal-bottom">
 				<div className="modal-box">
 					<form method="dialog">
 						{/* if there is a button in form, it will close the modal */}
@@ -199,7 +266,7 @@ function CartPage() {
 					</div>
 				</div>
 			</dialog>
-		</>
+		</HydrationBoundary>
 	);
 }
 
