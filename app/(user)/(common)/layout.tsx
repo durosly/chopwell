@@ -3,7 +3,6 @@ import darkLogo from "@/public/images/chopwell-logo-dark.png";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./_components/search-bar";
-import BottomNav from "./_components/bottom-nav";
 import {
 	LuAlignLeft,
 	LuChevronDown,
@@ -11,6 +10,7 @@ import {
 	LuLayers,
 	LuOctagonAlert,
 	LuShieldAlert,
+	LuShoppingCart,
 	LuUserCheck,
 	LuX,
 } from "react-icons/lu";
@@ -20,6 +20,9 @@ import IconTruck from "@/icons/truck";
 import IconNotification from "@/icons/notification";
 import IconWallet from "@/icons/wallet";
 import IconCart from "@/icons/cart";
+import CartCount from "./_components/cart-count";
+import LoadCart from "./_components/load-cart";
+import BottomNavWrapper from "./_components/bottom-nav-wrapper";
 
 export default function CommonLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -29,7 +32,7 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 			<div className="drawer">
 				<input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
 				<div className="drawer-content flex flex-col">
-					<div className="max-w-[1400px] w-full mx-auto bg-base-100">
+					<div className="max-w-[1400px] w-full mx-auto">
 						{/* Navbar */}
 						<div className="sticky top-0 z-50 navbar justify-between bg-primary py-4 mb-5">
 							<div className="flex-none lg:hidden">
@@ -55,7 +58,8 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 							<SearchBar
 								showSubmitBtn
 								direction="row"
-								inputClassName="bg-base-100 border-none rounded-lg !outline-none min-w-[400px]"
+								isHeader={true}
+								inputClassName="bg-base-100 border-none rounded !outline-none min-w-[400px]"
 								btnClassName="bg-base-100 text-primary hover:bg-base-100/90"
 								parentClassName="max-lg:hidden"
 							/>
@@ -77,12 +81,9 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 								</div>
 								<Link
 									className="relative text-primary-content"
-									href="/notifications">
-									<IconNotification className="w-6 h-6" />
-									{/* use animation on new notification: animate-bounce */}
-									<span className="absolute -top-1 -right-1 text-xs text-primary-content font-bold bg-primary rounded-full w-4 h-4 flex items-center justify-center ">
-										3
-									</span>
+									href="/cart">
+									<LuShoppingCart className="w-6 h-6" />
+									<CartCount />
 								</Link>
 
 								<div className="dropdown dropdown-end">
@@ -109,6 +110,15 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 											<Link href="/user">
 												<IconUser className="w-6 h-6" />{" "}
 												Profile
+											</Link>
+										</li>
+										<li>
+											<Link href="/notification">
+												<IconNotification className="w-6 h-6" />{" "}
+												Notification
+												<span className="badge badge-primary">
+													5
+												</span>
 											</Link>
 										</li>
 										<li>
@@ -158,9 +168,10 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 							inputClassName="w-full"
 						/>
 						{/* Page content here */}
+						<LoadCart />
 						{children}
 
-						<BottomNav />
+						<BottomNavWrapper />
 						<div className="max-sm:hidden ">
 							<footer className="footer bg-base-200 text-base-content p-10">
 								<nav>
