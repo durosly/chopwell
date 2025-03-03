@@ -13,6 +13,9 @@
 		"@aws-sdk/client-s3": "^3.723.0",
 		"@faker-js/faker": "^9.5.0",
 		"@hookform/resolvers": "^3.9.1",
+		"@lordicon/react": "^1.10.1",
+		"@lottiefiles/dotlottie-react": "^0.13.0",
+		"@lottiefiles/lottie-player": "^2.0.12",
 		"@react-email/components": "^0.0.31",
 		"@tanstack/react-query": "^5.62.11",
 		"axios": "^1.7.9",
@@ -21,6 +24,7 @@
 		"comma-number": "^2.1.0",
 		"date-fns": "^4.1.0",
 		"lodash": "^4.17.21",
+		"lottie-react": "^2.4.1",
 		"mongoose": "^8.9.2",
 		"mongoose-lean-virtuals": "^1.1.0",
 		"mongoose-paginate-v2": "^1.9.0",
@@ -45,6 +49,7 @@
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
+		"@tailwindcss/postcss": "^4.0.9",
 		"@tanstack/eslint-plugin-query": "^5.62.9",
 		"@types/bcryptjs": "^2.4.6",
 		"@types/comma-number": "^2.1.2",
@@ -53,12 +58,12 @@
 		"@types/react-dom": "^19",
 		"@types/react-portal": "^4.0.7",
 		"@types/react-slick": "^0.23.13",
-		"daisyui": "^4.12.22",
+		"daisyui": "^5.0.0",
 		"eslint": "^9",
 		"eslint-config-next": "15.1.0",
-		"postcss": "^8",
+		"postcss": "^8.5.3",
 		"react-email": "^3.0.4",
-		"tailwindcss": "^3.4.1",
+		"tailwindcss": "^4.0.9",
 		"typescript": "^5"
 	}
 }
