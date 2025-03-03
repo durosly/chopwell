@@ -8,15 +8,13 @@ function SaveBeforeLate() {
 		<div className="mb-10">
 			<div className="flex flex-wrap items-center justify-between gap-5 px-5 mb-5">
 				<h2 className="text-xl font-bold">Save before it&apos;s to late</h2>
-				<Link
-					href="/"
-					className="btn bg-neutral text-primary border-none rounded-[50px]">
+				<Link href="/" className="btn btn-neutral">
 					See all
 				</Link>
 			</div>
 
 			<div className="carousel carousel-center px-5 gap-2 py-3 w-full">
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -52,7 +50,7 @@ function SaveBeforeLate() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -88,7 +86,7 @@ function SaveBeforeLate() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -124,7 +122,7 @@ function SaveBeforeLate() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -160,7 +158,7 @@ function SaveBeforeLate() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -196,7 +194,7 @@ function SaveBeforeLate() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -232,7 +230,7 @@ function SaveBeforeLate() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"

@@ -2,6 +2,7 @@
 import IconSearchNormal from "@/icons/search-normal";
 import { cn } from "@/utils/cn";
 import Form from "next/form";
+import { usePathname } from "next/navigation";
 // import Link from "next/link";
 import { useRef } from "react";
 
@@ -11,6 +12,7 @@ type PropType = {
 	inputClassName?: string;
 	btnClassName?: string;
 	parentClassName?: string;
+	isHeader?: boolean;
 };
 
 function SearchBar({
@@ -19,8 +21,15 @@ function SearchBar({
 	inputClassName,
 	btnClassName,
 	parentClassName,
+	isHeader,
 }: PropType) {
 	const inputRef = useRef<HTMLInputElement>(null);
+	const pathname = usePathname();
+
+	if (!isHeader) {
+		if (pathname === "/cart") return null;
+	}
+
 	return (
 		<Form
 			action={"/browse"}
@@ -31,7 +40,7 @@ function SearchBar({
 			)}>
 			<label
 				className={cn(
-					"input relative bg-neutral border-[0.5px] border-[#797373] flex items-center gap-2 rounded-full",
+					"input relative border-[0.5px] border-[#797373] flex items-center gap-2 rounded-full",
 					inputClassName
 				)}>
 				<IconSearchNormal className="h-5 w-5 opacity-70" />

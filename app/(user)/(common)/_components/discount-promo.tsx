@@ -10,7 +10,7 @@ function DiscountPromo() {
 			</div>
 
 			<div className="carousel carousel-center px-5 gap-2 py-3 w-full">
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -49,7 +49,7 @@ function DiscountPromo() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -88,7 +88,7 @@ function DiscountPromo() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -127,7 +127,7 @@ function DiscountPromo() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -166,7 +166,7 @@ function DiscountPromo() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -205,7 +205,7 @@ function DiscountPromo() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -244,7 +244,7 @@ function DiscountPromo() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
@@ -283,7 +283,7 @@ function DiscountPromo() {
 						<p className="font-bold">NG 2,000</p>
 					</div>
 				</div>
-				<div className="carousel-item shadow-md border-[0.5px] flex-col rounded-2xl overflow-hidden">
+				<div className="carousel-item border border-base-300 flex-col rounded-box overflow-hidden">
 					<div className="relative h-[200px] w-[80vw]">
 						<Image
 							src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"

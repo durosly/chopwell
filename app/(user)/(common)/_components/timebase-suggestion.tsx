@@ -17,7 +17,7 @@ async function TimebaseSuggestions() {
 	};
 
 	const timeChoice = getTimeChoice();
-	const foodItems = await getFoodItems({
+	const foodItems: FoodDocument[] = await getFoodItems({
 		limit: 6,
 		timeChoice,
 		sortBy: "average_rating",
@@ -32,7 +32,7 @@ async function TimebaseSuggestions() {
 				<h2 className="text-xl font-bold">Top pick for {timeChoice}</h2>
 				<Link
 					href={`/browse?time=${timeChoice}`}
-					className="btn bg-neutral text-primary border-none rounded-[50px]">
+					className="btn btn-neutral">
 					See all
 				</Link>
 			</div>
@@ -43,8 +43,8 @@ async function TimebaseSuggestions() {
 						<Link
 							href={`/product/${food._id}`}
 							key={food._id as string}
-							className="block h-[250px] relative rounded-2xl overflow-hidden group">
-							<div className="badge badge-xs bg-transparent text-white border-none absolute top-2 left-1 z-10">
+							className="block h-[250px] relative rounded-box overflow-hidden group">
+							<div className="badge badge-xs bg-transparent backdrop-blur text-white border-none absolute top-2 left-1 z-10">
 								<IconStar className="w-4 h-4 text-[#FFBB00]" />
 								<span>4.5</span>
 							</div>
