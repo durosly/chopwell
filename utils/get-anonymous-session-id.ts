@@ -7,8 +7,8 @@ import { cookies } from "next/headers";
 async function getAnonymousSessionId({ get }: { get?: boolean } = { get: true }) {
 	const anonymousSessionName = "sessionId";
 	const cookieStore = await cookies();
-
 	let sessionId = cookieStore.get(anonymousSessionName)?.value;
+
 	if (!sessionId && !get) {
 		sessionId = uuidv4();
 		cookieStore.set({
@@ -18,7 +18,9 @@ async function getAnonymousSessionId({ get }: { get?: boolean } = { get: true })
 			path: "/",
 			secure: process.env.NODE_ENV === "production",
 		});
-	} else {
+	}
+
+	if (!sessionId) {
 		sessionId = "";
 	}
 
