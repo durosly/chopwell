@@ -2,14 +2,28 @@ import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import CartModel from "@/models/cart";
 import FoodModel from "@/models/food";
+import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 
 async function addToCart(req: Request) {
 	try {
 		await connectMongo();
 
-		const { foodId, sessionId } = await req.json();
+		const { foodId } = await req.json();
+
+		let sessionId = "";
 		const session = await auth();
 		const userId = session?.user.id;
+
+		if (!userId) {
+			sessionId = await getAnonymousSessionId({ get: false });
+		}
+
+		if (!sessionId && !userId) {
+			return Response.json(
+				{ message: "Error creating session. Please, log in to continue" },
+				{ status: 500 }
+			);
+		}
 
 		const foodItem = await FoodModel.findById(foodId);
 		if (!foodItem)
