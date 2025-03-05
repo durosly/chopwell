@@ -8,7 +8,7 @@ const categorySchema = new Schema(
 		name: { type: String, required: true, trim: true },
 		_creatorId: { type: Schema.Types.ObjectId, ref: UserModel, required: true },
 		cover_image: { type: String, trim: true },
-		covertImagePlaceholder: {
+		coverImagePlaceholder: {
 			type: String,
 			default: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAwAB/6Fqk2YAAAAASUVORK5CYII=",
 		},
