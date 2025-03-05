@@ -7,6 +7,7 @@ import CartBtn from "./cart-btn";
 import FavBtn from "./fav-btn";
 import LinkWithCartAndFav from "./link-with-cart-and-fav";
 import LoadFavourites from "./load-favourites";
+import commaNumber from "@/utils/comma-number";
 
 // type PropType = {
 // 	items: FoodDocument[];
@@ -53,7 +54,7 @@ function BrowseList({ items }: { items: FoodDocument[] }) {
 									</p>
 								</div>
 								<p className="font-bold whitespace-nowrap">
-									NG {item.price}
+									{commaNumber(item.price)}
 								</p>
 								<div className="flex gap-2 justify-between items-center text-xs font-bold">
 									<div className="flex gap-1 items-center">
