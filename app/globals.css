@@ -14,7 +14,7 @@
 	--color-base-300: oklch(85% 0 0);
 	--color-base-content: oklch(21% 0.006 285.885);
 	--color-primary: oklch(38.11% 0.1502 28.37);
-	--color-primary-content: oklch(93% 0.034 272.788);
+	--color-primary-content: oklch(100% 0 0);
 	--color-secondary: oklch(99.4% 0 0);
 	--color-secondary-content: oklch(0% 0 0);
 	--color-accent: oklch(90.97% 0 0);
@@ -45,8 +45,13 @@
 
 @layer base {
 	body {
-		@apply bg-[#fcfcfc] text-dark;
+		background-color: #fcfcfc;
+		color: var(--color-dark);
 		font-family: var(--font-inter);
+	}
+
+	* {
+		border-color: var(--color-base-200);
 	}
 }
 

@@ -60,6 +60,21 @@ export async function getCart() {
 	return response.data;
 }
 
+export async function updateCartGroupTitle({ id, title }: { id: string; title: string }) {
+	const response = await axiosInstance.put(`/auth/cart/group/${id}/title`, { title });
+	return response.data;
+}
+
+export async function deleteCartGroup({ id }: { id: string }) {
+	const response = await axiosInstance.delete(`/auth/cart/group/${id}`);
+	return response.data;
+}
+
+export async function addNewCartGroup() {
+	const response = await axiosInstance.post(`/auth/cart/group`);
+	return response.data;
+}
+
 export async function getCartIds({ full }: { full?: boolean }, signal?: AbortSignal) {
 	const response = await axiosInstance("/auth/cart/ids", { params: { full }, signal });
 	return response.data;

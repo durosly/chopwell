@@ -41,9 +41,7 @@ async function CartPage() {
 								<IconTrash />
 							</button>
 						</div>
-						<div className="pl-5 md:pl-10">
-							<hr className="mb-5" />
-						</div>
+
 						<LoaCart />
 					</div>
 					<div className="max-lg:hidden w-80 pt-3 border-l">
