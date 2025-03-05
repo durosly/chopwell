@@ -1,9 +1,11 @@
 "use server";
+import "server-only";
 import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import CartModel from "@/models/cart";
+import FoodModel from "@/models/food";
+import PromoModel from "@/models/promo";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
-import "server-only";
 
 async function getCartDataAction() {
 	await connectMongo();
