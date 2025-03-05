@@ -26,7 +26,7 @@ async function CartPage() {
 
 	await queryClient.prefetchQuery({
 		queryKey: ["cart-full-data"],
-		queryFn: () => cart.data,
+		queryFn: () => JSON.parse(JSON.stringify(cart.data)),
 	});
 
 	return (
