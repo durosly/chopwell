@@ -90,7 +90,7 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 									<div
 										tabIndex={0}
 										role="button"
-										className="btn btn-sm btn-ghost flex-nowrap text-primary-content">
+										className="btn btn-sm btn-ghost hover:bg-transparent flex-nowrap text-primary-content">
 										<LuUserCheck className="w-6 h-6" />
 										<span className="max-sm:hidden text-nowrap">
 											Hi, Duro
