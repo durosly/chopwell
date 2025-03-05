@@ -1,16 +1,21 @@
 import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import FavouriteModel from "@/models/favourite";
+import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 import { NextRequest } from "next/server";
 
 async function getFav(req: NextRequest) {
 	try {
 		await connectMongo();
 		const searchParams = req.nextUrl.searchParams;
-		const sessionId = searchParams.get("sessionId");
+		let sessionId = "";
 		const full = searchParams.get("full");
 		const session = await auth();
 		const userId = session?.user.id;
+
+		if (!userId) {
+			sessionId = await getAnonymousSessionId();
+		}
 
 		const filter = userId ? { userId } : { sessionId };
 
@@ -20,6 +25,7 @@ async function getFav(req: NextRequest) {
 
 		// return empty array as data if no fav found else return fav.items as data
 		if (!fav) return Response.json({ data: [] });
+
 		return Response.json({ data: fav.items });
 	} catch (error) {
 		console.log("Error in add-to-fav", error);

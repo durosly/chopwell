@@ -2,14 +2,19 @@ import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import FavouriteModel from "@/models/favourite";
 import FoodModel from "@/models/food";
+import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 
 async function addToFav(req: Request) {
 	try {
 		await connectMongo();
 
-		const { foodId, sessionId } = await req.json();
+		const { foodId } = await req.json();
 		const session = await auth();
 		const userId = session?.user.id;
+		let sessionId = "";
+		if (!userId) {
+			sessionId = await getAnonymousSessionId();
+		}
 
 		const foodItem = await FoodModel.findById(foodId);
 		if (!foodItem)
