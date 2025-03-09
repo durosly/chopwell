@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import CartModel from "@/models/cart";
+import CartItemModel from "@/models/cart-item";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 
 async function loadCartIds() {
@@ -23,18 +24,9 @@ async function loadCartIds() {
 			return Response.json({ data: [] });
 		}
 
-		// Get all food item ids in the cart ensuring no duplicates
-		const foodIds = cart.group.reduce(
-			(acc: string[], group: { items: { foodId: string }[] }) => {
-				group.items.forEach((item: { foodId: string }) => {
-					if (!acc.includes(item.foodId)) {
-						acc.push(item.foodId);
-					}
-				});
-				return acc;
-			},
-			[] as string[]
-		);
+		// get all food item ids in the cart ensuring no duplicates
+		const cartItems = await CartItemModel.find({ cartId: cart._id });
+		const foodIds = [...new Set(cartItems.map((item) => item.foodId))];
 
 		return Response.json({ message: "Food item added to cart", data: foodIds });
 	} catch (error) {

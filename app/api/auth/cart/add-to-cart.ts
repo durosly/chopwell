@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import CartModel from "@/models/cart";
+import CartItemModel from "@/models/cart-item";
+import CartItemGroupModel from "@/models/cart-item-group";
 import FoodModel from "@/models/food";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 
@@ -34,42 +36,51 @@ async function addToCart(req: Request) {
 		const cart = await CartModel.findOne(filter);
 
 		if (!cart) {
-			await CartModel.create({
-				...filter,
-				group: [
-					{ title: "Cart group 1", items: [{ foodId, quantity: 1 }] },
-				],
+			const newCart = await CartModel.create(filter);
+
+			const newCartGroup = await CartItemGroupModel.create({
+				title: "My Cart",
+				cartId: newCart._id,
+			});
+
+			await CartItemModel.create({
+				foodId,
+				groupId: newCartGroup._id,
+				cartId: newCart._id,
 			});
 		} else {
-			// check if the food item is already in any of the cart groups
-			const groupIndex = cart.group.findIndex(
-				(group: { items: { foodId: string }[] }) =>
-					group.items.some(
-						(item: { foodId: string }) =>
-							item.foodId.toString() === foodId
-					)
-			);
-			if (groupIndex === -1) {
-				// if not, add it to the first group
-				cart.group[0].items.push({ foodId, quantity: 1 });
+			const cartGroup = await CartItemGroupModel.findOne({
+				cartId: cart._id,
+			}).sort({ createdAt: -1 });
+
+			if (!cartGroup) {
+				const newCartGroup = await CartItemGroupModel.create({
+					title: "My Cart",
+					cartId: cart._id,
+				});
+
+				await CartItemModel.create({
+					foodId,
+					groupId: newCartGroup._id,
+					cartId: cart._id,
+				});
 			} else {
-				// if it is, increase the quantity
-				const itemIndex = cart.group[groupIndex].items.findIndex(
-					(item: { foodId: string }) =>
-						item.foodId.toString() === foodId
-				);
+				const cartItem = await CartItemModel.findOne({
+					foodId,
+					groupId: cartGroup._id,
+				});
 
-				if (itemIndex === -1) {
-					return Response.json(
-						{ message: "Cart error occured" },
-						{ status: 400 }
-					);
+				if (cartItem) {
+					cartItem.quantity += 1;
+					await cartItem.save();
+				} else {
+					await CartItemModel.create({
+						foodId,
+						groupId: cartGroup._id,
+						cartId: cart._id,
+					});
 				}
-
-				cart.group[groupIndex].items[itemIndex].quantity++;
 			}
-
-			await cart.save();
 		}
 
 		return Response.json({ message: "Food item added to cart" });
