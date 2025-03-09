@@ -26,6 +26,7 @@ export async function addItemToFavourite({ foodId }: { foodId: string }, signal?
 	const response = await axiosInstance.post("/auth/fav", { foodId }, { signal });
 	return response.data;
 }
+
 export async function removeItemFromFavourite(
 	{ foodId }: { foodId: string },
 	signal?: AbortSignal
@@ -48,15 +49,39 @@ export async function addItemToCart({ foodId }: { foodId: string }) {
 	const response = await axiosInstance.post("/auth/cart", { foodId });
 	return response.data;
 }
-export async function removeItemFromCart({ foodId }: { foodId: string }) {
-	const response = await axiosInstance.delete("/auth/cart", {
-		data: { foodId },
+export async function removeItemFromCartGroup({
+	cartItemId,
+	groupId,
+}: {
+	cartItemId: string;
+	groupId: string;
+}) {
+	const response = await axiosInstance.delete(`/auth/cart/group/${groupId}/item`, {
+		data: { cartItemId },
 	});
+	return response.data;
+}
+export async function updateItemQuantityInCart({
+	cartItemId,
+	quantity,
+}: {
+	cartItemId: string;
+	quantity: number;
+}) {
+	const response = await axiosInstance.put(`/auth/cart/item/${cartItemId}`, {
+		quantity,
+	});
+
 	return response.data;
 }
 
 export async function getCart() {
 	const response = await axiosInstance("/auth/cart");
+	return response.data;
+}
+
+export async function clearCart() {
+	const response = await axiosInstance.delete("/auth/cart");
 	return response.data;
 }
 
