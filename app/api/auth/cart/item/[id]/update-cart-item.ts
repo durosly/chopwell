@@ -3,6 +3,7 @@ import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
 import CartModel from "@/models/cart";
 import CartItemModel from "@/models/cart-item";
+import FoodModel from "@/models/food";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 
 type Params = Promise<{ id: string }>;
@@ -28,6 +29,13 @@ async function updateCartItem(req: Request, { params }: { params: Params }) {
 			);
 		}
 
+		if (quantity < 1) {
+			return Response.json(
+				{ message: "Quantity must be greater than 0" },
+				{ status: 400 }
+			);
+		}
+
 		const filter = userId ? { userId } : { sessionId };
 
 		const cart = await CartModel.findOne(filter);
@@ -40,6 +48,19 @@ async function updateCartItem(req: Request, { params }: { params: Params }) {
 
 		if (!cartItem) {
 			return Response.json({ message: "Item not found" }, { status: 404 });
+		}
+
+		const food = await FoodModel.findById(cartItem.foodId);
+
+		if (!food) {
+			return Response.json({ message: "No longer available" }, { status: 404 });
+		}
+
+		if (food.number_of_item < quantity) {
+			return Response.json(
+				{ message: `We cannot server more than ${quantity} at the moment` },
+				{ status: 400 }
+			);
 		}
 
 		cartItem.quantity = quantity;

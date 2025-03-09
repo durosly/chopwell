@@ -34,6 +34,9 @@ function useCartItemQuatityUpdate({ cartItemId }: PropType) {
 				id: toastRef.current,
 			});
 		},
+		scope: {
+			id: "update-cart-item",
+		},
 	});
 
 	return { isPending, mutate, isError, error };
