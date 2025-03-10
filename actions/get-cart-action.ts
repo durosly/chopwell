@@ -36,7 +36,7 @@ async function getCartDataAction() {
 	};
 
 	const cartGroup = await CartItemGroupModel.find({ cartId: cart._id }).sort({
-		createdAt: -1,
+		createdAt: 1,
 	});
 
 	if (cartGroup.length === 0) {
@@ -53,7 +53,7 @@ async function getCartDataAction() {
 		};
 
 		const cartItems = await CartItemModel.find({ groupId: group._id }).sort({
-			createdAt: -1,
+			createdAt: 1,
 		});
 
 		for (const item of cartItems) {
