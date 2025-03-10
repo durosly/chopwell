@@ -1,6 +1,6 @@
 "use client";
 
-import { addItemToCart, removeItemFromCart } from "@/api";
+import { addItemToCart, removeCartItem } from "@/api";
 import { handleError } from "@/lib/handleError";
 import useCartStore from "@/store/cart-store";
 import { cn } from "@/utils/cn";
@@ -23,7 +23,7 @@ function CartBtn({ className, children, foodId, activeClassName }: CartBtnProps)
 
 	const { isPending, mutate } = useMutation({
 		mutationFn: ({ foodId }: { foodId: string }) =>
-			inCart ? removeItemFromCart({ foodId }) : addItemToCart({ foodId }),
+			inCart ? removeCartItem({ foodId }) : addItemToCart({ foodId }),
 		onError: (error) => {
 			const message = handleError(error);
 			toast.error("Cart failed", { description: message });
