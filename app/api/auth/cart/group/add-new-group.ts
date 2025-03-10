@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
 import CartModel from "@/models/cart";
+import CartItemModel from "@/models/cart-item";
+import CartItemGroupModel from "@/models/cart-item-group";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 
 async function addNewGroup() {
@@ -32,16 +34,21 @@ async function addNewGroup() {
 		}
 
 		// if the last group has no items, return an error
-		if (cart.group[cart.group.length - 1].items.length === 0) {
+		const cartGroups = await CartItemGroupModel.find({ cartId: cart._id });
+		const lastGroup = cartGroups[cartGroups.length - 1];
+		const itemsInLastGroup = await CartItemModel.find({ groupId: lastGroup._id });
+		if (itemsInLastGroup.length === 0) {
 			return Response.json(
-				{ message: "Please, add items to the last group" },
+				{ message: "Add items to the last group first" },
 				{ status: 400 }
 			);
 		}
 
 		// add a new group with title "Cart group n" where n is the number of groups + 1
-		cart.group.push({ title: `Cart group ${cart.group.length + 1}`, items: [] });
-		await cart.save();
+		await CartItemGroupModel.create({
+			title: `My Cart ${cartGroups.length + 1}`,
+			cartId: cart._id,
+		});
 
 		return Response.json({ message: "New group added" });
 	} catch (error) {
