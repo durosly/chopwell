@@ -10,7 +10,7 @@ async function getCartData() {
 
 		return Response.json(data.data, { status: 200 });
 	} catch (error) {
-		console.log("Error in add-to-fav", error);
+		console.log("Error in get-cart-full-data", error);
 		return Response.json({ message: "Something went wrong" }, { status: 500 });
 	}
 }
