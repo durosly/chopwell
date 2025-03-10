@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
 import CartModel from "@/models/cart";
+import CartItemGroupModel from "@/models/cart-item-group";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 import { Filter } from "bad-words";
 
@@ -57,14 +58,19 @@ async function updateCartTitle(req: Request, { params }: { params: Params }) {
 
 		const filter = userId ? { userId } : { sessionId };
 
+		const cart = await CartModel.findOne(filter);
+
+		if (!cart) {
+			return Response.json({ message: "Cart not found" }, { status: 404 });
+		}
+
 		// find the cart belonging to the user and update the cart group title with the id
-		const cart = await CartModel.findOneAndUpdate(
-			{ ...filter, "group._id": id },
-			{ $set: { "group.$.title": cleanTitle } },
-			{ new: true }
+		await CartItemGroupModel.updateOne(
+			{ _id: id, cartId: cart._id },
+			{ title: cleanTitle }
 		);
 
-		return Response.json({ data: cart, message: "Cart title updated" });
+		return Response.json({ message: "Cart title updated" });
 	} catch (error) {
 		const message = handleError(error);
 		console.error(message);
