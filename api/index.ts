@@ -49,16 +49,8 @@ export async function addItemToCart({ foodId }: { foodId: string }) {
 	const response = await axiosInstance.post("/auth/cart", { foodId });
 	return response.data;
 }
-export async function removeItemFromCartGroup({
-	cartItemId,
-	groupId,
-}: {
-	cartItemId: string;
-	groupId: string;
-}) {
-	const response = await axiosInstance.delete(`/auth/cart/group/${groupId}/item`, {
-		data: { cartItemId },
-	});
+export async function removeCartItem({ cartItemId }: { cartItemId: string }) {
+	const response = await axiosInstance.delete(`/auth/cart/item/${cartItemId}`);
 	return response.data;
 }
 export async function updateItemQuantityInCart({

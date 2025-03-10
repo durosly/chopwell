@@ -1,6 +1,6 @@
 "use client";
 
-import { removeItemFromCartGroup } from "@/api";
+import { removeCartItem } from "@/api";
 import IconTrash from "@/icons/trash";
 import { handleError } from "@/lib/handleError";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,15 +8,14 @@ import { toast } from "sonner";
 
 type PropType = {
 	cartItemId: string;
-	groupId: string;
 };
 
-function RemoveCartItemBtn({ cartItemId, groupId }: PropType) {
+function RemoveCartItemBtn({ cartItemId }: PropType) {
 	const queryClient = useQueryClient();
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: async ({ cartItemId, groupId }: PropType) => {
-			return removeItemFromCartGroup({ cartItemId, groupId });
+		mutationFn: async ({ cartItemId }: PropType) => {
+			return removeCartItem({ cartItemId });
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["cart-full-data"] });
@@ -33,7 +32,7 @@ function RemoveCartItemBtn({ cartItemId, groupId }: PropType) {
 		<button
 			className="btn btn-sm btn-accent"
 			disabled={isPending}
-			onClick={() => mutate({ cartItemId, groupId })}>
+			onClick={() => mutate({ cartItemId })}>
 			<IconTrash className="w-5 h-5" /> Remove
 		</button>
 	);
