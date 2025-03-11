@@ -8,14 +8,23 @@ function GoogleButton({ children }: { children: React.ReactNode }) {
 	const toastRef = useRef<string | number | undefined>(undefined);
 	const { isPending, mutate } = useMutation({
 		mutationFn: async () => {
-			toastRef.current = toast.loading("Authenticating user...", { duration: Infinity, id: toastRef.current });
+			toastRef.current = toast.loading("Authenticating user...", {
+				duration: Infinity,
+				id: toastRef.current,
+			});
 			await signIn("google", { redirectTo: "/" });
 		},
 		onError: (error) => {
-			toast.error("An error occured", { description: error.message, id: toastRef.current });
+			toast.error("An error occured", {
+				description: error.message,
+				id: toastRef.current,
+			});
 		},
 		onSuccess: () => {
-			toast.info("Authenticating with google", { description: "you would be redirected shortly", id: toastRef.current });
+			toast.info("Authenticating with google", {
+				description: "you would be redirected shortly",
+				id: toastRef.current,
+			});
 		},
 		onSettled: () => {
 			setTimeout(() => toast.dismiss(toastRef.current), 5000);
@@ -23,7 +32,10 @@ function GoogleButton({ children }: { children: React.ReactNode }) {
 	});
 
 	return (
-		<button disabled={isPending} onClick={() => mutate()} className="btn btn-block rounded-full border-accent">
+		<button
+			disabled={isPending}
+			onClick={() => mutate()}
+			className="btn btn-block border-accent">
 			{children}
 		</button>
 	);

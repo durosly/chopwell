@@ -19,7 +19,10 @@ function UserLoginForm() {
 	const { register, handleSubmit } = useForm<Inputs>();
 	const { isPending, mutate } = useMutation({
 		mutationFn: async (data: Inputs) => {
-			toastRef.current = toast.loading("Authenticating user...", { duration: Infinity, id: toastRef.current });
+			toastRef.current = toast.loading("Authenticating user...", {
+				duration: Infinity,
+				id: toastRef.current,
+			});
 			const res = await signIn("credentials", { redirect: false, ...data });
 
 			if (!res?.ok || res.error) {
@@ -27,10 +30,16 @@ function UserLoginForm() {
 			}
 		},
 		onError: (error) => {
-			toast.error("An error occured", { description: error.message, id: toastRef.current });
+			toast.error("An error occured", {
+				description: error.message,
+				id: toastRef.current,
+			});
 		},
 		onSuccess: () => {
-			toast.success("Authentication successful", { description: "you would be redirected shortly", id: toastRef.current });
+			toast.success("Authentication successful", {
+				description: "you would be redirected shortly",
+				id: toastRef.current,
+			});
 			// TODO: redirect to callbackUrl if available
 			router.push("/");
 		},
@@ -41,35 +50,48 @@ function UserLoginForm() {
 	const onSubmit: SubmitHandler<Inputs> = (data) => mutate(data);
 
 	return (
-		<form action="" className="space-y-6 mb-5" onSubmit={handleSubmit(onSubmit)}>
-			<label className="form-control w-full">
-				<div className="label">
-					<span className="label-text">Email / Phonenumber</span>
-				</div>
-				<input type="text" placeholder="Email / Phonenumber" className="input w-full bg-neutral text-xs rounded-2xl" {...register("email")} />
-			</label>
+		<form action="" className=" mb-5" onSubmit={handleSubmit(onSubmit)}>
+			<fieldset className="fieldset">
+				<legend className="fieldset-legend">Email / Phonenumber</legend>
+				<input
+					type="text"
+					placeholder="Email / Phonenumber"
+					className="input w-full text-xs"
+					{...register("email")}
+				/>
+			</fieldset>
 
-			<label className="form-control w-full">
-				<div className="label">
-					<span className="label-text">Password</span>
-				</div>
-				<div className="input bg-neutral text-xs flex items-center gap-2 rounded-2xl">
-					<input type={showPassword ? "text" : "password"} className="grow" placeholder="Enter password" {...register("password")} />
-					<button onClick={() => setShowPassword((prev) => !prev)} type="button" className="text-primary underline">
+			<fieldset className="fieldset">
+				<legend className="fieldset-legend">Password</legend>
+				<div className="input text-xs flex items-center gap-2 w-full">
+					<input
+						type={showPassword ? "text" : "password"}
+						className="grow"
+						placeholder="Enter password"
+						{...register("password")}
+					/>
+					<button
+						onClick={() => setShowPassword((prev) => !prev)}
+						type="button"
+						className="text-primary underline cursor-pointer">
 						{showPassword ? "Hide" : "Show"}
 					</button>
 				</div>
-			</label>
+			</fieldset>
 
-			<div className="form-control">
+			{/* <div className="">
 				<label className="cursor-pointer label justify-start gap-2">
-					<input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+					<input
+						type="checkbox"
+						defaultChecked
+						className="checkbox checkbox-primary"
+					/>
 					<span className="label-text">Remember me</span>
 				</label>
-			</div>
+			</div> */}
 
-			<div>
-				<button disabled={isPending} className="btn btn-primary btn-block rounded-full">
+			<div className="mt-5">
+				<button disabled={isPending} className="btn btn-primary btn-block">
 					Continue
 				</button>
 			</div>
