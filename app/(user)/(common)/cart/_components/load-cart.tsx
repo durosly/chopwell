@@ -102,8 +102,8 @@ function LoaCart() {
 												className="border-b pb-5 last:border-b-0 last:pb-0">
 												<Link
 													href={`/product/${cartItem._id}`}
-													className="flex gap-5 items-start ">
-													<div className="relative w-[70px] flex-none aspect-square rounded-md overflow-hidden">
+													className="flex gap-5 items-start mb-2">
+													<div className="relative size-[70px] flex-none aspect-square rounded-md overflow-hidden">
 														<Image
 															src={
 																cartItem.image
