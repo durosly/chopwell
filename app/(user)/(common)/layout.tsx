@@ -23,8 +23,11 @@ import IconCart from "@/icons/cart";
 import CartCount from "./_components/cart-count";
 import LoadCart from "./_components/load-cart";
 import BottomNavWrapper from "./_components/bottom-nav-wrapper";
+import { auth } from "@/auth";
 
-export default function CommonLayout({ children }: { children: React.ReactNode }) {
+async function CommonLayout({ children }: { children: React.ReactNode }) {
+	const session = await auth();
+
 	return (
 		<>
 			{/* <header className="bg-primary flex items-center justify-between gap-5 px-2 py-1"></header> */}
@@ -85,81 +88,91 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 									<LuShoppingCart className="w-6 h-6" />
 									<CartCount />
 								</Link>
-
-								<div className="dropdown dropdown-end">
-									<div
-										tabIndex={0}
-										role="button"
-										className="btn btn-sm btn-ghost hover:bg-transparent flex-nowrap text-primary-content">
-										<LuUserCheck className="w-6 h-6" />
-										<span className="max-sm:hidden text-nowrap">
-											Hi, Duro
-										</span>
-										<LuChevronDown className="w-5 h-5" />
-									</div>
-									<ul
-										tabIndex={0}
-										className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-										<li className="sm:hidden">
-											<span className="font-bold">
+								{session?.user ? (
+									<div className="dropdown dropdown-end">
+										<div
+											tabIndex={0}
+											role="button"
+											className="btn btn-sm btn-ghost hover:bg-transparent flex-nowrap text-primary-content">
+											<LuUserCheck className="w-6 h-6" />
+											<span className="max-sm:hidden text-nowrap">
 												Hi,
-												Duro
+												{
+													session
+														.user
+														.firstname
+												}
 											</span>
-										</li>
-										<li>
-											<Link href="/user">
-												<IconUser className="w-6 h-6" />{" "}
-												Profile
-											</Link>
-										</li>
-										<li>
-											<Link href="/notification">
-												<IconNotification className="w-6 h-6" />{" "}
-												Notification
-												<span className="badge badge-primary">
-													5
+											<LuChevronDown className="w-5 h-5" />
+										</div>
+										<ul
+											tabIndex={0}
+											className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+											<li className="sm:hidden">
+												<span className="font-bold">
+													Hi,
+													{
+														session
+															.user
+															.firstname
+													}
 												</span>
-											</Link>
-										</li>
-										<li>
-											<Link href="/wallet">
-												<IconWallet className="w-6 h-6" />
-												Wallet
-											</Link>
-										</li>
-										<li>
-											<Link
-												href={`/favourites`}>
-												<IconHeart className="w-6 h-6" />{" "}
-												Favourites
-											</Link>
-										</li>
-										<li>
-											<Link href="/orders">
-												<IconTruck className="w-6 h-6" />
-												Orders
-											</Link>
-										</li>
-										<li className="mt-2">
-											<button className="btn btn-sm btn-error">
-												Logout
-											</button>
-										</li>
-									</ul>
-								</div>
-
-								{/* <div className="space-x-2">
-									<Link
-										className="btn btn-sm btn-secondary"
-										href="/signup">
-										Join Now
-									</Link>
-									<Link
-										className="btn btn-sm btn-w-outline"
-										href="/login">
-										Log in
-									</Link>
-								</div> */}
+											</li>
+											<li>
+												<Link href="/user">
+													<IconUser className="w-6 h-6" />{" "}
+													Profile
+												</Link>
+											</li>
+											<li>
+												<Link href="/notification">
+													<IconNotification className="w-6 h-6" />{" "}
+													Notification
+													<span className="badge badge-primary">
+														5
+													</span>
+												</Link>
+											</li>
+											<li>
+												<Link href="/wallet">
+													<IconWallet className="w-6 h-6" />
+													Wallet
+												</Link>
+											</li>
+											<li>
+												<Link
+													href={`/favourites`}>
+													<IconHeart className="w-6 h-6" />{" "}
+													Favourites
+												</Link>
+											</li>
+											<li>
+												<Link href="/orders">
+													<IconTruck className="w-6 h-6" />
+													Orders
+												</Link>
+											</li>
+											<li className="mt-2">
+												<button className="btn btn-sm btn-error">
+													Logout
+												</button>
+											</li>
+										</ul>
+									</div>
+								) : (
+									<div className="space-x-2">
+										<Link
+											className="btn btn-sm btn-primary"
+											href="/signup">
+											Join Now
+										</Link>
+										<Link
+											className="btn btn-sm btn-secondary"
+											href="/login">
+											Log in
+										</Link>
+									</div>
+								)}
 							</div>
 						</div>
 
@@ -339,3 +352,5 @@ export default function CommonLayout({ children }: { children: React.ReactNode }
 		</>
 	);
 }
+
+export default CommonLayout;
