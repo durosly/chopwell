@@ -6,48 +6,36 @@ import IconUser from "@/icons/user";
 
 function BottomNav() {
 	return (
-		<nav className="sm:hidden sticky bottom-0 left-0 right-0 bg-base-100 py-3 px-10 border-t">
-			<ul className="flex justify-between items-center px-2">
-				<li>
-					<NavLink
-						className="flex flex-col items-center text-[#797373]"
-						activeClassName="text-primary"
-						path="/">
-						<IconDiscover className="w-8 h-8" />
-						<span className="text-xs capitalize">discover</span>
-					</NavLink>
-				</li>
-				<li>
-					<NavLink
-						className="flex flex-col items-center text-[#797373]"
-						activeClassName="text-primary"
-						path={"/browse"}>
-						<IconCart className="w-8 h-8" />
-						<span className="text-xs capitalize">Browse</span>
-					</NavLink>
-				</li>
-				<li>
-					<NavLink
-						className="flex flex-col items-center text-[#797373]"
-						activeClassName="text-primary"
-						path={"/favourites"}>
-						<IconHeart className="w-8 h-8" />
-						<span className="text-xs capitalize">
-							Favourites
-						</span>
-					</NavLink>
-				</li>
-				<li>
-					<NavLink
-						className="flex flex-col items-center text-[#797373]"
-						activeClassName="text-primary"
-						path="/user">
-						<IconUser className="w-8 h-8" />
-						<span className="text-xs capitalize ">Me</span>
-					</NavLink>
-				</li>
-			</ul>
-		</nav>
+		<div className="dock sm:hidden">
+			<NavLink className="" activeClassName="text-primary dock-active" path="/">
+				<IconDiscover className="size-[1.2em]" />
+				<span className="docker-label text-xs capitalize">discover</span>
+			</NavLink>
+
+			<NavLink
+				className=""
+				activeClassName="text-primary dock-active"
+				path={"/browse"}>
+				<IconCart className="size-[1.2em]" />
+				<span className="docker-label text-xs capitalize">Browse</span>
+			</NavLink>
+
+			<NavLink
+				className=""
+				activeClassName="text-primary dock-active"
+				path={"/favourites"}>
+				<IconHeart className="size-[1.2em]" />
+				<span className="docker-label text-xs capitalize">Favourites</span>
+			</NavLink>
+
+			<NavLink
+				className=""
+				activeClassName="text-primary dock-active"
+				path="/user">
+				<IconUser className="size-[1.2em]" />
+				<span className="docker-label text-xs capitalize">Me</span>
+			</NavLink>
+		</div>
 	);
 }
 
