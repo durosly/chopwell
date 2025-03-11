@@ -22,7 +22,10 @@ function SignupForm() {
 	} = useForm<SignupType>({ resolver: zodResolver(signupSchema) });
 	const { isPending, mutate } = useMutation({
 		mutationFn: async (data: SignupType) => {
-			toastRef.current = toast.loading("Authenticating user...", { duration: Infinity, id: toastRef.current });
+			toastRef.current = toast.loading("Authenticating user...", {
+				duration: Infinity,
+				id: toastRef.current,
+			});
 			const res = await axios.post("/api/auth/signup", data);
 
 			console.log({ res });
@@ -31,10 +34,16 @@ function SignupForm() {
 		},
 		onError: (error) => {
 			const message = handleError(error);
-			toast.error("An error occured", { description: message, id: toastRef.current });
+			toast.error("An error occured", {
+				description: message,
+				id: toastRef.current,
+			});
 		},
 		onSuccess: () => {
-			toast.success("Authentication successful", { description: "you would be redirected shortly", id: toastRef.current });
+			toast.success("Authentication successful", {
+				description: "you would be redirected shortly",
+				id: toastRef.current,
+			});
 			// TODO: redirect to callbackUrl if available
 			router.push("/");
 		},
@@ -46,76 +55,104 @@ function SignupForm() {
 	const onSubmit: SubmitHandler<SignupType> = (data: SignupType) => mutate(data);
 
 	return (
-		<form action="" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-			<label className="form-control w-full">
-				<div className="label">
+		<form action="" className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
+			<fieldset className="fieldset">
+				<label htmlFor="fullname" className="label">
 					<span className="label-text">Fullname</span>
-				</div>
+				</label>
 				<input
 					type="text"
 					{...register("fullname")}
+					id="fullname"
 					placeholder="Fullname"
-					className={`input  w-full bg-neutral text-xs rounded-2xl ${errors.fullname && "input-error"}`}
+					className={`input  w-full text-xs ${errors.fullname && "input-error"}`}
 				/>
 				{!!errors.fullname && (
 					<div className="label">
-						<span className="label-text-alt text-error">{errors.fullname?.message}</span>
+						<span className="label-text-alt text-error">
+							{errors.fullname?.message}
+						</span>
 					</div>
 				)}
-			</label>
-			<label className="form-control w-full">
-				<div className="label">
+			</fieldset>
+			<fieldset className="fieldset">
+				<label htmlFor="contact" className="label">
 					<span className="label-text">Email / Phonenumber</span>
-				</div>
+				</label>
 				<input
 					type="text"
 					{...register("contact")}
+					id="contact"
 					placeholder="Email / Phonenumber"
-					className={`input w-full bg-neutral text-xs rounded-2xl  ${errors.contact && "input-error"}`}
+					className={`input w-full text-xs  ${errors.contact && "input-error"}`}
 				/>
 				{!!errors.contact && (
 					<div className="label">
-						<span className="label-text-alt text-error">{errors.contact?.message}</span>
+						<span className="label-text-alt text-error">
+							{errors.contact?.message}
+						</span>
 					</div>
 				)}
-			</label>
+			</fieldset>
 
-			<label className="form-control w-full">
-				<div className="label">
+			<fieldset className="fieldset">
+				<label htmlFor="password" className="label">
 					<span className="label-text">Create Password</span>
-				</div>
-				<div className={`input bg-neutral text-xs flex items-center gap-2 rounded-2xl ${errors.password && "input-error"}`}>
-					<input type={showPassword ? "text" : "password"} {...register("password")} className="grow" placeholder="Create password" />
-					<button onClick={() => setShowPassword((prev) => !prev)} type="button" className="text-primary underline">
+				</label>
+				<div
+					className={`input text-xs flex items-center w-full gap-2 ${errors.password && "input-error"}`}>
+					<input
+						type={showPassword ? "text" : "password"}
+						{...register("password")}
+						id="password"
+						placeholder="Create password"
+					/>
+					<button
+						onClick={() => setShowPassword((prev) => !prev)}
+						type="button"
+						className="text-primary underline">
 						{showPassword ? "Hide" : "Show"}
 					</button>
 				</div>
 
 				{!!errors.password && (
 					<div className="label">
-						<span className="label-text-alt text-error">{errors.password?.message}</span>
+						<span className="label-text-alt text-error">
+							{errors.password?.message}
+						</span>
 					</div>
 				)}
-			</label>
-			<label className="form-control w-full">
-				<div className="label">
+			</fieldset>
+			<fieldset className="fieldset">
+				<label htmlFor="confirmPassword" className="label">
 					<span className="label-text">Confirm Password</span>
-				</div>
-				<div className={`input bg-neutral text-xs flex items-center gap-2 rounded-2xl ${errors.confirmPassword && "input-error"}`}>
-					<input type={showPassword ? "text" : "password"} {...register("confirmPassword")} className="grow" placeholder="Confirm your password" />
-					<button onClick={() => setShowPassword((prev) => !prev)} type="button" className="text-primary underline">
+				</label>
+				<div
+					className={`input text-xs flex items-center gap-2 w-full ${errors.confirmPassword && "input-error"}`}>
+					<input
+						type={showPassword ? "text" : "password"}
+						{...register("confirmPassword")}
+						id="confirmPassword"
+						placeholder="Confirm your password"
+					/>
+					<button
+						onClick={() => setShowPassword((prev) => !prev)}
+						type="button"
+						className="text-primary underline">
 						{showPassword ? "Hide" : "Show"}
 					</button>
 				</div>
 				{!!errors.confirmPassword && (
 					<div className="label">
-						<span className="label-text-alt text-error">{errors.confirmPassword?.message}</span>
+						<span className="label-text-alt text-error">
+							{errors.confirmPassword?.message}
+						</span>
 					</div>
 				)}
-			</label>
+			</fieldset>
 
-			<div>
-				<button disabled={isPending} className="btn btn-primary btn-block rounded-full">
+			<div className="mt-5">
+				<button disabled={isPending} className="btn btn-primary btn-block">
 					Continue
 				</button>
 			</div>

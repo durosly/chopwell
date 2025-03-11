@@ -52,22 +52,28 @@ function UserLoginForm() {
 	return (
 		<form action="" className=" mb-5" onSubmit={handleSubmit(onSubmit)}>
 			<fieldset className="fieldset">
-				<legend className="fieldset-legend">Email / Phonenumber</legend>
+				<label htmlFor="email" className="label">
+					<span className="label-text">Email / Phonenumber</span>
+				</label>
 				<input
 					type="text"
 					placeholder="Email / Phonenumber"
 					className="input w-full text-xs"
+					id="email"
 					{...register("email")}
 				/>
 			</fieldset>
 
 			<fieldset className="fieldset">
-				<legend className="fieldset-legend">Password</legend>
+				<label htmlFor="password" className="label">
+					<span className="label-text">Password</span>
+				</label>
+
 				<div className="input text-xs flex items-center gap-2 w-full">
 					<input
 						type={showPassword ? "text" : "password"}
-						className="grow"
 						placeholder="Enter password"
+						id="password"
 						{...register("password")}
 					/>
 					<button
