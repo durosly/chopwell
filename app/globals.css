@@ -45,7 +45,7 @@
 
 @layer base {
 	body {
-		background-color: #fcfcfc;
+		background-color: #f8f8f8;
 		color: var(--color-dark);
 		font-family: var(--font-inter);
 	}
