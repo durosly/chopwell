@@ -33,6 +33,8 @@ async function getAnonymousSessionId({ get }: { get?: boolean } = { get: true })
 			secure: process.env.NODE_ENV === "production",
 			maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
 		});
+
+		cookieData = { sessionId, timestamp: currentTime };
 	}
 
 	// if sessionId is set, check if cookie is older than 5 days then reset it
