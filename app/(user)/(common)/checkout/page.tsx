@@ -1,8 +1,8 @@
 import BackButton from "@/app/_components/back-button";
 import IconArrowLeft from "@/icons/arrow-left";
 import Link from "next/link";
-import { LuLock } from "react-icons/lu";
 import CartDataDesktop from "./_components/cart-data-desktop";
+import CheckoutPayment from "./_components/checkout-payment";
 import PaymentMethod from "./_components/payment-method";
 import PaymentMethodInfoDesktop from "./_components/payment-method-info-desktop";
 import ShippingMethod from "./_components/shipping-method";
@@ -58,38 +58,7 @@ function CheckoutPage() {
 
 						<div className="card border">
 							<div className="card-body">
-								<div className="mb-5">
-									<ul className="mb-2">
-										<li className="flex justify-between gap-5">
-											<span className="text-gray-500">Subtotal</span>
-											<span className="font-semibold">N5,500</span>
-										</li>
-										<li className="flex justify-between gap-5">
-											<span className="text-gray-500">Delivery</span>
-											<span className="font-semibold">N500</span>
-										</li>
-										<li className="flex justify-between gap-5 mb-1">
-											<span className="text-gray-500">Discount</span>
-											<span className="font-semibold">N100</span>
-										</li>
-										<li className="flex justify-between gap-5">
-											<span className="font-bold">Total</span>
-											<span className="font-bold">N6,100</span>
-										</li>
-									</ul>
-
-									<button className="btn btn-primary btn-block">Checkout (N6,100)</button>
-								</div>
-
-								<div>
-									<div className="flex items-center gap-2">
-										<LuLock className="text-primary" />
-										<p className="font-bold">Secure Checkout - SSL Encrypted</p>
-									</div>
-									<p className="text-gray-500">
-										Ensuring your personal and financial information is secured during every transaction
-									</p>
-								</div>
+								<CheckoutPayment />
 							</div>
 						</div>
 					</div>
