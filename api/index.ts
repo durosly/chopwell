@@ -27,10 +27,7 @@ export async function addItemToFavourite({ foodId }: { foodId: string }, signal?
 	return response.data;
 }
 
-export async function removeItemFromFavourite(
-	{ foodId }: { foodId: string },
-	signal?: AbortSignal
-) {
+export async function removeItemFromFavourite({ foodId }: { foodId: string }, signal?: AbortSignal) {
 	const response = await axiosInstance.delete("/auth/fav", {
 		data: { foodId },
 		signal,
@@ -53,13 +50,7 @@ export async function removeCartItem({ cartItemId }: { cartItemId: string }) {
 	const response = await axiosInstance.delete(`/auth/cart/item/${cartItemId}`);
 	return response.data;
 }
-export async function updateItemQuantityInCart({
-	cartItemId,
-	quantity,
-}: {
-	cartItemId: string;
-	quantity: number;
-}) {
+export async function updateItemQuantityInCart({ cartItemId, quantity }: { cartItemId: string; quantity: number }) {
 	const response = await axiosInstance.put(`/auth/cart/item/${cartItemId}`, {
 		quantity,
 	});
@@ -94,5 +85,10 @@ export async function addNewCartGroup() {
 
 export async function getCartIds({ full }: { full?: boolean }, signal?: AbortSignal) {
 	const response = await axiosInstance("/auth/cart/ids", { params: { full }, signal });
+	return response.data;
+}
+
+export async function getUserSavedCards() {
+	const response = await axiosInstance("/auth/cards");
 	return response.data;
 }
