@@ -92,3 +92,7 @@ export async function getUserSavedCards() {
 	const response = await axiosInstance("/auth/cards");
 	return response.data;
 }
+export async function getUserWalletBalance() {
+	const response = await axiosInstance("/auth/user/balance");
+	return response.data;
+}

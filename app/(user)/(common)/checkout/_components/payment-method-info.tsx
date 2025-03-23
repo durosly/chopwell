@@ -1,8 +1,7 @@
 "use client";
 
 import useCheckoutStore from "@/store/checkout-store";
-import Link from "next/link";
-import { LuEye } from "react-icons/lu";
+import BalanceDisplay from "./balance-display";
 import CardPaymentInfo from "./card/payment-info";
 
 function PaymentMethodInfo() {
@@ -21,28 +20,7 @@ function PaymentMethodInfo() {
 	} else if (paymentMethod === "card") {
 		return <CardPaymentInfo />;
 	} else if (paymentMethod === "wallet") {
-		return (
-			<>
-				{/* Chopwell balance option display */}
-				<div>
-					<h3 className="font-bold">Balance</h3>
-					<div>
-						<p className="mb-2">
-							Your current balance is <span className="text-primary">****</span>{" "}
-							<button>
-								<LuEye />
-							</button>
-						</p>
-						<p className="text-xs">
-							Top up your balance{" "}
-							<Link className="link" href="/wallet/top-up">
-								here
-							</Link>
-						</p>
-					</div>
-				</div>
-			</>
-		);
+		return <BalanceDisplay />;
 	} else if (paymentMethod === "virtual-account") {
 		return (
 			<>
