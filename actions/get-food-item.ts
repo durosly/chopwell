@@ -1,3 +1,6 @@
+"use server";
+import "server-only";
+
 import connectMongo from "@/lib/connectMongo";
 import FoodModel from "@/models/food";
 
