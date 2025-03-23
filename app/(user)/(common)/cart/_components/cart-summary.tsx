@@ -15,7 +15,7 @@ function CartSummary() {
 			<p className="text-xs flex item-center gap-1 text-gray-500 mb-4">
 				<LuBadgeInfo /> Delivery fee not included yet
 			</p>
-			<Link href={"/checkout"} className="btn btn-primary btn-block">
+			<Link href={"/user/checkout"} className="btn btn-primary btn-block">
 				Checkout (
 				<SubtotalDisplay />)
 			</Link>

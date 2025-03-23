@@ -9,7 +9,7 @@ async function getUserBalance() {
 		if (!userId) {
 			return Response.json({ message: "Unauthorized" }, { status: 401 });
 		}
-		const wallet = await WalletModel.findOne({ userId });
+		const wallet = await WalletModel.findOne({ _userId: userId });
 		if (!wallet) {
 			return Response.json({ message: "No balance", balance: 0 });
 		}
