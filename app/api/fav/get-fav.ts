@@ -19,9 +19,7 @@ async function getFav(req: NextRequest) {
 
 		const filter = userId ? { userId } : { sessionId };
 
-		const fav = await FavouriteModel.findOne(filter).populate(
-			full === "true" ? "items" : ""
-		);
+		const fav = await FavouriteModel.findOne(filter).populate(full === "true" ? "items" : "");
 
 		// return empty array as data if no fav found else return fav.items as data
 		if (!fav) return Response.json({ data: [] });
