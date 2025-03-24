@@ -51,11 +51,7 @@ export interface CategoryDocument extends Document, CategoryData {
 
 // Define the model with pagination support
 const CategoryModel: PaginateModel<CategoryDocument> =
-	(mongoose.models.Category as PaginateModel<CategoryDocument>) ||
-	mongoose.model<CategoryDocument, PaginateModel<CategoryDocument>>(
-		"Category",
-		categorySchema
-	);
+	(mongoose.models?.Category as PaginateModel<CategoryDocument>) || mongoose.model<CategoryDocument, PaginateModel<CategoryDocument>>("Category", categorySchema);
 
 export default CategoryModel;
 

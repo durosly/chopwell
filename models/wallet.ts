@@ -3,7 +3,7 @@ import UserModel from "./user";
 
 const WalletSchema = new mongoose.Schema(
 	{
-		userId: { type: mongoose.Schema.Types.ObjectId, ref: UserModel },
+		_userId: { type: mongoose.Schema.Types.ObjectId, ref: UserModel },
 		balance: { type: Number, default: 0 },
 	},
 	{ timestamps: true }

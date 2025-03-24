@@ -9,7 +9,6 @@ const CartItemGroupSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-const CartItemGroupModel =
-	mongoose.models.CartItemGroup || mongoose.model("CartItemGroup", CartItemGroupSchema);
+const CartItemGroupModel = mongoose.models?.CartItemGroup || mongoose.model("CartItemGroup", CartItemGroupSchema);
 
 export default CartItemGroupModel;
