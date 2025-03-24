@@ -4,6 +4,8 @@ import { UserType } from "./types";
 export type ExtendedUser = DefaultSession["user"] & {
 	type: UserType;
 	is_admin: boolean;
+	firstname: string;
+	lastname: string;
 };
 
 declare module "next-auth" {
