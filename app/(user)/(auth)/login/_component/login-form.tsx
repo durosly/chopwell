@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 type Inputs = {
 	email: string;
@@ -13,6 +14,9 @@ type Inputs = {
 };
 
 function UserLoginForm() {
+	const searchParams = useSearchParams();
+
+	const nextUrl = searchParams.get("nextUrl");
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
 	const toastRef = useRef<string | number | undefined>(undefined);
@@ -40,8 +44,12 @@ function UserLoginForm() {
 				description: "you would be redirected shortly",
 				id: toastRef.current,
 			});
-			// TODO: redirect to callbackUrl if available
-			router.push("/");
+
+			if (nextUrl) {
+				router.push(nextUrl);
+			} else {
+				router.push("/");
+			}
 		},
 		onSettled: () => {
 			setTimeout(() => toast.dismiss(toastRef.current), 5000);
@@ -55,13 +63,7 @@ function UserLoginForm() {
 				<label htmlFor="email" className="label">
 					<span className="label-text">Email / Phonenumber</span>
 				</label>
-				<input
-					type="text"
-					placeholder="Email / Phonenumber"
-					className="input w-full text-xs"
-					id="email"
-					{...register("email")}
-				/>
+				<input type="text" placeholder="Email / Phonenumber" className="input w-full text-xs" id="email" {...register("email")} />
 			</fieldset>
 
 			<fieldset className="fieldset">
@@ -70,16 +72,8 @@ function UserLoginForm() {
 				</label>
 
 				<div className="input text-xs flex items-center gap-2 w-full">
-					<input
-						type={showPassword ? "text" : "password"}
-						placeholder="Enter password"
-						id="password"
-						{...register("password")}
-					/>
-					<button
-						onClick={() => setShowPassword((prev) => !prev)}
-						type="button"
-						className="text-primary underline cursor-pointer">
+					<input type={showPassword ? "text" : "password"} placeholder="Enter password" id="password" {...register("password")} />
+					<button onClick={() => setShowPassword((prev) => !prev)} type="button" className="text-primary underline cursor-pointer">
 						{showPassword ? "Hide" : "Show"}
 					</button>
 				</div>
