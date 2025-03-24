@@ -23,12 +23,12 @@ export async function getCategories(page: number, query: string, signal: AbortSi
 
 // Favoutite API
 export async function addItemToFavourite({ foodId }: { foodId: string }, signal?: AbortSignal) {
-	const response = await axiosInstance.post("/auth/fav", { foodId }, { signal });
+	const response = await axiosInstance.post("/fav", { foodId }, { signal });
 	return response.data;
 }
 
 export async function removeItemFromFavourite({ foodId }: { foodId: string }, signal?: AbortSignal) {
-	const response = await axiosInstance.delete("/auth/fav", {
+	const response = await axiosInstance.delete("/fav", {
 		data: { foodId },
 		signal,
 	});
@@ -37,21 +37,21 @@ export async function removeItemFromFavourite({ foodId }: { foodId: string }, si
 }
 
 export async function getFavourites({ full }: { full?: boolean }, signal?: AbortSignal) {
-	const response = await axiosInstance("/auth/fav", { params: { full }, signal });
+	const response = await axiosInstance("/fav", { params: { full }, signal });
 	return response.data;
 }
 
 // Cart API
 export async function addItemToCart({ foodId }: { foodId: string }) {
-	const response = await axiosInstance.post("/auth/cart", { foodId });
+	const response = await axiosInstance.post("/cart", { foodId });
 	return response.data;
 }
 export async function removeCartItem({ cartItemId }: { cartItemId: string }) {
-	const response = await axiosInstance.delete(`/auth/cart/item/${cartItemId}`);
+	const response = await axiosInstance.delete(`/cart/item/${cartItemId}`);
 	return response.data;
 }
 export async function updateItemQuantityInCart({ cartItemId, quantity }: { cartItemId: string; quantity: number }) {
-	const response = await axiosInstance.put(`/auth/cart/item/${cartItemId}`, {
+	const response = await axiosInstance.put(`/cart/item/${cartItemId}`, {
 		quantity,
 	});
 
@@ -59,32 +59,32 @@ export async function updateItemQuantityInCart({ cartItemId, quantity }: { cartI
 }
 
 export async function getCart() {
-	const response = await axiosInstance("/auth/cart");
+	const response = await axiosInstance("/cart");
 	return response.data;
 }
 
 export async function clearCart() {
-	const response = await axiosInstance.delete("/auth/cart");
+	const response = await axiosInstance.delete("/cart");
 	return response.data;
 }
 
 export async function updateCartGroupTitle({ id, title }: { id: string; title: string }) {
-	const response = await axiosInstance.put(`/auth/cart/group/${id}/title`, { title });
+	const response = await axiosInstance.put(`/cart/group/${id}/title`, { title });
 	return response.data;
 }
 
 export async function deleteCartGroup({ id }: { id: string }) {
-	const response = await axiosInstance.delete(`/auth/cart/group/${id}`);
+	const response = await axiosInstance.delete(`/cart/group/${id}`);
 	return response.data;
 }
 
 export async function addNewCartGroup() {
-	const response = await axiosInstance.post(`/auth/cart/group`);
+	const response = await axiosInstance.post(`/cart/group`);
 	return response.data;
 }
 
 export async function getCartIds({ full }: { full?: boolean }, signal?: AbortSignal) {
-	const response = await axiosInstance("/auth/cart/ids", { params: { full }, signal });
+	const response = await axiosInstance("/cart/ids", { params: { full }, signal });
 	return response.data;
 }
 
@@ -94,5 +94,9 @@ export async function getUserSavedCards() {
 }
 export async function getUserWalletBalance() {
 	const response = await axiosInstance("/auth/user/balance");
+	return response.data;
+}
+export async function getUserAddress() {
+	const response = await axiosInstance("/auth/user/address");
 	return response.data;
 }
