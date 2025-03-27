@@ -10,8 +10,8 @@ import ShippingMethodInfoDesktop from "./_components/shipping-method-info-deskto
 
 function CheckoutPage() {
 	return (
-		<div className="max-w-[1200px] mx-auto px-10 mb-10">
-			<div className="flex gap-5 mt-10">
+		<div className="max-w-[1200px] mx-auto px-5 md:px-10 mb-10">
+			<div className="flex flex-col md:flex-row gap-5 mt-10">
 				<div className="flex-1">
 					<div className="mb-10">
 						<BackButton className="cursor-pointer flex items-center gap-2">
@@ -33,7 +33,7 @@ function CheckoutPage() {
 						<CartDataDesktop />
 
 						<div className="card border">
-							<div className="card-body">
+							<div className="card-body @container">
 								<ShippingMethod />
 							</div>
 						</div>
@@ -42,13 +42,13 @@ function CheckoutPage() {
 					</div>
 				</div>
 				<div className="flex-1">
-					<div className="mb-10">
+					<div className="mb-10 max-md:hidden">
 						<h2 className="text-xl">Payment Details</h2>
 						<p className="text-xs text-gray-500">Complete your purchase by selection a payment method</p>
 					</div>
 					<div className="space-y-5">
 						<div className="card border">
-							<div className="card-body">
+							<div className="card-body @container">
 								<PaymentMethod />
 							</div>
 						</div>

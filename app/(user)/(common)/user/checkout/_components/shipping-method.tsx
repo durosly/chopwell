@@ -8,7 +8,7 @@ function ShippingMethod() {
 	return (
 		<>
 			<h3 className="font-bold">Shipping info</h3>
-			<fieldset className="fieldset grid-cols-2 gap-4">
+			<fieldset className="fieldset @sm:grid-cols-2 gap-4">
 				<legend className="sr-only">Shipping method</legend>
 				<label className="flex items-center p-4 rounded-box gap-2 bg-neutral/5 ring ring-neutral/20 has-checked:bg-primary/10 has-checked:text-primary has-checked:ring-primary/50">
 					<LuTruck className="size-6" />
