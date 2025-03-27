@@ -41,6 +41,11 @@ type CheckoutData = {
 	paymentMethod: PaymentMethod;
 };
 
+type AddressData = {
+	address: string;
+	deliveryFee: number;
+};
+
 type CheckoutDataState = CheckoutData & {
 	setCardOption: (option: CardPaymentOption) => void;
 	setCardExisting: (cardId: string) => void;
@@ -51,6 +56,8 @@ type CheckoutDataState = CheckoutData & {
 
 	setPaymentMethod: (method: PaymentMethod) => void;
 	setDeliveryMethod: (method: DeliveryMethod) => void;
+
+	setAddress: (addressData: AddressData) => void;
 };
 
 const useCheckoutStore = create<CheckoutDataState>((set) => ({
@@ -116,6 +123,8 @@ const useCheckoutStore = create<CheckoutDataState>((set) => ({
 
 	setPaymentMethod: (method: PaymentMethod) => set({ paymentMethod: method }),
 	setDeliveryMethod: (method: DeliveryMethod) => set({ deliveryMethod: method }),
+
+	setAddress: (data: AddressData) => set((state) => ({ address: data.address, deliveryFee: data.deliveryFee, total: state.subtotal + data.deliveryFee - state.discount })),
 }));
 
 export default useCheckoutStore;
