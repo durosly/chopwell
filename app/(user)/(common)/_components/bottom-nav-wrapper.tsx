@@ -5,8 +5,9 @@ import BottomNav from "./bottom-nav";
 
 function BottomNavWrapper() {
 	const pathname = usePathname();
+	const exceptions = ["/cart", "/user/checkout"];
 
-	if (pathname === "/cart") return null;
+	if (exceptions.includes(pathname)) return null;
 
 	return <BottomNav />;
 }
