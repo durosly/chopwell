@@ -29,7 +29,7 @@ async function handleCartMerge(email: string) {
 		const existingCart = await CartModel.findOne({ userId });
 
 		if (!existingCart) {
-			anonymousCart.sessionId = "";
+			anonymousCart.sessionId = null;
 			anonymousCart.userId = userId;
 			await anonymousCart.save();
 		} else {
