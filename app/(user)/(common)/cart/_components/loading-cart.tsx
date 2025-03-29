@@ -8,6 +8,7 @@ function LoadingCartAnimation() {
 	const playerRef = useRef(null);
 
 	useEffect(() => {
+		// @ts-expect-error: not added lordicon type
 		playerRef.current?.playFromBeginning();
 	}, []);
 
@@ -17,6 +18,7 @@ function LoadingCartAnimation() {
 			size={96}
 			icon={trolleyJump}
 			colors="primary:#000,secondary:#800808"
+			// @ts-expect-error: not added lordicon type
 			onComplete={() => playerRef.current?.playFromBeginning()}
 		/>
 	);
