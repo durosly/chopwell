@@ -1,3 +1,4 @@
+import { CartResponse } from "@/types";
 import { create } from "zustand";
 
 type DeliveryMethod = "delivery" | "pickup" | "";
@@ -5,13 +6,14 @@ type PaymentMethod = "card" | "wallet" | "virtual-account" | "pay-for-me" | "";
 type CardPaymentOption = "existing" | "new" | "";
 
 type CartItem = {
-	id: string;
+	_id: string;
 	name: string;
 	price: number;
 	quantity: number;
 	total: number;
 };
 export type Cart = {
+	_id: string;
 	title: string;
 	total: number;
 	percentage: number;
@@ -58,6 +60,10 @@ type CheckoutDataState = CheckoutData & {
 	setDeliveryMethod: (method: DeliveryMethod) => void;
 
 	setAddress: (addressData: AddressData) => void;
+
+	initCheckout: (checkoutData: CartResponse) => void;
+	setNote: (note: string, cartId: string) => void;
+	setSchedule: (note: string, cartId: string) => void;
 };
 
 const useCheckoutStore = create<CheckoutDataState>((set) => ({
@@ -75,34 +81,42 @@ const useCheckoutStore = create<CheckoutDataState>((set) => ({
 			saveForFuture: false,
 		},
 	},
-	cart: [
-		{
-			title: "Groceries",
-			total: 50,
-			percentage: 50,
-			schedule: "2023-10-01",
-			note: "Weekly groceries",
-			items: [
-				{ id: "1", name: "Apple", price: 2, quantity: 10, total: 20 },
-				{ id: "2", name: "Bread", price: 3, quantity: 5, total: 15 },
-				{ id: "3", name: "Milk", price: 5, quantity: 3, total: 15 },
-			],
-		},
-		{
-			title: "Electronics",
-			total: 50,
-			percentage: 50,
-			schedule: "2023-10-02",
-			note: "Office supplies",
-			items: [
-				{ id: "4", name: "Mouse", price: 25, quantity: 1, total: 25 },
-				{ id: "5", name: "Keyboard", price: 25, quantity: 1, total: 25 },
-			],
-		},
-	],
+	cart: [],
 	address: "",
 	deliveryMethod: "",
 	paymentMethod: "",
+
+	// cart group
+	setNote: (note: string, cartId: string) =>
+		set((state) => {
+			const newCart = state.cart.map((cart) => {
+				if (cart._id === cartId) {
+					return {
+						...cart,
+						note,
+					};
+				}
+
+				return cart;
+			});
+
+			return { cart: newCart };
+		}),
+	setSchedule: (schedule: string, cartId: string) =>
+		set((state) => {
+			const newCart = state.cart.map((cart) => {
+				if (cart._id === cartId) {
+					return {
+						...cart,
+						schedule,
+					};
+				}
+
+				return cart;
+			});
+
+			return { cart: newCart };
+		}),
 
 	// card methods
 	setCardOption: (option: CardPaymentOption) => set((state) => ({ card: { ...state.card, options: option } })),
@@ -125,6 +139,29 @@ const useCheckoutStore = create<CheckoutDataState>((set) => ({
 	setDeliveryMethod: (method: DeliveryMethod) => set({ deliveryMethod: method }),
 
 	setAddress: (data: AddressData) => set((state) => ({ address: data.address, deliveryFee: data.deliveryFee, total: state.subtotal + data.deliveryFee - state.discount })),
+
+	initCheckout: (checkoutData: CartResponse) =>
+		set({
+			subtotal: checkoutData.subtotal,
+			discount: checkoutData.discount,
+			total: checkoutData.total,
+			deliveryFee: checkoutData.delivery,
+			cart: checkoutData.data.map((cartGroup) => ({
+				_id: cartGroup._id,
+				title: cartGroup.title,
+				percentage: cartGroup.percentage,
+				total: cartGroup.total,
+				schedule: "",
+				note: "",
+				items: cartGroup.items.map((item) => ({
+					_id: item._id,
+					name: item.name,
+					price: item.price,
+					quantity: item.quantity,
+					total: item.quantity * item.price,
+				})),
+			})),
+		}),
 }));
 
 export default useCheckoutStore;

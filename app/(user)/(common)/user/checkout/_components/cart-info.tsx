@@ -1,13 +1,14 @@
 "use client";
 
-import { Cart } from "@/store/checkout-store";
+import useCheckoutStore, { Cart } from "@/store/checkout-store";
 import commaNumber from "@/utils/comma-number";
 import Link from "next/link";
 import { useState } from "react";
 
-function CartInfo({ cart: { title, total, items, percentage } }: { cart: Cart }) {
+function CartInfo({ cart: { title, total, items, percentage, _id, note, schedule } }: { cart: Cart }) {
 	const [showCartItemInfo, setShowCartItemInfo] = useState(false);
 	const [showAddedInfo, setShowAddedInfo] = useState(false);
+	const { setNote, setSchedule } = useCheckoutStore();
 
 	return (
 		<>
@@ -26,14 +27,17 @@ function CartInfo({ cart: { title, total, items, percentage } }: { cart: Cart })
 			{showCartItemInfo && (
 				<ul className="list mb-5">
 					{items.map((item, j) => (
-						<li key={item.id} className="list-row py-2">
+						<li key={item._id} className="list-row py-2">
 							<div className="font-thin tabular-nums">{(1 + j).toString().padStart(2, "0")}.</div>
-							<Link className="link" href="/product/1">
-								{item.name}
-							</Link>{" "}
-							<span className="text-gray-500">
-								(<span>{commaNumber(item.price)}</span> x <span>{item.quantity}</span> = <span>{commaNumber(item.total)}</span>)
-							</span>
+							<div className="flex flex-col">
+								<Link className="link" href="/product/1">
+									{item.name}
+								</Link>{" "}
+								<span className="text-gray-500 text-xs">
+									(<span>{commaNumber(item.price)}</span> x <span>{item.quantity}</span> ={" "}
+									<span>{commaNumber(item.total)}</span>)
+								</span>
+							</div>
 						</li>
 					))}
 				</ul>
@@ -55,12 +59,26 @@ function CartInfo({ cart: { title, total, items, percentage } }: { cart: Cart })
 					<>
 						<fieldset className="fieldset">
 							<legend className="fieldset-legend sr-only">Delivery Date</legend>
-							<input type="datetime-local" className="input" min="2025-03-03T00:00" max="2025-03-20T23:59" />
+							<input
+								type="datetime-local"
+								className="input"
+								value={schedule}
+								onChange={(e) => setSchedule(e.target.value, _id)}
+								min="2025-03-03T00:00"
+								max="2025-03-20T23:59"
+							/>
 							<span className="fieldset-label text-xs mb-2">Mon 12th, Mar (2:30 PM)</span>
 						</fieldset>
 						<fieldset className="fieldset">
 							<legend className="fieldset-label">Note (optional)</legend>
-							<input type="text" className="input" placeholder="Type in your note..." maxLength={500} />
+							<input
+								type="text"
+								className="input"
+								value={note}
+								onChange={(e) => setNote(e.target.value, _id)}
+								placeholder="Type in your note..."
+								maxLength={500}
+							/>
 						</fieldset>
 					</>
 				)}

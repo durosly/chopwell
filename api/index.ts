@@ -1,4 +1,5 @@
 import { handleError } from "@/lib/handleError";
+import { AddAddressType } from "@/types/add-address";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -89,14 +90,25 @@ export async function getCartIds({ full }: { full?: boolean }, signal?: AbortSig
 }
 
 export async function getUserSavedCards() {
-	const response = await axiosInstance("/auth/cards");
+	const response = await axiosInstance("/auth/user/cards");
 	return response.data;
 }
 export async function getUserWalletBalance() {
 	const response = await axiosInstance("/auth/user/balance");
 	return response.data;
 }
+
+// Regions and address
 export async function getUserAddress() {
 	const response = await axiosInstance("/auth/user/address");
+	return response.data;
+}
+export async function getRegions() {
+	const response = await axiosInstance("/auth/user/address/regions");
+	return response.data;
+}
+
+export async function addNewAddress(data: AddAddressType) {
+	const response = await axiosInstance.post(`/auth/user/address`, data);
 	return response.data;
 }

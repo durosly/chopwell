@@ -31,7 +31,10 @@ async function getCartDataAction() {
 	const now = new Date();
 
 	const cartData = {
+		total: 0,
 		subtotal: 0,
+		discount: 0,
+		delivery: 0,
 		data: [],
 	};
 
@@ -45,7 +48,7 @@ async function getCartDataAction() {
 
 	for (const group of cartGroup) {
 		const groupData = {
-			_id: group._id,
+			_id: group.id,
 			title: group.title,
 			items: [],
 			total: 0,
@@ -70,12 +73,14 @@ async function getCartDataAction() {
 			const discount = promo?.precentageDiscount || 0;
 			const discountedPrice = price - (price * discount) / 100;
 
+			cartData.discount += discount;
+
 			// @ts-expect-error: not specified types
 			groupData.items.push({
-				_id: item._id,
+				_id: item.id,
 				quantity: item.quantity,
-				price: discountedPrice,
-				actualPrice: price,
+				price,
+				discountedPrice,
 				name: food.name,
 				available: food.available,
 				image: food.image,
@@ -87,7 +92,7 @@ async function getCartDataAction() {
 					.join(", "),
 			});
 
-			groupData.total += discountedPrice * item.quantity;
+			groupData.total += food.price * item.quantity;
 		}
 
 		// @ts-expect-error: not specified types
@@ -100,6 +105,8 @@ async function getCartDataAction() {
 		// @ts-expect-error: not specified types
 		group.percentage = (group.total / cartData.subtotal) * 100;
 	});
+
+	cartData.total = cartData.subtotal - cartData.discount + cartData.delivery;
 
 	return { status: true, data: cartData };
 }
