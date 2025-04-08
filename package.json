@@ -54,6 +54,7 @@
 		"@eslint/eslintrc": "^3",
 		"@tailwindcss/postcss": "^4.0.9",
 		"@tanstack/eslint-plugin-query": "^5.62.9",
+		"@tanstack/react-query-devtools": "^5.72.1",
 		"@types/bcryptjs": "^2.4.6",
 		"@types/comma-number": "^2.1.2",
 		"@types/node": "^20",
