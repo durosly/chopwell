@@ -46,7 +46,9 @@ function AddNewCardForm() {
 						placeholder="MM/YY"
 						maxLength={5}
 						value={expiryDate}
-						onChange={(e) => setNewCardExpiryDate(e.target.value)}
+						onChange={(e) =>
+							setNewCardExpiryDate(e.target.value)
+						}
 					/>
 				</fieldset>
 				<fieldset className="fieldset">
@@ -60,7 +62,9 @@ function AddNewCardForm() {
 							placeholder="3 digits"
 							maxLength={3}
 							value={cvc}
-							onChange={(e) => setNewCardCVV(e.target.value)}
+							onChange={(e) =>
+								setNewCardCVV(e.target.value)
+							}
 						/>
 
 						<IconCardTick className="h-6 w-6 text-dark" />
@@ -70,12 +74,16 @@ function AddNewCardForm() {
 
 			<div className="form-control">
 				<label className="label cursor-pointer items-center">
-					<span className="label-text font-bold">Save card for future</span>
+					<span className="label-text font-bold">
+						Save card for future
+					</span>
 
 					<input
 						type="checkbox"
 						checked={saveForFuture}
-						onChange={() => setNewCardSaveForFuture(!saveForFuture)}
+						onChange={() =>
+							setNewCardSaveForFuture(!saveForFuture)
+						}
 						className="toggle toggle-xs checked:toggle-primary"
 					/>
 				</label>

@@ -3,7 +3,7 @@ import IconArrowLeft from "@/icons/arrow-left";
 import Link from "next/link";
 import CartDataDesktop from "./_components/cart-data-desktop";
 import CheckoutPayment from "./_components/checkout-payment";
-import PaymentMethod from "./_components/payment-method";
+// import PaymentMethod from "./_components/payment-method";
 import PaymentMethodInfoDesktop from "./_components/payment-method-info-desktop";
 import ShippingMethod from "./_components/shipping-method";
 import ShippingMethodInfoDesktop from "./_components/shipping-method-info-desktop";
@@ -38,10 +38,15 @@ async function CheckoutPage() {
 						</div>
 						<div className="space-y-5">
 							<div>
-								<h2 className="text-xl">Cart Information and review</h2>
+								<h2 className="text-xl">
+									Cart Information and review
+								</h2>
 								<p className="text-xs text-gray-500">
-									By proceeding, you are automatically accepting the{" "}
-									<Link className="link" href="/terms">
+									By proceeding, you are
+									automatically accepting the{" "}
+									<Link
+										className="link"
+										href="/terms">
 										Terms and condition
 									</Link>
 								</p>
@@ -61,14 +66,17 @@ async function CheckoutPage() {
 					<div className="flex-1">
 						<div className="mb-10 max-md:hidden">
 							<h2 className="text-xl">Payment Details</h2>
-							<p className="text-xs text-gray-500">Complete your purchase by selection a payment method</p>
+							<p className="text-xs text-gray-500">
+								Complete your purchase by selection
+								a payment method
+							</p>
 						</div>
 						<div className="space-y-5">
-							<div className="card border">
+							{/* <div className="card border">
 								<div className="card-body @container">
 									<PaymentMethod />
 								</div>
-							</div>
+							</div> */}
 
 							{/* Payment method info desktop */}
 							<PaymentMethodInfoDesktop />

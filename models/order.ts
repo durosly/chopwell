@@ -8,14 +8,14 @@ const orderSchema = new mongoose.Schema(
 		code: { type: String, default: "DS12345" },
 		method_of_delivery: {
 			type: String,
-			enum: ["home", "pickup", "reserve"],
+			enum: ["delivery", "pickup"],
 			default: "pickup",
 		},
-		method_of_payment: {
-			type: String,
-			enum: ["apple-pay", "on-delivery", "chopwell-credit", "debit-card"],
-			default: "on-delivery",
-		},
+		// method_of_payment: {
+		// 	type: String,
+		// 	enum: ["card", "wallet", "virtual-account", "pay-for-me"],
+		// 	default: "wallet",
+		// },
 		status: {
 			type: String,
 			enum: ["pending", "preparing", "delivering", "successful"],
@@ -31,7 +31,6 @@ const orderSchema = new mongoose.Schema(
 			},
 		],
 		totalPrice: Number,
-		reference: String,
 		seen: { type: Boolean, default: false },
 	},
 	{ timestamps: true }

@@ -11,12 +11,21 @@ type ParamType = {
 	timeChoice?: "breakfast" | "lunch" | "dinner";
 	sortBy?: "price" | "average_rating";
 	order?: "asc" | "desc";
+	available?: boolean;
 };
 
-async function getFoodItems({ limit, page, paginate, timeChoice, sortBy, order }: ParamType) {
+async function getFoodItems({
+	limit,
+	page,
+	paginate,
+	timeChoice,
+	sortBy,
+	order,
+	available = true,
+}: ParamType) {
 	await connectMongo();
 
-	const query = timeChoice ? { timeChoice } : {};
+	const query = { available, ...(timeChoice && { timeChoice }) };
 	if (!paginate) {
 		const foodItems = await FoodModel.find(query)
 			.sort({ [sortBy || "price"]: order || "asc" })

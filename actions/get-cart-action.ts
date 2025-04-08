@@ -81,6 +81,7 @@ async function getCartDataAction() {
 				quantity: item.quantity,
 				price,
 				discountedPrice,
+				_foodId: food.id,
 				name: food.name,
 				available: food.available,
 				image: food.image,

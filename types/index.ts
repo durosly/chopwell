@@ -40,3 +40,29 @@ export interface CartResponse {
 	delivery: number;
 	data: Cart[];
 }
+
+// export type CardDetails = {
+// 	options: "existing" | "new";
+// 	existing?: string;
+// 	new?: {
+// 		cardNumber: string;
+// 		expiryDate: string;
+// 		cvc: string;
+// 		saveForFuture: boolean;
+// 	};
+// };
+
+// export type PaymentDetails = {
+// 	method: "card" | "virtual-account" | "wallet" | "pay-for-me";
+// 	card: CardDetails;
+// };
+
+export type ShippingDetails = {
+	method: "delivery" | "pickup";
+	address?: FormattedAddress;
+};
+
+export type OrderData = {
+	// paymentDetails: PaymentDetails;
+	shipping: ShippingDetails;
+};

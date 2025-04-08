@@ -2,8 +2,8 @@ import { CartResponse } from "@/types";
 import { create } from "zustand";
 
 type DeliveryMethod = "delivery" | "pickup" | "";
-type PaymentMethod = "card" | "wallet" | "virtual-account" | "pay-for-me" | "";
-type CardPaymentOption = "existing" | "new" | "";
+// type PaymentMethod = "card" | "wallet" | "virtual-account" | "pay-for-me" | "";
+// type CardPaymentOption = "existing" | "new" | "";
 
 type CartItem = {
 	_id: string;
@@ -26,21 +26,21 @@ type CheckoutData = {
 	subtotal: number;
 	deliveryFee: number;
 	discount: number;
-	card: {
-		options: CardPaymentOption;
-		existing: string;
-		new: {
-			cardNumber: string;
-			expiryDate: string;
-			cvc: string;
-			saveForFuture: boolean;
-		};
-	};
+	// card: {
+	// 	options: CardPaymentOption;
+	// 	existing: string;
+	// 	new: {
+	// 		cardNumber: string;
+	// 		expiryDate: string;
+	// 		cvc: string;
+	// 		saveForFuture: boolean;
+	// 	};
+	// };
 	total: number;
 	cart: Cart[];
 	address: string;
 	deliveryMethod: DeliveryMethod;
-	paymentMethod: PaymentMethod;
+	// paymentMethod: PaymentMethod;
 };
 
 type AddressData = {
@@ -49,14 +49,14 @@ type AddressData = {
 };
 
 type CheckoutDataState = CheckoutData & {
-	setCardOption: (option: CardPaymentOption) => void;
-	setCardExisting: (cardId: string) => void;
-	setNewCardNumber: (number: string) => void;
-	setNewCardExpiryDate: (date: string) => void;
-	setNewCardCVV: (cvv: string) => void;
-	setNewCardSaveForFuture: (save: boolean) => void;
+	// setCardOption: (option: CardPaymentOption) => void;
+	// setCardExisting: (cardId: string) => void;
+	// setNewCardNumber: (number: string) => void;
+	// setNewCardExpiryDate: (date: string) => void;
+	// setNewCardCVV: (cvv: string) => void;
+	// setNewCardSaveForFuture: (save: boolean) => void;
 
-	setPaymentMethod: (method: PaymentMethod) => void;
+	// setPaymentMethod: (method: PaymentMethod) => void;
 	setDeliveryMethod: (method: DeliveryMethod) => void;
 
 	setAddress: (addressData: AddressData) => void;
@@ -71,20 +71,20 @@ const useCheckoutStore = create<CheckoutDataState>((set) => ({
 	deliveryFee: 10,
 	discount: 5,
 	total: 105,
-	card: {
-		options: "existing",
-		existing: "",
-		new: {
-			cardNumber: "",
-			expiryDate: "",
-			cvc: "",
-			saveForFuture: false,
-		},
-	},
+	// card: {
+	// 	options: "existing",
+	// 	existing: "",
+	// 	new: {
+	// 		cardNumber: "",
+	// 		expiryDate: "",
+	// 		cvc: "",
+	// 		saveForFuture: false,
+	// 	},
+	// },
 	cart: [],
 	address: "",
 	deliveryMethod: "",
-	paymentMethod: "",
+	// paymentMethod: "",
 
 	// cart group
 	setNote: (note: string, cartId: string) =>
@@ -119,26 +119,40 @@ const useCheckoutStore = create<CheckoutDataState>((set) => ({
 		}),
 
 	// card methods
-	setCardOption: (option: CardPaymentOption) => set((state) => ({ card: { ...state.card, options: option } })),
-	setCardExisting: (cardId: string) => set((state) => ({ card: { ...state.card, existing: cardId } })),
-	setNewCardNumber: (number: string) =>
-		set((state) => ({
-			card: {
-				...state.card,
-				new: {
-					...state.card.new,
-					cardNumber: number,
-				},
-			},
-		})),
-	setNewCardExpiryDate: (date: string) => set((state) => ({ card: { ...state.card, new: { ...state.card.new, expiryDate: date } } })),
-	setNewCardCVV: (cvv: string) => set((state) => ({ card: { ...state.card, new: { ...state.card.new, cvv } } })),
-	setNewCardSaveForFuture: (save: boolean) => set((state) => ({ card: { ...state.card, new: { ...state.card.new, saveForFuture: save } } })),
+	// setCardOption: (option: CardPaymentOption) =>
+	// 	set((state) => ({ card: { ...state.card, options: option } })),
+	// setCardExisting: (cardId: string) =>
+	// 	set((state) => ({ card: { ...state.card, existing: cardId } })),
+	// setNewCardNumber: (number: string) =>
+	// 	set((state) => ({
+	// 		card: {
+	// 			...state.card,
+	// 			new: {
+	// 				...state.card.new,
+	// 				cardNumber: number,
+	// 			},
+	// 		},
+	// 	})),
+	// setNewCardExpiryDate: (date: string) =>
+	// 	set((state) => ({
+	// 		card: { ...state.card, new: { ...state.card.new, expiryDate: date } },
+	// 	})),
+	// setNewCardCVV: (cvc: string) =>
+	// 	set((state) => ({ card: { ...state.card, new: { ...state.card.new, cvc } } })),
+	// setNewCardSaveForFuture: (save: boolean) =>
+	// 	set((state) => ({
+	// 		card: { ...state.card, new: { ...state.card.new, saveForFuture: save } },
+	// 	})),
 
-	setPaymentMethod: (method: PaymentMethod) => set({ paymentMethod: method }),
+	// setPaymentMethod: (method: PaymentMethod) => set({ paymentMethod: method }),
 	setDeliveryMethod: (method: DeliveryMethod) => set({ deliveryMethod: method }),
 
-	setAddress: (data: AddressData) => set((state) => ({ address: data.address, deliveryFee: data.deliveryFee, total: state.subtotal + data.deliveryFee - state.discount })),
+	setAddress: (data: AddressData) =>
+		set((state) => ({
+			address: data.address,
+			deliveryFee: data.deliveryFee,
+			total: state.subtotal + data.deliveryFee - state.discount,
+		})),
 
 	initCheckout: (checkoutData: CartResponse) =>
 		set({

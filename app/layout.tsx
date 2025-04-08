@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
 import ToastWrapper from "./_components/toast-wrapper";
 import QueryWrapper from "./_components/query-wrapper";
-
+// import ReactScan from "./_components/react-scan";
 const inter = Inter({
 	variable: "--font-inter",
 	subsets: ["latin"],
@@ -25,6 +25,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.variable} antialiased`}>
+				{/* <ReactScan /> */}
 				<QueryWrapper>
 					{children}
 					<ToastWrapper />

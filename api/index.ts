@@ -1,4 +1,5 @@
 import { handleError } from "@/lib/handleError";
+import { OrderData } from "@/types";
 import { AddAddressType } from "@/types/add-address";
 import axios from "axios";
 
@@ -28,7 +29,10 @@ export async function addItemToFavourite({ foodId }: { foodId: string }, signal?
 	return response.data;
 }
 
-export async function removeItemFromFavourite({ foodId }: { foodId: string }, signal?: AbortSignal) {
+export async function removeItemFromFavourite(
+	{ foodId }: { foodId: string },
+	signal?: AbortSignal
+) {
 	const response = await axiosInstance.delete("/fav", {
 		data: { foodId },
 		signal,
@@ -51,7 +55,13 @@ export async function removeCartItem({ cartItemId }: { cartItemId: string }) {
 	const response = await axiosInstance.delete(`/cart/item/${cartItemId}`);
 	return response.data;
 }
-export async function updateItemQuantityInCart({ cartItemId, quantity }: { cartItemId: string; quantity: number }) {
+export async function updateItemQuantityInCart({
+	cartItemId,
+	quantity,
+}: {
+	cartItemId: string;
+	quantity: number;
+}) {
 	const response = await axiosInstance.put(`/cart/item/${cartItemId}`, {
 		quantity,
 	});
@@ -110,5 +120,16 @@ export async function getRegions() {
 
 export async function addNewAddress(data: AddAddressType) {
 	const response = await axiosInstance.post(`/auth/user/address`, data);
+	return response.data;
+}
+
+// Checkout API
+export async function getCheckoutData() {
+	const response = await axiosInstance("/checkout");
+	return response.data;
+}
+
+export async function createCheckoutSession(data: OrderData) {
+	const response = await axiosInstance.post("/auth/user/checkout", data);
 	return response.data;
 }

@@ -40,6 +40,7 @@
 		"react-pin-field": "^4.0.2",
 		"react-portal": "^4.3.0",
 		"react-range": "^1.10.0",
+		"react-scan": "^0.3.3",
 		"react-slick": "^0.30.3",
 		"server-only": "^0.0.1",
 		"slick-carousel": "^1.8.1",
