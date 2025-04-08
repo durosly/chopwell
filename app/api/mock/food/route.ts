@@ -24,7 +24,7 @@ async function createMockFood() {
 		const categoryIds = categories.map((c) => c.id);
 
 		const photos = await axios("https://picsum.photos/v2/list");
-		const photosData = photos.data.map((p: { download_url: string }) => p.download_url);
+		const photosData = photos.data.map((p: { download_url: string }) => p.download_url.replace(/\/\d+\/\d+$/, ""));
 
 		const count = 100;
 
@@ -39,11 +39,7 @@ async function createMockFood() {
 				full_desc: faker.lorem.paragraph(),
 				number_of_item: faker.number.int({ min: 5, max: 50 }),
 				_creatorId: adminUser._id,
-				timeChoice: faker.helpers.arrayElement([
-					"breakfast",
-					"lunch",
-					"dinner",
-				]),
+				timeChoice: faker.helpers.arrayElement(["breakfast", "lunch", "dinner"]),
 				type: faker.helpers.arrayElement(["food", "drink", "combo"]),
 				average_rating: faker.number.float({
 					min: 0,
