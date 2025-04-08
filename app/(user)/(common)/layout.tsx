@@ -3,7 +3,17 @@ import darkLogo from "@/public/images/chopwell-logo-dark.png";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./_components/search-bar";
-import { LuAlignLeft, LuChevronDown, LuHandshake, LuLayers, LuOctagonAlert, LuShieldAlert, LuShoppingCart, LuUserCheck, LuX } from "react-icons/lu";
+import {
+	LuAlignLeft,
+	LuChevronDown,
+	LuHandshake,
+	LuLayers,
+	LuOctagonAlert,
+	LuShieldAlert,
+	LuShoppingCart,
+	LuUserCheck,
+	LuX,
+} from "react-icons/lu";
 import IconUser from "@/icons/user";
 import IconHeart from "@/icons/heart";
 import IconTruck from "@/icons/truck";
@@ -15,9 +25,14 @@ import LoadCart from "./_components/load-cart";
 import BottomNavWrapper from "./_components/bottom-nav-wrapper";
 import { auth } from "@/auth";
 import LogoutButton from "@/app/_components/logout-btn";
+import HydrateCartIds from "./_components/hydrate-cart-ids";
 
 async function CommonLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();
+
+	// TODO: hydrate cart(ids) to load faster
+
+	// TODO: hydrate fav(ids) to laod faster
 
 	return (
 		<>
@@ -30,13 +45,23 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 						{/* Navbar */}
 						<div className="sticky top-0 z-50 navbar justify-between bg-primary py-4 mb-5">
 							<div className="flex-none lg:hidden">
-								<label htmlFor="my-drawer-3" aria-label="open sidebar" className="btn btn-square btn-ghost text-primary-content">
+								<label
+									htmlFor="my-drawer-3"
+									aria-label="open sidebar"
+									className="btn btn-square btn-ghost text-primary-content">
 									<LuAlignLeft className="inline-block h-6 w-6 stroke-current" />
 								</label>
 							</div>
 							<div className="mx-2 px-2">
-								<Link href="/" className="block relative h-10 w-[100px]">
-									<Image src={lightLogo} fill alt="chopwell light logo" className="object-contain" />
+								<Link
+									href="/"
+									className="block relative h-10 w-[100px]">
+									<Image
+										src={lightLogo}
+										fill
+										alt="chopwell light logo"
+										className="object-contain"
+									/>
 								</Link>
 							</div>
 							<SearchBar
@@ -52,14 +77,20 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 									<ul className="menu menu-horizontal text-primary-content">
 										{/* Navbar menu content here */}
 										<li>
-											<Link href="/browse">Browse</Link>
+											<Link href="/browse">
+												Browse
+											</Link>
 										</li>
 										<li>
-											<Link href="/category">Categories</Link>
+											<Link href="/category">
+												Categories
+											</Link>
 										</li>
 									</ul>
 								</div>
-								<Link className="relative text-primary-content" href="/cart">
+								<Link
+									className="relative text-primary-content"
+									href="/cart">
 									<LuShoppingCart className="w-6 h-6" />
 									<CartCount />
 								</Link>
@@ -70,22 +101,42 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 											role="button"
 											className="btn btn-sm btn-ghost hover:bg-transparent flex-nowrap text-primary-content">
 											<LuUserCheck className="w-6 h-6" />
-											<span className="max-sm:hidden text-nowrap">Hi, {session.user.firstname}</span>
+											<span className="max-sm:hidden text-nowrap">
+												Hi,{" "}
+												{
+													session
+														.user
+														.firstname
+												}
+											</span>
 											<LuChevronDown className="w-5 h-5" />
 										</div>
-										<ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+										<ul
+											tabIndex={0}
+											className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
 											<li className="sm:hidden">
-												<span className="font-bold">Hi, {session.user.firstname}</span>
+												<span className="font-bold">
+													Hi,{" "}
+													{
+														session
+															.user
+															.firstname
+													}
+												</span>
 											</li>
 											<li>
 												<Link href="/user">
-													<IconUser className="w-6 h-6" /> Profile
+													<IconUser className="w-6 h-6" />{" "}
+													Profile
 												</Link>
 											</li>
 											<li>
 												<Link href="/notification">
-													<IconNotification className="w-6 h-6" /> Notification
-													<span className="badge badge-primary">5</span>
+													<IconNotification className="w-6 h-6" />{" "}
+													Notification
+													<span className="badge badge-primary">
+														5
+													</span>
 												</Link>
 											</li>
 											<li>
@@ -95,8 +146,10 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 												</Link>
 											</li>
 											<li>
-												<Link href={`/favourites`}>
-													<IconHeart className="w-6 h-6" /> Favourites
+												<Link
+													href={`/favourites`}>
+													<IconHeart className="w-6 h-6" />{" "}
+													Favourites
 												</Link>
 											</li>
 											<li>
@@ -106,16 +159,22 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 												</Link>
 											</li>
 											<li className="mt-2">
-												<LogoutButton className="btn btn-sm btn-error">Logout</LogoutButton>
+												<LogoutButton className="btn btn-sm btn-error">
+													Logout
+												</LogoutButton>
 											</li>
 										</ul>
 									</div>
 								) : (
 									<div className="space-x-2">
-										<Link className="btn btn-sm btn-primary" href="/signup">
+										<Link
+											className="btn btn-sm btn-primary"
+											href="/signup">
 											Join Now
 										</Link>
-										<Link className="btn btn-sm btn-secondary" href="/login">
+										<Link
+											className="btn btn-sm btn-secondary"
+											href="/login">
 											Log in
 										</Link>
 									</div>
@@ -123,44 +182,85 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 							</div>
 						</div>
 
-						<SearchBar parentClassName="lg:hidden w-full mb-5" inputClassName="w-full" />
+						<SearchBar
+							parentClassName="lg:hidden w-full mb-5"
+							inputClassName="w-full"
+						/>
 						{/* Page content here */}
-						<LoadCart />
+						<HydrateCartIds>
+							<LoadCart />
+						</HydrateCartIds>
 						{children}
 
 						<BottomNavWrapper />
 						<div className="max-sm:hidden ">
 							<footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
 								<nav>
-									<h6 className="footer-title">Services</h6>
-									<a className="link link-hover">Branding</a>
-									<a className="link link-hover">Design</a>
-									<a className="link link-hover">Marketing</a>
-									<a className="link link-hover">Advertisement</a>
+									<h6 className="footer-title">
+										Services
+									</h6>
+									<a className="link link-hover">
+										Branding
+									</a>
+									<a className="link link-hover">
+										Design
+									</a>
+									<a className="link link-hover">
+										Marketing
+									</a>
+									<a className="link link-hover">
+										Advertisement
+									</a>
 								</nav>
 								<nav>
-									<h6 className="footer-title">Company</h6>
-									<a className="link link-hover">About us</a>
-									<a className="link link-hover">Contact</a>
-									<a className="link link-hover">Jobs</a>
-									<a className="link link-hover">Press kit</a>
+									<h6 className="footer-title">
+										Company
+									</h6>
+									<a className="link link-hover">
+										About us
+									</a>
+									<a className="link link-hover">
+										Contact
+									</a>
+									<a className="link link-hover">
+										Jobs
+									</a>
+									<a className="link link-hover">
+										Press kit
+									</a>
 								</nav>
 								<nav>
-									<h6 className="footer-title">Legal</h6>
-									<a className="link link-hover">Terms of use</a>
-									<a className="link link-hover">Privacy policy</a>
-									<a className="link link-hover">Cookie policy</a>
+									<h6 className="footer-title">
+										Legal
+									</h6>
+									<a className="link link-hover">
+										Terms of use
+									</a>
+									<a className="link link-hover">
+										Privacy policy
+									</a>
+									<a className="link link-hover">
+										Cookie policy
+									</a>
 								</nav>
 							</footer>
 							<footer className="footer bg-base-200 text-base-content border-base-300 border-t px-10 py-4">
 								<aside className="">
 									<div className="relative h-7 w-20">
-										<Image src={darkLogo} fill className="object-contain" alt="chopwell" />
+										<Image
+											src={
+												darkLogo
+											}
+											fill
+											className="object-contain"
+											alt="chopwell"
+										/>
 									</div>
 									<p>
 										ACME Industries Ltd.
 										<br />
-										Providing reliable tech since 1992
+										Providing reliable
+										tech since 1992
 									</p>
 								</aside>
 								<nav className="md:place-self-center md:justify-self-end">
@@ -202,13 +302,24 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 					</div>
 				</div>
 				<div className="drawer-side z-50">
-					<label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
+					<label
+						htmlFor="my-drawer-3"
+						aria-label="close sidebar"
+						className="drawer-overlay"></label>
 					<div className="relative menu bg-base-100 min-h-full w-80 p-4">
-						<label htmlFor="my-drawer-3" aria-label="close sidebar" className="absolute top-1 right-1 btn btn-ghost z-10">
+						<label
+							htmlFor="my-drawer-3"
+							aria-label="close sidebar"
+							className="absolute top-1 right-1 btn btn-ghost z-10">
 							<LuX className="w-4 h-4" />
 						</label>
 						<div className="relative h-14 w-full mb-5">
-							<Image src={darkLogo} fill className="object-contain" alt="chopwell" />
+							<Image
+								src={darkLogo}
+								fill
+								className="object-contain"
+								alt="chopwell"
+							/>
 						</div>
 						<ul>
 							{/* Sidebar content here */}
