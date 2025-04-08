@@ -42,13 +42,13 @@ function UserPage() {
 					</Link>
 					<Link
 						className="w-20 h-20 flex flex-col justify-center items-center rounded-box text-center bg-accent"
-						href="/wallet">
+						href="/user/wallet">
 						<IconWallet className="w-8 h-8" />
 						<span className="text-xs capitalize">Wallet</span>
 					</Link>
 					<Link
 						className="w-20 h-20 flex flex-col justify-center items-center rounded-box text-center bg-accent stroke-dark stroke-1"
-						href="/orders">
+						href="/user/orders">
 						<IconTruck className="w-8 h-8" />
 						<span className="text-xs capitalize">Orders</span>
 					</Link>
