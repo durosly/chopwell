@@ -8,7 +8,7 @@ import { useEffect } from "react";
 function LoadCart() {
 	const { updateCart } = useCartStore();
 	const {
-		data: favourites,
+		data: cart,
 		isLoading,
 		isSuccess,
 	} = useQuery({
@@ -18,12 +18,12 @@ function LoadCart() {
 
 	useEffect(() => {
 		if (!isLoading && isSuccess) {
-			const data = favourites?.data;
+			const data = cart?.data;
 			if (data) {
 				updateCart(data);
 			}
 		}
-	}, [favourites, isLoading, isSuccess, updateCart]);
+	}, [cart, isLoading, isSuccess, updateCart]);
 
 	return null;
 }

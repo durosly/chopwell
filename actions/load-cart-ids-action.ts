@@ -25,7 +25,7 @@ async function loadCartIdsAction() {
 
 	// get all food item ids in the cart ensuring no duplicates
 	const cartItems = await CartItemModel.find({ cartId: cart._id });
-	return [...new Set(cartItems.map((item) => item.foodId))];
+	return [...new Set(cartItems.map((item) => item.foodId.toString()))];
 }
 
 export default loadCartIdsAction;
