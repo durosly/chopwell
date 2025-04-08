@@ -94,8 +94,8 @@ export async function addNewCartGroup() {
 	return response.data;
 }
 
-export async function getCartIds({ full }: { full?: boolean }, signal?: AbortSignal) {
-	const response = await axiosInstance("/cart/ids", { params: { full }, signal });
+export async function getCartIds(params?: { full?: boolean }, signal?: AbortSignal) {
+	const response = await axiosInstance("/cart/ids", { params, signal });
 	return response.data;
 }
 
