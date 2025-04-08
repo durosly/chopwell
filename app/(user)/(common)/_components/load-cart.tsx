@@ -13,7 +13,7 @@ function LoadCart() {
 		isSuccess,
 	} = useQuery({
 		queryKey: ["cart", "ids"],
-		queryFn: () => getCartIds({}),
+		queryFn: () => getCartIds(),
 	});
 
 	useEffect(() => {
