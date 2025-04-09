@@ -1,10 +1,16 @@
 import BackButton from "@/app/_components/back-button";
 import IconArrowLeft from "@/icons/arrow-left";
-import IconBrush from "@/icons/brush";
+// import IconBrush from "@/icons/brush";
 import IconUser from "@/icons/user";
 import Link from "next/link";
+import PersonalInfo from "./_components/personal-info";
+import { auth } from "@/auth";
 
-function AccountDetails() {
+async function AccountDetails() {
+	const session = await auth();
+	const user = session?.user;
+	if (!user) return null;
+
 	return (
 		<>
 			<div className="flex items-center mt-5 mb-10 gap-5 pr-10">
@@ -20,56 +26,15 @@ function AccountDetails() {
 				<div className="relative w-[89px] aspect-square rounded-box flex justify-center items-center bg-accent/30">
 					<IconUser className="w-10 h-10 text-[#292D32]" />
 
-					<button className="flex items-center justify-center bg-[#DDDCDC]/80 w-6 h-6 rounded-full absolute bottom-0 -right-2">
+					{/* <button className="flex items-center justify-center bg-[#DDDCDC]/80 w-6 h-6 rounded-full absolute bottom-0 -right-2">
 						<IconBrush className="w-4 h-4" />
-					</button>
+					</button> */}
 				</div>
 			</div>
 
 			<div className="px-5 mb-10">
 				<h3 className="text-xl font-bold mb-5">Personal Info</h3>
-				<form action="" className="space-y-4 mb-10">
-					<label className="form-control w-full">
-						<div className="label">
-							<span className="label-text-alt">
-								Full name
-							</span>
-						</div>
-						<input
-							type="text"
-							placeholder="Full name..."
-							className="input bg-neutral/60 w-full"
-							defaultValue={"John Doe"}
-						/>
-					</label>
-					<label className="form-control w-full">
-						<div className="label">
-							<span className="label-text-alt">
-								Phone number
-							</span>
-						</div>
-						<input
-							type="phone"
-							placeholder="Phone number..."
-							className="input bg-neutral/60 w-full"
-							defaultValue={"+234 12345678968"}
-						/>
-					</label>
-					<label className="form-control w-full">
-						<div className="label">
-							<span className="label-text-alt">
-								Email
-							</span>
-						</div>
-						<input
-							type="email"
-							placeholder="Email..."
-							className="input bg-neutral/60 w-full"
-							defaultValue={"test@gmail.com"}
-						/>
-					</label>
-				</form>
-
+				<PersonalInfo userId={user.id as string} />
 				<h3 className="text-xl font-bold mb-5">My Locations</h3>
 				<ul className="space-y-4">
 					<li className="bg-accent/70 rounded-box">
@@ -109,12 +74,6 @@ function AccountDetails() {
 						</Link>
 					</li>
 				</ul>
-			</div>
-
-			<div className="px-5">
-				<button className="btn btn-primary btn-block rounded-full">
-					Save Update
-				</button>
 			</div>
 		</>
 	);

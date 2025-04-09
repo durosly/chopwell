@@ -133,3 +133,9 @@ export async function createCheckoutSession(data: OrderData) {
 	const response = await axiosInstance.post("/auth/user/checkout", data);
 	return response.data;
 }
+
+// User API
+export async function updateUsername(data: { firstname: string; lastname: string }) {
+	const response = await axiosInstance.put("/auth/user/name", data);
+	return response.data;
+}
