@@ -27,6 +27,7 @@ async function CategorySelection() {
 									category.coverImagePlaceholder
 								}
 								alt="Pizza"
+								sizes="(min-width: 780px) 120px, 80px"
 							/>
 						</div>
 						<p className="font-bold mt-2">{category.name}</p>

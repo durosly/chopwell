@@ -30,6 +30,7 @@ function BrowseList({ items }: { items: FoodDocument[] }) {
 								alt={item.name}
 								fill
 								className="object-cover group-hover:scale-105 transition-transform duration-300"
+								sizes="(min-width: 1540px) 323px, (min-width: 1280px) calc(12.5vw + 133px), (min-width: 780px) calc(33.33vw - 29px), (min-width: 640px) calc(50vw - 32px), calc(100vw - 42px)"
 							/>
 							<div className="absolute top-0 w-full flex justify-between p-4">
 								<div></div>

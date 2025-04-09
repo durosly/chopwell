@@ -17,6 +17,7 @@ function DiscountPromo() {
 							alt="Burger"
 							fill
 							className="object-cover"
+							sizes="80vw"
 						/>
 						<div className="absolute top-0 w-full flex justify-between p-4">
 							<div>

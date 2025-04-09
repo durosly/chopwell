@@ -45,6 +45,7 @@ function ImageSlider() {
 									className="object-cover"
 									fill
 									alt=""
+									sizes="(min-width: 1480px) 1485px, calc(106.47vw - 68px)"
 								/>
 							</div>
 						</div>

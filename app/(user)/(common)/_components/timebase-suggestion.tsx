@@ -53,6 +53,7 @@ async function TimebaseSuggestions() {
 								src={food.image}
 								alt={food.name}
 								className="object-cover group-hover:scale-105 transition-transform duration-300"
+								sizes="(min-width: 640px) 250px, calc(100vw - 40px)"
 							/>
 							<div className="flex items-end absolute inset-0 bg-black/40 p-2">
 								<p className="text-xs text-white  group-hover:line-clamp-none line-clamp-2 transition-[line-clamp] duration-300">

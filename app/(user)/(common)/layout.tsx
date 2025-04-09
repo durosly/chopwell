@@ -61,6 +61,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 										fill
 										alt="chopwell light logo"
 										className="object-contain"
+										sizes="100px"
 									/>
 								</Link>
 							</div>
@@ -254,6 +255,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 											fill
 											className="object-contain"
 											alt="chopwell"
+											sizes="80px"
 										/>
 									</div>
 									<p>
@@ -319,6 +321,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 								fill
 								className="object-contain"
 								alt="chopwell"
+								sizes="198px"
 							/>
 						</div>
 						<ul>
