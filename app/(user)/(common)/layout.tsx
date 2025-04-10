@@ -132,7 +132,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 												</Link>
 											</li>
 											<li>
-												<Link href="/notification">
+												<Link href="/user/notifications">
 													<IconNotification className="w-6 h-6" />{" "}
 													Notification
 													<span className="badge badge-primary">
@@ -141,7 +141,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 												</Link>
 											</li>
 											<li>
-												<Link href="/wallet">
+												<Link href="/user/wallet">
 													<IconWallet className="w-6 h-6" />
 													Wallet
 												</Link>
@@ -154,7 +154,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 												</Link>
 											</li>
 											<li>
-												<Link href="/orders">
+												<Link href="/user/orders">
 													<IconTruck className="w-6 h-6" />
 													Orders
 												</Link>

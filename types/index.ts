@@ -66,3 +66,15 @@ export type OrderData = {
 	// paymentDetails: PaymentDetails;
 	shipping: ShippingDetails;
 };
+
+export type Notification = {
+	_id: string;
+	_userId: string;
+	title: string;
+	description: string;
+	link: string;
+	linkDescription: string;
+	isRead: boolean;
+	createdAt: string; // ISO date string
+	updatedAt: string; // ISO date string
+};

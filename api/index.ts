@@ -156,3 +156,18 @@ export async function updateUserEmail(data: { email: string }) {
 	const response = await axiosInstance.put("/auth/user/email", data);
 	return response.data;
 }
+
+// //// (notifications)
+export async function getUserNotifications() {
+	const response = await axiosInstance("/auth/user/notifications");
+	return response.data;
+}
+
+export async function deleteUserNotification(id: string) {
+	const response = await axiosInstance.delete(`/auth/user/notifications/${id}`);
+	return response.data;
+}
+export async function markUserNotificationAsRead(id: string) {
+	const response = await axiosInstance.put(`/auth/user/notifications/${id}`);
+	return response.data;
+}
