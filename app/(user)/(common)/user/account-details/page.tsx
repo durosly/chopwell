@@ -55,8 +55,8 @@ async function AccountDetails() {
 						<h3 className="text-xl font-bold mb-5">
 							My Locations
 						</h3>
-						<ul className="space-y-4">
-							<li className="bg-accent/70 rounded-box">
+						<ul className="space-y-4 mb-2">
+							<li className="bg-base-200/50 rounded">
 								<Link
 									className="flex items-center justify-between py-3 px-4 "
 									href={`/user/account-details/edit-home`}>
@@ -71,7 +71,7 @@ async function AccountDetails() {
 									</div>
 								</Link>
 							</li>
-							<li className="bg-accent/70 rounded-box">
+							<li className="bg-base-200/50 rounded">
 								<Link
 									className="flex items-center justify-between py-3 px-4 "
 									href={`/user/account-details/edit-work`}>
@@ -83,7 +83,7 @@ async function AccountDetails() {
 									</div>
 								</Link>
 							</li>
-							<li className="bg-accent/70 rounded-box">
+							<li className="bg-base-200/50 rounded">
 								<Link
 									className="flex items-center justify-between py-3 px-4 "
 									href={`/user/account-details/edit-others`}>
@@ -96,6 +96,10 @@ async function AccountDetails() {
 								</Link>
 							</li>
 						</ul>
+
+						<button className="btn btn-block">
+							+ Add new address +
+						</button>
 					</div>
 				</div>
 			</div>
