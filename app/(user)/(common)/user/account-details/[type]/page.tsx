@@ -1,8 +1,32 @@
 import BackButton from "@/app/_components/back-button";
+import { auth } from "@/auth";
 import IconArrowLeft from "@/icons/arrow-left";
+import connectMongo from "@/lib/connectMongo";
+import AddressModel from "@/models/address";
+import { notFound } from "next/navigation";
+import EditAddressForm from "./_components/edit-address-form";
+import DeleteModal from "./_components/delete-modal";
 
 async function AccountFormType({ params }: { params: Promise<{ type: string }> }) {
 	const { type } = await params;
+	const session = await auth();
+	const userId = session?.user.id;
+	await connectMongo();
+	const address = await AddressModel.findOne({ _userId: userId, _id: type }).populate(
+		"_regionId"
+	);
+
+	if (!address) return notFound();
+
+	const formattedAddresses = {
+		_id: address.id,
+		landmark: address.landmark,
+		location: address.location,
+		region: address._regionId.id, // Store only the region ID
+		deliveryPrice: address._regionId.deliveryPrice,
+		title: address._regionId.title,
+	};
+
 	return (
 		<>
 			<div className="flex items-center mt-5 mb-10 gap-5 pr-10">
@@ -10,71 +34,19 @@ async function AccountFormType({ params }: { params: Promise<{ type: string }> }
 					<IconArrowLeft className="w-6 h-6" />
 				</BackButton>
 				<h2 className="text-2xl font-bold text-center flex-1">
-					Edit {type}
+					Edit {formattedAddresses.title} Address
 				</h2>
 			</div>
+			<div className="max-w-md mx-auto mb-10">
+				<div className="card bg-base-100">
+					<div className="card-body">
+						<EditAddressForm
+							existingAddress={formattedAddresses}
+						/>
 
-			<div className="px-5 mb-10">
-				<form action="" className="space-y-4 mb-10">
-					<label className="form-control w-full">
-						<div className="label">
-							<span className="label-text-alt">
-								Address line 1
-							</span>
-						</div>
-						<input
-							type="text"
-							placeholder="Address line 1..."
-							className="input bg-neutral/60 w-full"
-							defaultValue={"123 john doe street"}
-						/>
-					</label>
-					<label className="form-control w-full">
-						<div className="label">
-							<span className="label-text-alt">
-								Address line 2
-							</span>
-						</div>
-						<input
-							type="text"
-							placeholder="Address line 2..."
-							className="input bg-neutral/60 w-full"
-							defaultValue={"345 john doe street"}
-						/>
-					</label>
-					<label className="form-control w-full">
-						<div className="label">
-							<span className="label-text-alt">
-								State/Region
-							</span>
-						</div>
-						<input
-							type="text"
-							placeholder="State/Region..."
-							className="input bg-neutral/60 w-full"
-							defaultValue={"Delta"}
-						/>
-					</label>
-					<label className="form-control w-full">
-						<div className="label">
-							<span className="label-text-alt">
-								City/Town
-							</span>
-						</div>
-						<input
-							type="text"
-							placeholder="City/Town..."
-							className="input bg-neutral/60 w-full"
-							defaultValue={"Warri"}
-						/>
-					</label>
-				</form>
-			</div>
-
-			<div className="px-5">
-				<button className="btn btn-primary btn-block rounded-full">
-					Save Update
-				</button>
+						<DeleteModal addressId={formattedAddresses._id} />
+					</div>
+				</div>
 			</div>
 		</>
 	);

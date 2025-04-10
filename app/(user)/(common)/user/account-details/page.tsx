@@ -1,13 +1,12 @@
 import BackButton from "@/app/_components/back-button";
 import IconArrowLeft from "@/icons/arrow-left";
 // import IconBrush from "@/icons/brush";
-import IconUser from "@/icons/user";
-import Link from "next/link";
-import PersonalInfo from "./_components/personal-info";
 import { auth } from "@/auth";
+import IconUser from "@/icons/user";
 import { Suspense } from "react";
 import AddNewUserAddress from "./_components/add-address-modal";
 import AddressDisplay from "./_components/address-display";
+import PersonalInfo from "./_components/personal-info";
 
 async function AccountDetails() {
 	const session = await auth();

@@ -123,6 +123,15 @@ export async function addNewAddress(data: AddAddressType) {
 	return response.data;
 }
 
+export async function updateUserAddress(data: AddAddressType, id: string) {
+	const response = await axiosInstance.put(`/auth/user/address/${id}`, data);
+	return response.data;
+}
+export async function deleteUserAddress(id: string) {
+	const response = await axiosInstance.delete(`/auth/user/address/${id}`);
+	return response.data;
+}
+
 // Checkout API
 export async function getCheckoutData() {
 	const response = await axiosInstance("/checkout");
