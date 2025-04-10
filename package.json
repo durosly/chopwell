@@ -57,6 +57,7 @@
 		"@tanstack/react-query-devtools": "^5.72.1",
 		"@types/bcryptjs": "^2.4.6",
 		"@types/comma-number": "^2.1.2",
+		"@types/lodash": "^4.17.16",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
