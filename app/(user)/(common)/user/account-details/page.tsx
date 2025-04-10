@@ -6,6 +6,8 @@ import Link from "next/link";
 import PersonalInfo from "./_components/personal-info";
 import { auth } from "@/auth";
 import { Suspense } from "react";
+import AddNewUserAddress from "./_components/add-address-modal";
+import AddressDisplay from "./_components/address-display";
 
 async function AccountDetails() {
 	const session = await auth();
@@ -56,50 +58,9 @@ async function AccountDetails() {
 							My Locations
 						</h3>
 						<ul className="space-y-4 mb-2">
-							<li className="bg-base-200/50 rounded">
-								<Link
-									className="flex items-center justify-between py-3 px-4 "
-									href={`/user/account-details/edit-home`}>
-									<span>Home</span>
-
-									<div className="flex items-center gap-3">
-										<span>
-											123 home
-											gone
-										</span>
-										<IconArrowLeft className="w-5 h-5 rotate-180" />
-									</div>
-								</Link>
-							</li>
-							<li className="bg-base-200/50 rounded">
-								<Link
-									className="flex items-center justify-between py-3 px-4 "
-									href={`/user/account-details/edit-work`}>
-									<span>Work</span>
-
-									<div className="flex items-center gap-3">
-										<span></span>
-										<IconArrowLeft className="w-5 h-5 rotate-180" />
-									</div>
-								</Link>
-							</li>
-							<li className="bg-base-200/50 rounded">
-								<Link
-									className="flex items-center justify-between py-3 px-4 "
-									href={`/user/account-details/edit-others`}>
-									<span>Others</span>
-
-									<div className="flex items-center gap-3">
-										<span></span>
-										<IconArrowLeft className="w-5 h-5 rotate-180" />
-									</div>
-								</Link>
-							</li>
+							<AddressDisplay />
 						</ul>
-
-						<button className="btn btn-block">
-							+ Add new address +
-						</button>
+						<AddNewUserAddress />
 					</div>
 				</div>
 			</div>
