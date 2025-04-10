@@ -26,6 +26,7 @@ import BottomNavWrapper from "./_components/bottom-nav-wrapper";
 import { auth } from "@/auth";
 import LogoutButton from "@/app/_components/logout-btn";
 import HydrateCartIds from "./_components/hydrate-cart-ids";
+import NotificationCountLoader from "./_components/notification-count-loader";
 
 async function CommonLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();
@@ -135,9 +136,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 												<Link href="/user/notifications">
 													<IconNotification className="w-6 h-6" />{" "}
 													Notification
-													<span className="badge badge-primary">
-														5
-													</span>
+													<NotificationCountLoader />
 												</Link>
 											</li>
 											<li>
