@@ -1,5 +1,5 @@
 "use client";
-import { updateUsername } from "@/api";
+import { updateUserPhone } from "@/api";
 import IconBrush from "@/icons/brush";
 import { handleError } from "@/lib/handleError";
 import { useMutation } from "@tanstack/react-query";
@@ -8,9 +8,9 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-type PropType = { firstname: string; lastname: string };
+type PropType = { phone: string };
 
-function FullnameHandler({ firstname, lastname }: PropType) {
+function PhoneHandler({ phone }: PropType) {
 	const router = useRouter();
 	const editModalRef = useRef<HTMLDialogElement>(null);
 	const {
@@ -19,8 +19,7 @@ function FullnameHandler({ firstname, lastname }: PropType) {
 		formState: { isDirty },
 	} = useForm({
 		defaultValues: {
-			firstname,
-			lastname,
+			phone,
 		},
 	});
 
@@ -36,17 +35,19 @@ function FullnameHandler({ firstname, lastname }: PropType) {
 	}
 
 	const { mutate, isPending, isError, error } = useMutation({
-		mutationFn: (data: { firstname: string; lastname: string }) => updateUsername(data),
+		mutationFn: (data: { phone: string }) => updateUserPhone(data),
 		onSuccess: () => {
-			toast.success("Success", { description: "Name updated successfully" });
+			toast.success("Success", {
+				description: "Phonenumber updated successfully",
+			});
 			router.refresh();
 			closeModal();
 		},
 	});
 
-	function onSubmit(data: { firstname: string; lastname: string }) {
+	function onSubmit(data: { phone: string }) {
 		if (!isDirty) return toast.error("No changes made");
-		if (isPending) return toast.error("Updating name");
+		if (isPending) return toast.error("Updating phonenumber");
 
 		mutate(data);
 	}
@@ -64,47 +65,33 @@ function FullnameHandler({ firstname, lastname }: PropType) {
 							✕
 						</button>
 					</form>
-					<h3 className="font-bold text-lg">Edit fullname</h3>
+					<h3 className="font-bold text-lg">Update Phonenumber</h3>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						{isError && (
 							<div className="alert alert-error alert-soft">
 								<p>{handleError(error)}</p>
 							</div>
 						)}
-						<fieldset className="fieldset">
-							<div className="label">
-								<span className="label-text-alt">
-									Firstname
-								</span>
-							</div>
-							<input
-								type="text"
-								placeholder="Firstname..."
-								className="input w-full"
-								{...register("firstname", {
-									required: true,
-								})}
-							/>
-						</fieldset>
 						<fieldset className="fieldset mb-4">
 							<div className="label">
 								<span className="label-text-alt">
-									Lastname
+									Phonenumber
 								</span>
 							</div>
 							<input
 								type="text"
-								placeholder="Lastname..."
+								placeholder="Phonenumber..."
 								className="input w-full"
-								{...register("lastname", {
+								{...register("phone", {
 									required: true,
 								})}
 							/>
 						</fieldset>
+
 						<button
 							disabled={!isDirty || isPending}
 							className="btn btn-primary btn-block">
-							Save update
+							Save update phonenumber
 						</button>
 						{isPending && (
 							<div>
@@ -125,4 +112,4 @@ function FullnameHandler({ firstname, lastname }: PropType) {
 	);
 }
 
-export default FullnameHandler;
+export default PhoneHandler;

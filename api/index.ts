@@ -139,3 +139,11 @@ export async function updateUsername(data: { firstname: string; lastname: string
 	const response = await axiosInstance.put("/auth/user/name", data);
 	return response.data;
 }
+export async function updateUserPhone(data: { phone: string }) {
+	const response = await axiosInstance.put("/auth/user/phone", data);
+	return response.data;
+}
+export async function updateUserEmail(data: { email: string }) {
+	const response = await axiosInstance.put("/auth/user/email", data);
+	return response.data;
+}

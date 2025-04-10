@@ -5,6 +5,7 @@ import IconUser from "@/icons/user";
 import Link from "next/link";
 import PersonalInfo from "./_components/personal-info";
 import { auth } from "@/auth";
+import { Suspense } from "react";
 
 async function AccountDetails() {
 	const session = await auth();
@@ -23,7 +24,7 @@ async function AccountDetails() {
 			</div>
 
 			<div className="flex justify-center items-center gap-5 mb-10">
-				<div className="relative w-[89px] aspect-square rounded-box flex justify-center items-center bg-accent/30">
+				<div className="relative w-[89px] aspect-square rounded-box flex justify-center items-center bg-base-100">
 					<IconUser className="w-10 h-10 text-[#292D32]" />
 
 					{/* <button className="flex items-center justify-center bg-[#DDDCDC]/80 w-6 h-6 rounded-full absolute bottom-0 -right-2">
@@ -32,48 +33,71 @@ async function AccountDetails() {
 				</div>
 			</div>
 
-			<div className="px-5 mb-10">
-				<h3 className="text-xl font-bold mb-5">Personal Info</h3>
-				<PersonalInfo userId={user.id as string} />
-				<h3 className="text-xl font-bold mb-5">My Locations</h3>
-				<ul className="space-y-4">
-					<li className="bg-accent/70 rounded-box">
-						<Link
-							className="flex items-center justify-between py-3 px-4 "
-							href={`/user/account-details/edit-home`}>
-							<span>Home</span>
+			<div className="px-5 mb-10 max-w-md mx-auto">
+				<div className="card bg-base-100 mb-5">
+					<div className="card-body">
+						<h3 className="text-xl font-bold mb-5">
+							Personal Info
+						</h3>
+						<Suspense
+							fallback={
+								<div>
+									<span className="loading loading-spinner"></span>{" "}
+									<span>Loading...</span>
+								</div>
+							}>
+							<PersonalInfo userId={user.id as string} />
+						</Suspense>
+					</div>
+				</div>
+				<div className="card bg-base-100">
+					<div className="card-body">
+						<h3 className="text-xl font-bold mb-5">
+							My Locations
+						</h3>
+						<ul className="space-y-4">
+							<li className="bg-accent/70 rounded-box">
+								<Link
+									className="flex items-center justify-between py-3 px-4 "
+									href={`/user/account-details/edit-home`}>
+									<span>Home</span>
 
-							<div className="flex items-center gap-3">
-								<span>123 home gone</span>
-								<IconArrowLeft className="w-5 h-5 rotate-180" />
-							</div>
-						</Link>
-					</li>
-					<li className="bg-accent/70 rounded-box">
-						<Link
-							className="flex items-center justify-between py-3 px-4 "
-							href={`/user/account-details/edit-work`}>
-							<span>Work</span>
+									<div className="flex items-center gap-3">
+										<span>
+											123 home
+											gone
+										</span>
+										<IconArrowLeft className="w-5 h-5 rotate-180" />
+									</div>
+								</Link>
+							</li>
+							<li className="bg-accent/70 rounded-box">
+								<Link
+									className="flex items-center justify-between py-3 px-4 "
+									href={`/user/account-details/edit-work`}>
+									<span>Work</span>
 
-							<div className="flex items-center gap-3">
-								<span></span>
-								<IconArrowLeft className="w-5 h-5 rotate-180" />
-							</div>
-						</Link>
-					</li>
-					<li className="bg-accent/70 rounded-box">
-						<Link
-							className="flex items-center justify-between py-3 px-4 "
-							href={`/user/account-details/edit-others`}>
-							<span>Others</span>
+									<div className="flex items-center gap-3">
+										<span></span>
+										<IconArrowLeft className="w-5 h-5 rotate-180" />
+									</div>
+								</Link>
+							</li>
+							<li className="bg-accent/70 rounded-box">
+								<Link
+									className="flex items-center justify-between py-3 px-4 "
+									href={`/user/account-details/edit-others`}>
+									<span>Others</span>
 
-							<div className="flex items-center gap-3">
-								<span></span>
-								<IconArrowLeft className="w-5 h-5 rotate-180" />
-							</div>
-						</Link>
-					</li>
-				</ul>
+									<div className="flex items-center gap-3">
+										<span></span>
+										<IconArrowLeft className="w-5 h-5 rotate-180" />
+									</div>
+								</Link>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</>
 	);
