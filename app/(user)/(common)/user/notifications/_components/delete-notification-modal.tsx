@@ -28,6 +28,8 @@ function DeleteNotificationModal({ notificationId }: { notificationId: string })
 			toast.success("Notification deleted successfully", {
 				id: toastRef.current,
 			});
+
+			modalRef.current?.close();
 			queryClient.invalidateQueries({ queryKey: ["notifications"] });
 		},
 		onError: (error) => {
