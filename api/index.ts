@@ -25,7 +25,7 @@ export async function getCategories(page: number, query: string, signal: AbortSi
 
 // Favoutite API
 export async function addItemToFavourite({ foodId }: { foodId: string }, signal?: AbortSignal) {
-	const response = await axiosInstance.post("/fav", { foodId }, { signal });
+	const response = await axiosInstance.post("/user/fav", { foodId }, { signal });
 	return response.data;
 }
 
@@ -33,7 +33,7 @@ export async function removeItemFromFavourite(
 	{ foodId }: { foodId: string },
 	signal?: AbortSignal
 ) {
-	const response = await axiosInstance.delete("/fav", {
+	const response = await axiosInstance.delete("/user/fav", {
 		data: { foodId },
 		signal,
 	});
@@ -42,7 +42,7 @@ export async function removeItemFromFavourite(
 }
 
 export async function getFavourites({ full }: { full?: boolean }, signal?: AbortSignal) {
-	const response = await axiosInstance("/fav", { params: { full }, signal });
+	const response = await axiosInstance("/user/fav", { params: { full }, signal });
 	return response.data;
 }
 

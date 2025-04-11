@@ -40,7 +40,7 @@ async function UserPage() {
 					<div className="flex gap-6 md:gap-12 justify-center items-start mb-12">
 						<Link
 							className="card w-24 h-24 md:w-32 md:h-32 bg-base-100 border-2 border-base-200/20 hover:border-base-200/40 transition-colors"
-							href="/favourites">
+							href="/user/favourites">
 							<div className="card-body items-center justify-center p-0">
 								<IconHeart className="w-10 h-10 md:w-12 md:h-12 text-primary" />
 								<span className="text-sm md:text-base font-medium capitalize text-base-content">

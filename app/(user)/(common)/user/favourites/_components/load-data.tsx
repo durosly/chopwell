@@ -3,7 +3,7 @@
 import { getFavourites } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import NoFavourites from "./no-favourites";
-import BrowseList from "../../_components/browse-list";
+import BrowseList from "../../../_components/browse-list";
 
 function LoadData() {
 	const { data: favourites, isLoading } = useQuery({

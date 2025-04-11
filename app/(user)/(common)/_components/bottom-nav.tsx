@@ -10,22 +10,40 @@ function BottomNav() {
 			<div className="mt-20 sm:hidden">&nbsp;</div>
 
 			<div className="dock sm:hidden">
-				<NavLink className="" activeClassName="text-primary dock-active" path="/">
+				<NavLink
+					className=""
+					activeClassName="text-primary dock-active"
+					path="/">
 					<IconDiscover className="size-[1.2em]" />
-					<span className="docker-label text-xs capitalize">discover</span>
+					<span className="docker-label text-xs capitalize">
+						discover
+					</span>
 				</NavLink>
 
-				<NavLink className="" activeClassName="text-primary dock-active" path={"/browse"}>
+				<NavLink
+					className=""
+					activeClassName="text-primary dock-active"
+					path={"/browse"}>
 					<IconCart className="size-[1.2em]" />
-					<span className="docker-label text-xs capitalize">Browse</span>
+					<span className="docker-label text-xs capitalize">
+						Browse
+					</span>
 				</NavLink>
 
-				<NavLink className="" activeClassName="text-primary dock-active" path={"/favourites"}>
+				<NavLink
+					className=""
+					activeClassName="text-primary dock-active"
+					path={"/user/favourites"}>
 					<IconHeart className="size-[1.2em]" />
-					<span className="docker-label text-xs capitalize">Favourites</span>
+					<span className="docker-label text-xs capitalize">
+						Favourites
+					</span>
 				</NavLink>
 
-				<NavLink className="" activeClassName="text-primary dock-active" path="/user">
+				<NavLink
+					className=""
+					activeClassName="text-primary dock-active"
+					path="/user">
 					<IconUser className="size-[1.2em]" />
 					<span className="docker-label text-xs capitalize">Me</span>
 				</NavLink>
