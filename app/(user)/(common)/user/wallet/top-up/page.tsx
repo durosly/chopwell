@@ -1,9 +1,10 @@
 import BackButton from "@/app/_components/back-button";
 import IconArrowLeft from "@/icons/arrow-left";
-import IconCardTick from "@/icons/card-tick";
-import IconDoubleCard from "@/icons/cards";
-import IconCheckBoxActive from "@/icons/checkbox-active";
-import IconCheckBoxInactive from "@/icons/checkbox-inactive";
+import TopupForm from "./_components/topup-form";
+// import IconCardTick from "@/icons/card-tick";
+// import IconDoubleCard from "@/icons/cards";
+// import IconCheckBoxActive from "@/icons/checkbox-active";
+// import IconCheckBoxInactive from "@/icons/checkbox-inactive";
 
 function TopUpPage() {
 	return (
@@ -15,61 +16,14 @@ function TopUpPage() {
 				<h2 className="text-2xl font-bold text-center flex-1">Top Up</h2>
 			</div>
 
-			<form className="px-5 mb-10 space-y-4" action="">
-				<label className="form-control w-full">
-					<div className="label">
-						<span className="label-text">Amount</span>
-					</div>
-					<input
-						type="text"
-						placeholder="Enter Amount"
-						className="input w-full bg-neutral text-xs rounded-2xl"
-					/>
-				</label>
-				<div className="flex flex-wrap gap-2">
-					<input
-						type="radio"
-						name="radio-10"
-						className="btn btn-sm rounded-full checked:bg-primary"
-						aria-label="N1,000"
-					/>
-					<input
-						type="radio"
-						name="radio-10"
-						className="btn btn-sm rounded-full checked:bg-primary"
-						aria-label="N2,000"
-					/>
-					<input
-						type="radio"
-						name="radio-10"
-						className="btn btn-sm rounded-full checked:bg-primary"
-						aria-label="N5,000"
-					/>
-					<input
-						type="radio"
-						name="radio-10"
-						className="btn btn-sm rounded-full checked:bg-primary"
-						aria-label="N7,000"
-					/>
-					<input
-						type="radio"
-						name="radio-10"
-						className="btn btn-sm rounded-full checked:bg-primary"
-						aria-label="N10,000"
-					/>
-				</div>
-
-				<button className="btn btn-primary btn-block btn-sm rounded-full">
-					Proceed
-				</button>
-			</form>
+			<TopupForm />
 
 			{/* Open the modal using document.getElementById('ID').showModal() method */}
 			{/* <button className="btn" onClick={()=>document.getElementById('my_modal_2').showModal()}>open modal</button> */}
-			<dialog id="my_modal_2" className="modal modal-open">
+			{/* <dialog id="my_modal_2" className="modal modal-open">
 				<div className="modal-box">
 					<form method="dialog">
-						{/* if there is a button in form, it will close the modal */}
+						
 						<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
 							✕
 						</button>
@@ -163,7 +117,7 @@ function TopUpPage() {
 				<form method="dialog" className="modal-backdrop">
 					<button>close</button>
 				</form>
-			</dialog>
+			</dialog> */}
 		</>
 	);
 }

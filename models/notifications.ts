@@ -8,7 +8,7 @@ const notificationSchema = new mongoose.Schema(
 		description: String,
 		link: String,
 		linkDescription: String,
-		isRead: Boolean,
+		isRead: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 );

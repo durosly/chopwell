@@ -171,3 +171,9 @@ export async function markUserNotificationAsRead(id: string) {
 	const response = await axiosInstance.put(`/auth/user/notifications/${id}`);
 	return response.data;
 }
+
+// Transaction API
+export async function createTransactionSession(amount: number) {
+	const response = await axiosInstance.post("/auth/user/transactions/init", { amount });
+	return response.data;
+}
