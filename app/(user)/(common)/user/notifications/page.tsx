@@ -14,7 +14,11 @@ async function NotificationsPage() {
 			const session = await auth();
 			const userId = session?.user.id;
 
-			const notifications = await NotificationModel.find({ _userId: userId });
+			const notifications = await NotificationModel.find({
+				_userId: userId,
+			})
+				.sort("-createdAt")
+				.limit(10);
 			return { notifications: JSON.parse(JSON.stringify(notifications)) };
 		},
 	});
