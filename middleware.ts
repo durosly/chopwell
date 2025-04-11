@@ -13,7 +13,12 @@ export default auth((req) => {
 		return Response.redirect(new URL(`/login?nextUrl=${pathname}`, req.nextUrl));
 	}
 
-	if (!pathname.startsWith("/api") && !pathname.startsWith("/dashboard") && isLoggedIn && isAdmin) {
+	if (
+		!pathname.startsWith("/api") &&
+		!pathname.startsWith("/dashboard") &&
+		isLoggedIn &&
+		isAdmin
+	) {
 		// TODO: check if this is an admin user
 		console.log("dashboaord redirect");
 		return Response.redirect(new URL("/dashboard", req.nextUrl));
@@ -26,9 +31,9 @@ export default auth((req) => {
 	}
 
 	// if api route but not logged in
-	if (pathname.startsWith("/api") && !isLoggedIn) {
-		return Response.json({ message: "Unathorized access" }, { status: 401 });
-	}
+	// if (pathname.startsWith("/api") && !isLoggedIn) {
+	// 	return Response.json({ message: "Unathorized access" }, { status: 401 });
+	// }
 
 	// if admin api but not admin
 	if (pathname.startsWith("/api/admin") && !isAdmin) {
