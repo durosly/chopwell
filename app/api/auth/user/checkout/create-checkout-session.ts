@@ -3,11 +3,16 @@ import { handleError } from "@/lib/handleError";
 import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import OrderModel from "@/models/order";
+import { z } from "zod";
+import UserModel from "@/models/user";
+import WalletModel from "@/models/wallet";
+import FoodModel from "@/models/food";
+import NotificationModel from "@/models/notifications";
+import TransactionModel from "@/models/transactions";
+import AddressModel from "@/models/address";
 import CartModel from "@/models/cart";
 import CartItemGroupModel from "@/models/cart-item-group";
 import CartItemModel from "@/models/cart-item";
-import { z } from "zod";
-import UserModel from "@/models/user";
 
 // Validation schema for order data
 const orderDataSchema = z.object({
@@ -75,18 +80,29 @@ async function createCheckoutSession(req: Request) {
 			return Response.json({ message: "Unathorized" }, { status: 401 });
 		}
 
+		const wallet = await WalletModel.findOne({ _userId: user.id });
+
+		let checkoutTotal = checkoutData.total;
+
 		// Get request data
 		const reqData = validationResult.data;
 
-		// console.log(reqData)
+		if (reqData.shipping.method === "delivery") {
+			const userAddressId = reqData.shipping.address;
+			const address =
+				await AddressModel.findById(userAddressId).populate("_regionId");
+			if (address) {
+				const deliveryPrice = address._regionId.deliveryPrice;
+				checkoutTotal += Number(deliveryPrice);
+			}
+		}
 
-		if (!user?.balance || checkoutData.total > user.balance) {
+		if (!wallet || checkoutTotal > wallet.balance) {
 			return Response.json({ message: "Balance is too low" }, { status: 400 });
 		}
 
-		console.log(checkoutData.total, user.balance, "Balance comparison");
-
 		// Validate items availability and quantities
+		const itemQuantities = {};
 		for (const group of checkoutData.data) {
 			for (const item of group.items) {
 				if (!item.available) {
@@ -96,15 +112,37 @@ async function createCheckoutSession(req: Request) {
 					);
 				}
 
-				// TODO: Add quantity validation against database
-				// This would require checking the actual available quantity in the database
+				if (itemQuantities[item._foodId]) {
+					itemQuantities[item._foodId] += item.quantity;
+				} else {
+					itemQuantities[item._foodId] = item.quantity;
+				}
 			}
-
-			// TODO: Reduce quantity for each item
 		}
-
 		// Connect to MongoDB
 		await connectMongo();
+		console.log(itemQuantities);
+		for (const id of Object.keys(itemQuantities)) {
+			const foodItem = await FoodModel.findById(id);
+			if (foodItem.number_of_item < itemQuantities[id]) {
+				return Response.json(
+					{
+						message: `${foodItem.name} quantity is not sufficient for your demand`,
+					},
+					{ status: 404 }
+				);
+			}
+		}
+
+		// Reduce food item quantity in db. set availability to false if item quantity hits zero
+		for (const id of Object.keys(itemQuantities)) {
+			const foodItem = await FoodModel.findById(id);
+			if (!foodItem) continue;
+
+			foodItem.number_of_item -= itemQuantities[id];
+			foodItem.available = foodItem.number_of_item > 0;
+			await foodItem.save();
+		}
 
 		// Create order
 		const order = new OrderModel({
@@ -120,7 +158,7 @@ async function createCheckoutSession(req: Request) {
 					quantity: item.quantity,
 				}))
 			),
-			totalPrice: checkoutData.total,
+			totalPrice: checkoutTotal,
 		});
 
 		await order.save();
@@ -132,7 +170,27 @@ async function createCheckoutSession(req: Request) {
 			await CartItemModel.deleteMany({ cartId: cart._id });
 		}
 
+		wallet.balance -= Number(checkoutTotal);
+		await wallet.save();
+
 		const message = "Checkout process complete";
+
+		// Notificaition
+		await NotificationModel.create({
+			_userId: userId,
+			title: "Checkout complete",
+			description: "Your order is been processed",
+			link: `/user/orders/${order.id}`,
+			linkDescription: "view order",
+		});
+		// Transaction
+		await TransactionModel.create({
+			_userId: userId,
+			type: "purchase",
+			amount: checkoutTotal,
+			description: "Purchase items #" + order.code,
+			status: "success",
+		});
 
 		return Response.json({ message, orderId: order._id });
 	} catch (error) {

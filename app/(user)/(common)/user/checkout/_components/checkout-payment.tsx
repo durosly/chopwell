@@ -11,9 +11,12 @@ import { createCheckoutSession } from "@/api";
 import LoadingCartAnimation from "../../../cart/_components/loading-cart";
 import { cn } from "@/utils/cn";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 function CheckoutPayment() {
+	const router = useRouter();
 	const [showModal, setShowModal] = useState(false);
+	const [loadingMsg, setLoadingMsg] = useState("processing");
 	const { isPending, mutate } = useMutation({
 		mutationFn: async (data: OrderData) => createCheckoutSession(data),
 		onMutate: () => {
@@ -26,11 +29,8 @@ function CheckoutPayment() {
 		},
 		onSuccess: (response) => {
 			toast.success("Checkout successful", { description: response.message });
-			// TODO: Redirect to order page or handle next steps
-		},
-		// TODO: remove onSettled when redirection is complete
-		onSettled: () => {
-			setShowModal(false);
+			setLoadingMsg("Loading order information");
+			router.push(`/user/orders/${response.orderId}`);
 		},
 	});
 	const state = useCheckoutStore();
@@ -167,7 +167,9 @@ function CheckoutPayment() {
 				<div className="modal-box">
 					<div className="flex flex-col justify-center items-center">
 						<LoadingCartAnimation />
-						<span className="animate-pulse">Processing...</span>
+						<span className="animate-pulse">
+							{loadingMsg}...
+						</span>
 						<span className="loading loading-spinner"></span>
 					</div>
 				</div>
