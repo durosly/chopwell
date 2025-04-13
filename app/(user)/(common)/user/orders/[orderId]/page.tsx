@@ -1,170 +1,266 @@
 import IconArrowLeft from "@/icons/arrow-left";
-import IconDoubleCard from "@/icons/cards";
+// import IconDoubleCard from "@/icons/cards";
 import IconCheck from "@/icons/check";
 import IconCopy from "@/icons/copy";
 import IconPhone from "@/icons/phone";
 import IconWhatsapp from "@/icons/whatsapp";
+import connectMongo from "@/lib/connectMongo";
+import OrderModel from "@/models/order";
 import logo from "@/public/images/chopwell-logo-dark.png";
 import Image from "next/image";
 import Link from "next/link";
+import CopyToClipboardButton from "./_components/copy-to-clipboard";
+import commaNumber from "@/utils/comma-number";
+import pluralize from "pluralize";
+import BackButton from "@/app/_components/back-button";
 
-function OrderDetails() {
+async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }) {
+	const { orderId } = await params;
+	await connectMongo();
+	const order = await OrderModel.findById(orderId).populate("products._productId");
+
 	return (
-		<div className="p-2">
-			<div className="flex flex-wrap items-center justify-between gap-5 px-5 mb-5 py-4">
-				<button className="btn btn-xs btn-square border-none">
-					<IconArrowLeft />
-				</button>
-				<h2 className="text-xl font-bold flex-1 text-center">Your Order</h2>
+		<div className="max-w-4xl mx-auto px-4 py-6">
+			<div className="flex items-center gap-4 mb-8">
+				<BackButton className="btn btn-ghost btn-square">
+					<IconArrowLeft className="size-5" />
+				</BackButton>
+				<h2 className="text-2xl font-semibold">Order Details</h2>
 			</div>
 
-			<div className="text-[12px] text-center bg-gray-100 p-2 rounded-box mb-10">
-				<h3 className="text-primary mb-3">Order status</h3>
-				<div className="mb-5">
-					<p className="mb-2">Order ID: </p>
-					<button className="bg-neutral p-2 rounded flex items-center gap-1 mx-auto">
-						<span className="font-bold">265435673</span>
-						<div className="">
-							<IconCopy className="w-4 h-4 text-[#C2C2C2]" />
-						</div>
-					</button>
-				</div>
+			<div className="rounded-lg border border-base-300 p-6 mb-8">
+				<div className="text-center mb-6">
+					<h3 className="text-primary font-medium mb-4">
+						Order Status
+					</h3>
+					<div className="mb-6">
+						<p className="text-gray-600 mb-2">
+							Order ID:{" "}
+							{order.id.substring(order.id.length - 6)}
+						</p>
+						<CopyToClipboardButton
+							code={order.code}
+							className="bg-base-100 px-4 py-2 rounded-lg flex items-center gap-2 mx-auto hover:bg-gray-100 transition-colors cursor-pointer">
+							<span className="font-semibold">
+								{order.code}
+							</span>
+							<IconCopy className="size-4 text-gray-400" />
+						</CopyToClipboardButton>
+					</div>
 
-				<div>
-					<ul className="flex gap-2 justify-center items-center mb-3">
-						{Array.from({ length: 4 })
-
-							.map((_, i) => (
-								<li key={i}>
-									<span className="w-8 h-8 aspect-square rounded-full flex justify-center items-center bg-primary text-secondary">
-										<IconCheck className="w-3 h-3" />
-									</span>
-								</li>
-							))}
-					</ul>
-					<p className="text-[#3A3939]">Order recieved</p>
-				</div>
-			</div>
-
-			<div className="flex items-center gap-5 border rounded-box p-2 mb-10">
-				<div className="relative h-[50px] w-[120px]">
-					<Image
-						src={logo}
-						alt="chopwell"
-						fill
-						className="object-contain"
-					/>
-				</div>
-
-				<div className="flex gap-5 flex-wrap">
-					<a
-						className="btn btn-sm bg-gray-100 rounded-full border-none "
-						href="tel://+2347063069903"
-						target="_blank"
-						rel="noopener noreferrer">
-						<IconPhone className="w-7 h-7" />
-						<span>Phone</span>
-					</a>
-					<a
-						className="btn btn-sm bg-gray-100 rounded-full border-none "
-						href="https://wa.me/+2347063069903"
-						target="_blank"
-						rel="noopener noreferrer">
-						<IconWhatsapp className="w-7 h-7" />
-						<span>Whatsapp</span>
-					</a>
-				</div>
-			</div>
-
-			<div className="bg-gray-50 p-2 rounded-box mb-10">
-				<div className="flex items-center gap-5 mb-5">
-					<h2 className="font-bold flex-1 text-center">
-						Your Order Summary
-					</h2>
-					<button className="bg-neutral p-2 rounded flex items-center gap-1 mx-auto">
-						<span className="font-bold">265435673</span>
-						<div className="">
-							<IconCopy className="w-4 h-4 text-[#C2C2C2]" />
-						</div>
-					</button>
-				</div>
-
-				<ul className="space-y-8 mb-5">
-					{Array.from({ length: 4 }).map((_, index) => (
-						<li key={index}>
-							<Link href={`/product/${index}`}>
-								<div className="flex gap-5 mb-5">
-									<div className="flex items-center gap-5">
-										<div className="relative w-[35px] h-[35px] rounded-xl overflow-hidden">
-											<Image
-												src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
-												alt="Burger"
-												fill
-												className="object-cover"
+					<div>
+						<ul className="flex justify-center items-center gap-4 mb-4">
+							{[
+								{
+									status: "pending",
+									label: "Order received",
+								},
+								{
+									status: "preparing",
+									label: "Preparing your order",
+								},
+								{
+									status: "delivering",
+									label: "On the way",
+								},
+								{
+									status: "successful",
+									label: "Delivered",
+								},
+							].map((step, i) => {
+								const isCompleted =
+									[
+										"pending",
+										"preparing",
+										"delivering",
+										"successful",
+									].indexOf(order.status) >=
+									i;
+								return (
+									<li
+										key={i}
+										className="relative">
+										<span
+											className={`w-10 h-10 rounded-full flex justify-center items-center ${isCompleted ? "bg-primary" : "bg-neutral/50"} text-white`}>
+											<IconCheck className="w-4 h-4" />
+										</span>
+										{i < 3 && (
+											<div
+												className={`absolute top-1/2 left-full w-4 h-0.5 ${isCompleted ? "bg-primary" : "bg-neutral/50"} -translate-y-1/2`}
 											/>
-										</div>
-										<h3>
-											Hot Jollof
-											Rice
-										</h3>
-									</div>
-
-									<div className="ml-auto">
-										<p className="text-sm font-bold">
-											N2,500
-										</p>
-										<p className="text-xs text-gray-400">
-											X 4 pcs
-										</p>
-									</div>
-								</div>
-							</Link>
-						</li>
-					))}
-				</ul>
-
-				<div className="flex justify-between items-center">
-					<span>Total:</span>
-					<span className="font-bold">N13,000</span>
-				</div>
-			</div>
-			<div className="mb-10">
-				<button className="btn btn-primary btn-block rounded-full">
-					Re-order
-				</button>
-			</div>
-			<div className="bg-gray-50 p-2 rounded-box mb-10">
-				<h2 className="font-bold mb-5">Order details</h2>
-
-				<ul className="space-y-5">
-					{Array.from({ length: 4 }).map((_, i) => (
-						<li
-							key={i}
-							className="flex items-center justify-between text-xs ">
-							<span>Waiting for acceptance</span>
-							<span>28 January 2025 at 12:34 PM</span>
-						</li>
-					))}
-				</ul>
-			</div>
-
-			<div className="bg-gray-50 p-2 rounded-box mb-10">
-				<h2 className="font-bold mb-5">Payment</h2>
-
-				<div>
-					<div className="flex gap-1 items-center">
-						<IconDoubleCard className="w-10 h-10" />
-						<div className="text-xs">
-							<p className="font-bold">
-								Mastercard ****3712
-							</p>
-							<p className="text-gray-400">
-								08/01/2025 21:07
-							</p>
-						</div>
+										)}
+									</li>
+								);
+							})}
+						</ul>
+						<p className="text-gray-500 font-medium">
+							{order.status === "pending" &&
+								"We've received your order and will start preparing it soon"}
+							{order.status === "preparing" &&
+								"Our chefs are preparing your delicious meal"}
+							{order.status === "delivering" &&
+								"Your order is on its way to you"}
+							{order.status === "successful" &&
+								"Your order has been delivered. Enjoy your meal!"}
+						</p>
 					</div>
 				</div>
 			</div>
+
+			<div className="rounded-lg border border-base-300 p-6 mb-8">
+				<div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+					<div className="relative h-12 w-32">
+						<Image
+							src={logo}
+							alt="chopwell"
+							fill
+							className="object-contain"
+							sizes="128px"
+						/>
+					</div>
+
+					<div className="flex gap-4">
+						<a
+							className="btn btn-ghost btn-circle hover:bg-gray-100"
+							href="tel://+2347063069903"
+							target="_blank"
+							rel="noopener noreferrer">
+							<IconPhone className="w-6 h-6" />
+						</a>
+						<a
+							className="btn btn-ghost btn-circle hover:bg-gray-100"
+							href="https://wa.me/+2347063069903"
+							target="_blank"
+							rel="noopener noreferrer">
+							<IconWhatsapp className="w-6 h-6" />
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div className="rounded-lg border border-base-300 p-6 mb-8">
+				<div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+					<h2 className="text-xl font-semibold">Order Summary</h2>
+					<CopyToClipboardButton
+						code={order.code}
+						className="bg-gray-50 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-100 transition-colors">
+						<span className="font-semibold">{order.code}</span>
+						<IconCopy className="w-4 h-4 text-gray-400" />
+					</CopyToClipboardButton>
+				</div>
+
+				<ul className="space-y-6 mb-6">
+					{order.products.map(
+						(product: {
+							_productId: {
+								id: string;
+								name: string;
+								image: string;
+							};
+							price: string;
+							quantity: number;
+						}) => (
+							<li key={product._productId.id}>
+								<Link
+									href={`/product/${product._productId.id}`}
+									className="block hover:bg-gray-50 rounded-lg p-3 transition-colors">
+									<div className="flex flex-wrap items-center gap-4">
+										<div className="relative size-16 rounded-lg overflow-hidden">
+											<Image
+												src={
+													product
+														._productId
+														.image
+												}
+												alt={
+													product
+														._productId
+														.name
+												}
+												fill
+												className="object-cover"
+												sizes="64px"
+											/>
+										</div>
+										<div className="flex-1">
+											<h3 className="font-medium line-clamp-1">
+												{
+													product
+														._productId
+														.name
+												}
+											</h3>
+											<p className="text-sm text-gray-600 whitespace-nowrap">
+												{pluralize(
+													"piece",
+													product.quantity,
+													true
+												)}
+											</p>
+										</div>
+										<div className="text-right">
+											<p className="font-semibold">
+												{commaNumber(
+													product.price
+												)}
+											</p>
+										</div>
+									</div>
+								</Link>
+							</li>
+						)
+					)}
+				</ul>
+
+				<div className="flex justify-between items-center border-t pt-4">
+					<span className="font-medium">Total:</span>
+					<div>
+						<span className="text-xl font-bold">
+							{commaNumber(order.totalPrice)}
+						</span>
+						<p className="text-gray-500 text-xs">
+							+ delivery fee
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div className="mb-8">
+				<button className="btn btn-primary w-full rounded-lg">
+					Re-order
+				</button>
+			</div>
+
+			{/* <div className="bg-base-100 rounded-lg border border-base-300 p-6 mb-8">
+				<h2 className="text-xl font-semibold mb-6">Order Timeline</h2>
+				<ul className="space-y-4">
+					{Array.from({ length: 4 }).map((_, i) => (
+						<li
+							key={i}
+							className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
+							<span className="font-medium">
+								Waiting for acceptance
+							</span>
+							<span className="text-gray-600">
+								28 January 2025 at 12:34 PM
+							</span>
+						</li>
+					))}
+				</ul>
+			</div>
+
+			<div className="bg-base-100 rounded-lg border border-base-300 p-6">
+				<h2 className="text-xl font-semibold mb-6">Payment Details</h2>
+				<div className="flex items-center gap-4">
+					<IconDoubleCard className="w-12 h-12 text-primary" />
+					<div>
+						<p className="font-medium">Mastercard ****3712</p>
+						<p className="text-sm text-gray-600">
+							08/01/2025 21:07
+						</p>
+					</div>
+				</div>
+			</div> */}
 		</div>
 	);
 }

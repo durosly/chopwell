@@ -24,6 +24,7 @@ const foodSchema = new mongoose.Schema(
 		average_rating: { type: Number, default: 0 },
 		preparation_time: { type: Number, default: 1 }, // in minutes
 		_tagIds: [{ type: mongoose.Schema.Types.ObjectId, ref: TagsModel }],
+		unit: { type: String, default: "piece" }, // TODO: set food unit when uploading and display unit where it's required
 	},
 	{ timestamps: true }
 );
@@ -46,7 +47,9 @@ export interface FoodData {
 	type: "food" | "drink" | "combo";
 	average_rating: number;
 	preparation_time: number;
-	_tagIds: Types.ObjectId[] | { _id: string; _creatorId: string; title: string; emoji: string }[];
+	_tagIds:
+		| Types.ObjectId[]
+		| { _id: string; _creatorId: string; title: string; emoji: string }[];
 }
 
 export interface FoodDocument extends Document, FoodData {
@@ -56,7 +59,8 @@ export interface FoodDocument extends Document, FoodData {
 
 // Define the model with pagination support
 const FoodModel: PaginateModel<FoodDocument> =
-	(mongoose.models?.Food as PaginateModel<FoodDocument>) || mongoose.model<FoodDocument, PaginateModel<FoodDocument>>("Food", foodSchema);
+	(mongoose.models?.Food as PaginateModel<FoodDocument>) ||
+	mongoose.model<FoodDocument, PaginateModel<FoodDocument>>("Food", foodSchema);
 
 export default FoodModel;
 

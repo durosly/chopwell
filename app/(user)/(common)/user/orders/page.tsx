@@ -1,6 +1,7 @@
 import BackButton from "@/app/_components/back-button";
 import { auth } from "@/auth";
 import IconArrowLeft from "@/icons/arrow-left";
+import connectMongo from "@/lib/connectMongo";
 import OrderModel from "@/models/order";
 import { cn } from "@/utils/cn";
 import commaNumber from "@/utils/comma-number";
@@ -11,6 +12,8 @@ import Link from "next/link";
 async function OrderPage() {
 	const session = await auth();
 	const userId = session?.user.id;
+
+	await connectMongo();
 
 	const orders = await OrderModel.find({ _userId: userId })
 		.populate("products._productId")
@@ -31,8 +34,8 @@ async function OrderPage() {
 			<div className="min-h-screen">
 				<div className="px-4 mb-10">
 					<div className="max-w-4xl mx-auto flex items-center gap-4">
-						<BackButton className="btn btn-ghost btn-circle">
-							<IconArrowLeft />
+						<BackButton className="btn btn-ghost btn-square">
+							<IconArrowLeft className="size-5" />
 						</BackButton>
 						<h1 className="text-2xl font-bold text-center flex-1">
 							My Orders
@@ -51,8 +54,8 @@ async function OrderPage() {
 			{/* Header Section */}
 			<div className="px-4 mb-10">
 				<div className="max-w-4xl mx-auto flex items-center gap-4">
-					<BackButton className="btn btn-ghost btn-circle">
-						<IconArrowLeft />
+					<BackButton className="btn btn-ghost btn-square">
+						<IconArrowLeft className="size-5" />
 					</BackButton>
 					<h1 className="text-2xl font-bold text-center flex-1">
 						My Orders
