@@ -8,6 +8,7 @@ import commaNumber from "@/utils/comma-number";
 import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
+import ReOrderBtn from "./_components/re-order-btn";
 
 async function OrderPage() {
 	const session = await auth();
@@ -149,9 +150,11 @@ async function OrderPage() {
 										className="btn btn-ghost btn-sm">
 										View Details
 									</Link>
-									<button className="btn btn-primary btn-sm">
+									<ReOrderBtn
+										orderId={order.id}
+										className="btn btn-primary btn-sm">
 										Re-order
-									</button>
+									</ReOrderBtn>
 								</div>
 							</div>
 						</div>

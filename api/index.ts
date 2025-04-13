@@ -177,3 +177,11 @@ export async function createTransactionSession(amount: number) {
 	const response = await axiosInstance.post("/auth/user/transactions/init", { amount });
 	return response.data;
 }
+
+// Reorder API
+export async function reorderOrder({ orderId, addressId }: { orderId: string; addressId: string }) {
+	const response = await axiosInstance.post(`/auth/user/orders/${orderId}/reorder`, {
+		addressId,
+	});
+	return response.data;
+}

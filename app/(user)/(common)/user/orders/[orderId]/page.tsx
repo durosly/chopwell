@@ -13,6 +13,7 @@ import CopyToClipboardButton from "./_components/copy-to-clipboard";
 import commaNumber from "@/utils/comma-number";
 import pluralize from "pluralize";
 import BackButton from "@/app/_components/back-button";
+import ReOrderBtn from "../_components/re-order-btn";
 
 async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }) {
 	const { orderId } = await params;
@@ -226,9 +227,11 @@ async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }
 			</div>
 
 			<div className="mb-8">
-				<button className="btn btn-primary w-full rounded-lg">
+				<ReOrderBtn
+					orderId={order.id}
+					className="btn btn-primary w-full rounded-lg">
 					Re-order
-				</button>
+				</ReOrderBtn>
 			</div>
 
 			{/* <div className="bg-base-100 rounded-lg border border-base-300 p-6 mb-8">
