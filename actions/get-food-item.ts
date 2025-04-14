@@ -12,6 +12,8 @@ type ParamType = {
 	sortBy?: "price" | "average_rating";
 	order?: "asc" | "desc";
 	available?: boolean;
+	price?: { min?: number; max?: number };
+	query?: string;
 };
 
 async function getFoodItems({
@@ -22,15 +24,36 @@ async function getFoodItems({
 	sortBy,
 	order,
 	available = true,
+	price,
+	query: queryParam,
 }: ParamType) {
 	await connectMongo();
 
-	const query = { available, ...(timeChoice && { timeChoice }) };
+	const query = {
+		available,
+		...(timeChoice && { timeChoice }),
+		...(price && {
+			price: {
+				...(price.min && { $gte: price.min }),
+				...(price.max && { $lte: price.max }),
+			},
+		}),
+		...(queryParam && {
+			$or: [
+				{ name: { $regex: queryParam, $options: "i" } },
+				{ short_desc: { $regex: queryParam, $options: "i" } },
+				{ full_desc: { $regex: queryParam, $options: "i" } },
+			],
+		}),
+	};
+
 	if (!paginate) {
-		const foodItems = await FoodModel.find(query)
-			.sort({ [sortBy || "price"]: order || "asc" })
-			.limit(limit || 10)
-			.lean();
+		let queryBuilder = FoodModel.find(query);
+
+		if (sortBy) {
+			queryBuilder = queryBuilder.sort({ [sortBy]: order || "asc" });
+		}
+		const foodItems = await queryBuilder.limit(limit || 10).lean();
 
 		if (!foodItems || !foodItems.length) return null;
 
@@ -43,7 +66,7 @@ async function getFoodItems({
 		const options = {
 			page: page || 1,
 			limit: limit || 10,
-			sort: { [sortBy || "price"]: order || "asc" },
+			...(sortBy && { sort: { [sortBy]: order || "asc" } }),
 		};
 
 		// const query = timeChoice ? { timeChoice } : {};

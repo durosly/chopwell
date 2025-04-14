@@ -185,3 +185,24 @@ export async function reorderOrder({ orderId, addressId }: { orderId: string; ad
 	});
 	return response.data;
 }
+
+// Product API
+export async function getProduct(id: string) {
+	const response = await axiosInstance(`/products/${id}`);
+	return response.data;
+}
+
+export async function getProducts(
+	params?: {
+		page?: number;
+		query?: string;
+		minPrice?: number;
+		maxPrice?: number;
+		mealTime?: string;
+		sortBy?: string;
+	},
+	signal?: AbortSignal
+) {
+	const response = await axiosInstance("/products", { params, signal });
+	return response.data;
+}

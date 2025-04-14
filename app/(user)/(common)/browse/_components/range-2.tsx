@@ -1,25 +1,28 @@
 "use client";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Range, getTrackBackground } from "react-range";
 
 const STEP = 100;
 const MIN = 1000;
 const MAX = 10000;
 
-// Copy of TwoThumbs with `draggableTrack` prop added
-const TwoThumbsDraggableTrack: FC<{ rtl: boolean }> = ({ rtl }) => {
-	const [values, setValues] = useState([1025, 7500]);
+interface TwoThumbsDraggableTrackProps {
+	rtl: boolean;
+	values: [number, number];
+	onChange: (values: [number, number]) => void;
+}
+
+const TwoThumbsDraggableTrack: FC<TwoThumbsDraggableTrackProps> = ({ rtl, values, onChange }) => {
 	return (
-		<div
-		// style={{
-		// 	display: "flex",
-		// 	justifyContent: "center",
-		// 	flexWrap: "wrap",
-		// }}
-		>
-			<output className="text-xs text-gray-500">
-				N{values[0]} - N{values[1]}
-			</output>
+		<div className="w-full space-y-4">
+			<div className="flex justify-between items-center">
+				<div className="badge badge-primary badge-lg">
+					₦{values[0].toLocaleString()}
+				</div>
+				<div className="badge badge-primary badge-lg">
+					₦{values[1].toLocaleString()}
+				</div>
+			</div>
 			<Range
 				draggableTrack
 				values={values}
@@ -27,37 +30,27 @@ const TwoThumbsDraggableTrack: FC<{ rtl: boolean }> = ({ rtl }) => {
 				min={MIN}
 				max={MAX}
 				rtl={rtl}
-				onChange={(values) => {
-					setValues(values);
-				}}
+				onChange={(values) => onChange(values as [number, number])}
 				renderTrack={({ props, children }) => (
 					<div
 						onMouseDown={props.onMouseDown}
 						onTouchStart={props.onTouchStart}
-						style={{
-							...props.style,
-							height: "36px",
-							display: "flex",
-							width: "100%",
-						}}>
+						className="h-8 flex items-center w-full">
 						<div
 							ref={props.ref}
+							className="h-2 w-full rounded-full"
 							style={{
-								height: "5px",
-								width: "100%",
-								borderRadius: "4px",
 								background: getTrackBackground({
 									values,
 									colors: [
-										"#D8B2B2",
-										"oklch(var(--p))",
-										"#D8B2B2",
+										"var(--color-base-300)",
+										"var(--color-primary)",
+										"var(--color-base-300)",
 									],
 									min: MIN,
 									max: MAX,
 									rtl,
 								}),
-								alignSelf: "center",
 							}}>
 							{children}
 						</div>
@@ -67,10 +60,8 @@ const TwoThumbsDraggableTrack: FC<{ rtl: boolean }> = ({ rtl }) => {
 					<div
 						{...props}
 						key={props.key}
-						style={{
-							...props.style,
-						}}
-						className="h-[19px] w-[19px] bg-primary rounded-full"></div>
+						className="h-5 w-5 bg-primary rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+					/>
 				)}
 			/>
 		</div>
