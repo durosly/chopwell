@@ -7,10 +7,11 @@ import { reorderOrder } from "@/api";
 import { toast } from "sonner";
 import { handleError } from "@/lib/handleError";
 import AddressModal from "./address-modal";
-
+import { useRouter } from "next/navigation";
 type PropType = PropsWithChildren<{ orderId: string; className?: string | undefined }>;
 
 function ReOrderBtn({ children, orderId, className }: PropType) {
+	const router = useRouter();
 	const toastId = useRef<string | number | undefined>(undefined);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -21,8 +22,9 @@ function ReOrderBtn({ children, orderId, className }: PropType) {
 				duration: Infinity,
 			});
 		},
-		onSuccess: () => {
+		onSuccess: (response) => {
 			toast.success("Order reordered successfully", { id: toastId.current });
+			router.push(`/user/orders/${response.order}`);
 		},
 		onError: (error) => {
 			toast.error(handleError(error), { id: toastId.current });

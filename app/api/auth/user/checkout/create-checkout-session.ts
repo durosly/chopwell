@@ -156,6 +156,7 @@ async function createCheckoutSession(req: Request) {
 					_productId: item._foodId,
 					price: item.price.toString(),
 					quantity: item.quantity,
+					label: group.title,
 				}))
 			),
 			totalPrice: checkoutTotal,

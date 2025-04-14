@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
 import UserModel from "./user";
 import FoodModel from "./food";
+import AddressModel from "./address";
 
 const orderSchema = new mongoose.Schema(
 	{
@@ -24,9 +25,12 @@ const orderSchema = new mongoose.Schema(
 				price: String,
 				quantity: Number,
 				hasReview: { type: Boolean, default: false },
+				label: String,
 			},
 		],
+		_addressId: { type: mongoose.Types.ObjectId, ref: AddressModel },
 		totalPrice: Number,
+		deliveryPrice: Number,
 		seen: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
