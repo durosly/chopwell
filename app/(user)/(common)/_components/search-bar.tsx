@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn";
 import Form from "next/form";
 import { usePathname } from "next/navigation";
 // import Link from "next/link";
+import { match } from "path-to-regexp";
 import { useRef } from "react";
 
 type PropType = {
@@ -27,16 +28,8 @@ function SearchBar({
 	const pathname = usePathname();
 
 	if (!isHeader) {
-		const exceptions = [
-			"/cart",
-			"/user/checkout",
-			"/user",
-			"/favourites",
-			"/user/wallet",
-			"/user/orders",
-			"/user/account-details",
-		];
-		if (exceptions.includes(pathname)) return null;
+		const exceptions = ["/", "/browse", "/product/:id"];
+		if (!exceptions.some((exception) => match(exception)(pathname))) return null;
 	}
 
 	return (
