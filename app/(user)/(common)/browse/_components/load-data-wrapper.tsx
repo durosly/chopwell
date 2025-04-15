@@ -101,6 +101,14 @@ function LoadDataWrapper() {
 		);
 	}
 
+	if (data?.pages[0].data.docs.length === 0) {
+		return (
+			<div className="flex flex-col items-center justify-center min-h-[40vh] space-y-4">
+				<p className="text-base-content/60">No meals found</p>
+			</div>
+		);
+	}
+
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-5 gap-5 py-3 w-full mb-10">
 			{data?.pages.map((page) => (
