@@ -15,7 +15,9 @@ async function Recommendation() {
 				<h2 className="text-xl font-bold">Recommended for you</h2>
 			</div>
 			{/* // @ts-expect-error: type for items has not been properly defined */}
-			<BrowseList items={foodItems} />
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 px-5 gap-5 py-3 w-full mb-10">
+				<BrowseList items={foodItems} />
+			</div>
 		</div>
 	);
 }

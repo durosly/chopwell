@@ -14,6 +14,8 @@ type ParamType = {
 	available?: boolean;
 	price?: { min?: number; max?: number };
 	query?: string;
+	category?: string;
+	subCategory?: string;
 };
 
 async function getFoodItems({
@@ -26,6 +28,8 @@ async function getFoodItems({
 	available = true,
 	price,
 	query: queryParam,
+	category,
+	subCategory,
 }: ParamType) {
 	await connectMongo();
 
@@ -45,6 +49,8 @@ async function getFoodItems({
 				{ full_desc: { $regex: queryParam, $options: "i" } },
 			],
 		}),
+		...(category && { _categoryIds: { $in: [category] } }),
+		...(subCategory && { _subCategoryIds: { $in: [subCategory] } }),
 	};
 
 	if (!paginate) {

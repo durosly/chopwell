@@ -200,6 +200,8 @@ export async function getProducts(
 		maxPrice?: number;
 		mealTime?: string;
 		sortBy?: string;
+		category?: string;
+		subCategory?: string;
 	},
 	signal?: AbortSignal
 ) {

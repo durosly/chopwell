@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 function LoadDataWrapper() {
 	const searchParams = useSearchParams();
 	const query = searchParams.get("query") ?? undefined;
+	const category = searchParams.get("category") ?? undefined;
+	const subCategory = searchParams.get("subCategory") ?? undefined;
 	const minPrice = searchParams.get("minPrice")
 		? Number(searchParams.get("minPrice"))
 		: undefined;
@@ -32,7 +34,16 @@ function LoadDataWrapper() {
 	// use tanstack query to create an infinite scroll pagination
 	const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery({
-			queryKey: ["food-items", query, minPrice, maxPrice, mealTime, sortBy],
+			queryKey: [
+				"food-items",
+				query,
+				minPrice,
+				maxPrice,
+				mealTime,
+				sortBy,
+				category,
+				subCategory,
+			],
 			queryFn: ({ pageParam }) =>
 				getProducts({
 					page: pageParam,
@@ -41,6 +52,8 @@ function LoadDataWrapper() {
 					maxPrice,
 					mealTime,
 					sortBy,
+					category,
+					subCategory,
 				}),
 			getNextPageParam: (lastPage) => {
 				return lastPage?.data?.nextPage;

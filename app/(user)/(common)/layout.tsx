@@ -84,7 +84,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 											</Link>
 										</li>
 										<li>
-											<Link href="/category">
+											<Link href="/categories">
 												Categories
 											</Link>
 										</li>

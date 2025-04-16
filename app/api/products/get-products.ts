@@ -7,6 +7,8 @@ async function getProducts(request: NextRequest) {
 	try {
 		const { searchParams } = request.nextUrl;
 		const query = searchParams.get("query");
+		const category = searchParams.get("category");
+		const subCategory = searchParams.get("subCategory");
 		const minPrice = searchParams.get("minPrice");
 		const maxPrice = searchParams.get("maxPrice");
 		const mealTime = searchParams.get("mealTime") as "breakfast" | "lunch" | "dinner";
@@ -56,6 +58,8 @@ async function getProducts(request: NextRequest) {
 			price: { min: minPriceInt, max: maxPriceInt },
 			timeChoice,
 			query: queryParam,
+			category: category || undefined,
+			subCategory: subCategory || undefined,
 		});
 
 		// console.log(foodItems);
