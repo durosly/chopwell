@@ -1,6 +1,7 @@
 import connectMongo from "@/lib/connectMongo";
 import CategoryModel from "@/models/category";
 import FoodModel from "@/models/food";
+import SubCategoryModel from "@/models/sub-category";
 import UserModel from "@/models/user";
 import { faker } from "@faker-js/faker";
 import axios from "axios";
@@ -21,10 +22,21 @@ async function createMockFood() {
 			return Response.json({ message: "No categories found" }, { status: 404 });
 		}
 
+		const subCategories = await SubCategoryModel.find({});
+		if (!subCategories || !subCategories.length) {
+			return Response.json(
+				{ message: "No subcategories found" },
+				{ status: 404 }
+			);
+		}
+
 		const categoryIds = categories.map((c) => c.id);
+		const subCategoryIds = subCategories.map((s) => s.id);
 
 		const photos = await axios("https://picsum.photos/v2/list");
-		const photosData = photos.data.map((p: { download_url: string }) => p.download_url.replace(/\/\d+\/\d+$/, ""));
+		const photosData = photos.data.map((p: { download_url: string }) =>
+			p.download_url.replace(/\/\d+\/\d+$/, "")
+		);
 
 		const count = 100;
 
@@ -32,6 +44,7 @@ async function createMockFood() {
 			return {
 				name: faker.commerce.productName(),
 				_categoryIds: [faker.helpers.arrayElement(categoryIds)], // Assign random category ID
+				_subCategoryIds: [faker.helpers.arrayElement(subCategoryIds)], // Assign random sub-category ID
 				image: faker.helpers.arrayElement(photosData),
 				available: faker.datatype.boolean(),
 				price: faker.number.int({ min: 1000, max: 10000 }),
@@ -39,7 +52,11 @@ async function createMockFood() {
 				full_desc: faker.lorem.paragraph(),
 				number_of_item: faker.number.int({ min: 5, max: 50 }),
 				_creatorId: adminUser._id,
-				timeChoice: faker.helpers.arrayElement(["breakfast", "lunch", "dinner"]),
+				timeChoice: faker.helpers.arrayElement([
+					"breakfast",
+					"lunch",
+					"dinner",
+				]),
 				type: faker.helpers.arrayElement(["food", "drink", "combo"]),
 				average_rating: faker.number.float({
 					min: 0,
@@ -47,6 +64,7 @@ async function createMockFood() {
 					multipleOf: 0.1,
 				}), // Random float between 0 and 5
 				preparation_time: faker.number.int({ min: 1, max: 60 }), // Random int between 1 and 60
+				slug: faker.lorem.slug(),
 			};
 		});
 

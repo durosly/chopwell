@@ -1,89 +1,100 @@
 import connectMongo from "@/lib/connectMongo";
 import CategoryModel from "@/models/category";
+import SubCategoryModel from "@/models/sub-category";
 import UserModel from "@/models/user";
 import axios from "axios";
 
-const dummyCategory = [
+const dummySubCategory = [
 	{
-		name: "Appetizers",
+		name: "Light and Tasty Appetizers",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/appetizers.jpg",
 	},
 	{
-		name: "Burgers",
+		name: "Signature Gourmet Burgers",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/burgers.jpg",
 	},
 	{
-		name: "Pasta",
+		name: "Creamy and Cheesy Pasta",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/pasta.jpg",
 	},
 	{
-		name: "Pizza",
+		name: "Stone Oven Baked Pizza",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/pizza.jpg",
 	},
 	{
-		name: "Salads",
+		name: "Fresh and Crunchy Salads",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/salads.jpg",
 	},
 	{
-		name: "Desserts",
+		name: "Sweet and Decadent Desserts",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/desserts.jpg",
 	},
 	{
-		name: "Beverages",
+		name: "Chilled and Refreshing Beverages",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/beverages.jpg",
 	},
 	{
-		name: "Seafood",
+		name: "Freshly Cooked Seafood Delights",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/seafood.jpg",
 	},
 	{
-		name: "Grilled",
+		name: "Flame Grilled Meat Specialties",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/grilled.jpg",
 	},
 	{
-		name: "Soups",
+		name: "Warm and Hearty Soups",
 		_creatorId: "65f9a3b1c7e2a6d5b9f0e123",
 		cover_image: "https://example.com/images/soups.jpg",
 	},
 ];
 
-async function createMockCategory() {
+async function createMockSubCategory() {
 	try {
 		await connectMongo();
 
-		await CategoryModel.deleteMany({});
+		await SubCategoryModel.deleteMany({});
 		const adminUser = await UserModel.findOne({ type: "admin" });
 
 		if (!adminUser) {
 			return Response.json({ message: "No admin user found" }, { status: 404 });
 		}
 
+		const categories = await CategoryModel.find({});
+
+		if (!categories.length) {
+			return Response.json({ message: "No categories found" }, { status: 404 });
+		}
+
+		const categoryIds = categories.map((category) => category._id);
 		const photos = await axios("https://picsum.photos/v2/list");
 		const photosData = photos.data.map((p: { download_url: string }) =>
 			p.download_url.replace(/\/\d+\/\d+$/, "")
 		);
 
-		const newCategories = dummyCategory.map((category, index) => {
+		const newSubCategories = dummySubCategory.map((subCategory, index) => {
+			const randomCategoryId =
+				categoryIds[Math.floor(Math.random() * categoryIds.length)];
 			return {
-				...category,
+				...subCategory,
 				_creatorId: adminUser?._id,
 				cover_image: photosData[index],
-				slug: category.name.toLowerCase().replace(/ /g, "-"),
+				_categoryId: randomCategoryId,
+				slug: subCategory.name.toLowerCase().replace(/ /g, "-"),
 			};
 		});
 
-		await CategoryModel.insertMany(newCategories);
+		await SubCategoryModel.insertMany(newSubCategories);
 
-		return Response.json({ message: "New categories inserted" });
+		return Response.json({ message: "New sub categories inserted" });
 	} catch (error: unknown) {
 		let message = "Something went wrong";
 		if (error instanceof Error) {
@@ -94,4 +105,4 @@ async function createMockCategory() {
 	}
 }
 
-export { createMockCategory as GET, createMockCategory as POST };
+export { createMockSubCategory as GET, createMockSubCategory as POST };

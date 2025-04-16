@@ -1,13 +1,14 @@
 import mongoose, { Schema, Types, Document, PaginateModel } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import UserModel from "./user";
+import CategoryModel from "./category";
 import slugify from "slugify";
-
 // Define the schema
-const categorySchema = new Schema(
+const subCategorySchema = new Schema(
 	{
 		name: { type: String, required: true, trim: true },
 		_creatorId: { type: Schema.Types.ObjectId, ref: UserModel, required: true },
+		_categoryId: { type: Schema.Types.ObjectId, ref: CategoryModel, required: true },
 		cover_image: { type: String, trim: true },
 		coverImagePlaceholder: {
 			type: String,
@@ -19,34 +20,34 @@ const categorySchema = new Schema(
 );
 
 // Pre-save middleware to generate and validate slug
-categorySchema.pre<CategoryDocument>("save", async function (next) {
+subCategorySchema.pre<SubCategoryDocument>("save", async function (next) {
 	// eslint-disable-next-line @typescript-eslint/no-this-alias
-	const category = this;
+	const subCategory = this;
 	// only hash the password if it has been modified (or is new)
 
-	if (!category.isModified("name")) return next();
-	let slug = slugify(category.name, { lower: true, strict: true });
+	if (!subCategory.isModified("name")) return next();
+	let slug = slugify(subCategory.name, { lower: true, strict: true });
 	// generate a salt
 	let slugExists = true;
 	let counter = 1;
 	while (slugExists) {
 		// @ts-expect-error: use constructor to find the food
-		const existingCategory = await this.constructor.findOne({ slug });
-		if (!existingCategory || existingCategory._id.equals(this._id)) {
+		const existingSubCategory = await this.constructor.findOne({ slug });
+		if (!existingSubCategory || existingSubCategory._id.equals(this._id)) {
 			// If no other article found with the same slug or the found article is the current one being saved
 			slugExists = false;
 		} else {
 			// Generate a new slug with a unique identifier
 			counter++;
-			slug = `${slugify(category.name, { lower: true, strict: true })}-${counter}`;
+			slug = `${slugify(subCategory.name, { lower: true, strict: true })}-${counter}`;
 		}
 	}
 
-	this.slug = slug as string;
+	this.slug = slug;
 });
 
 // Add the toJSON and toObject transformation options
-categorySchema.set("toJSON", {
+subCategorySchema.set("toJSON", {
 	transform: (doc, ret) => {
 		ret._id = ret._id.toString();
 		delete ret.__v;
@@ -54,7 +55,7 @@ categorySchema.set("toJSON", {
 	},
 });
 
-categorySchema.set("toObject", {
+subCategorySchema.set("toObject", {
 	transform: (doc, ret) => {
 		ret._id = ret._id.toString();
 		delete ret.__v;
@@ -63,10 +64,10 @@ categorySchema.set("toObject", {
 });
 
 // Apply pagination plugin
-categorySchema.plugin(mongoosePaginate);
+subCategorySchema.plugin(mongoosePaginate);
 
 // Define TypeScript interfaces for the schema
-export interface CategoryData {
+export interface SubCategoryData {
 	name: string;
 	_creatorId: Types.ObjectId | { _id: string; firstname: string; lastname: string };
 	cover_image: string;
@@ -74,19 +75,19 @@ export interface CategoryData {
 	slug: string;
 }
 
-export interface CategoryDocument extends Document, CategoryData {
+export interface SubCategoryDocument extends Document, SubCategoryData {
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 // Define the model with pagination support
-const CategoryModel: PaginateModel<CategoryDocument> =
-	(mongoose.models?.Category as PaginateModel<CategoryDocument>) ||
-	mongoose.model<CategoryDocument, PaginateModel<CategoryDocument>>(
-		"Category",
-		categorySchema
+const SubCategoryModel: PaginateModel<SubCategoryDocument> =
+	(mongoose.models?.SubCategory as PaginateModel<SubCategoryDocument>) ||
+	mongoose.model<SubCategoryDocument, PaginateModel<SubCategoryDocument>>(
+		"SubCategory",
+		subCategorySchema
 	);
 
-export default CategoryModel;
+export default SubCategoryModel;
 
-export { categorySchema };
+export { subCategorySchema as subCategorySchema };
