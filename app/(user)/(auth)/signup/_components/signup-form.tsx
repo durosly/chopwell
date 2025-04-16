@@ -2,7 +2,7 @@
 
 import { signupSchema, type SignupType } from "@/types/signup";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type SubmitHandler, useForm } from "react-hook-form";

@@ -3,7 +3,7 @@ import { updateUsername } from "@/api";
 import IconBrush from "@/icons/brush";
 import { handleError } from "@/lib/handleError";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

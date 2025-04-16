@@ -11,7 +11,7 @@ import { createCheckoutSession } from "@/api";
 import LoadingCartAnimation from "../../../cart/_components/loading-cart";
 import { cn } from "@/utils/cn";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 function CheckoutPayment() {
 	const router = useRouter();

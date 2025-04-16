@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { PropsWithChildren } from "react";
 
 type PropType = { className?: string | undefined } & PropsWithChildren;

@@ -7,7 +7,7 @@ import addAddressSchema, { AddAddressType } from "@/types/add-address";
 import commaNumber from "@/utils/comma-number";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

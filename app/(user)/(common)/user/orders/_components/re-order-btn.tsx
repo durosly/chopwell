@@ -7,7 +7,7 @@ import { reorderOrder } from "@/api";
 import { toast } from "sonner";
 import { handleError } from "@/lib/handleError";
 import AddressModal from "./address-modal";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 type PropType = PropsWithChildren<{ orderId: string; className?: string | undefined }>;
 
 function ReOrderBtn({ children, orderId, className }: PropType) {

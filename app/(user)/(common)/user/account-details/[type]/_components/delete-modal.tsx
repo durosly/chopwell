@@ -3,7 +3,7 @@
 import { deleteUserAddress } from "@/api";
 import { handleError } from "@/lib/handleError";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useRef } from "react";
 import { toast } from "sonner";
 
