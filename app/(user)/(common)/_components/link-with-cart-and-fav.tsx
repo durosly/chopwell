@@ -26,7 +26,6 @@ function LinkWithCartAndFav({ href, className, children }: PropType) {
 		}
 
 		router.push(href);
-		console.log("The link was clicked.");
 	}
 	return (
 		<Link onClick={handleClick} href={href} className={cn(className)}>

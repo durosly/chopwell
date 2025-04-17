@@ -22,7 +22,7 @@ function BrowseList({ items }: { items: FoodDocument[] }) {
 			{items.map((item) => (
 				<LinkWithCartAndFav
 					key={item._id as string}
-					href={`/product/${item._id}`}
+					href={`/product/${item.slug}`}
 					className="card bg-base-100 border border-base-300 rounded-box overflow-hidden group hover:shadow-lg transition-all duration-300">
 					<div className="relative h-[200px] overflow-hidden">
 						<Image

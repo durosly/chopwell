@@ -8,13 +8,34 @@ import connectMongo from "@/lib/connectMongo";
 import commaNumber from "@/utils/comma-number";
 import FavBtn from "../../_components/fav-btn";
 import CartBtn from "../../_components/cart-btn";
+import ShareBtn from "./_components/share-btn";
 
-async function ProductDetailsPage({ params }: { params: Promise<{ productId: string }> }) {
-	const { productId } = await params;
+export async function generateMetadata({ params }: { params: { productSlug: string } }) {
+	const { productSlug } = await params;
+	const product = await FoodModel.findOne({ slug: productSlug });
+
+	if (!product) {
+		return {
+			title: "Product not found",
+			description: "Product not found",
+		};
+	}
+
+	return {
+		title: product.name,
+		description: product.full_desc,
+		openGraph: {
+			images: [product.image],
+		},
+	};
+}
+
+async function ProductDetailsPage({ params }: { params: Promise<{ productSlug: string }> }) {
+	const { productSlug } = await params;
 
 	await connectMongo();
 
-	const product = await FoodModel.findById(productId);
+	const product = await FoodModel.findOne({ slug: productSlug });
 
 	if (!product) {
 		return <div>Product not found</div>;
@@ -36,9 +57,12 @@ async function ProductDetailsPage({ params }: { params: Promise<{ productId: str
 						<BackButton className="btn btn-sm btn-circle glass text-base-content">
 							<IconArrowLeft className="w-4 h-4" />
 						</BackButton>
-						<button className="btn btn-sm btn-circle glass text-base-content">
+						<ShareBtn
+							title={product.name}
+							description={product.full_desc}
+							className="btn btn-sm btn-circle glass text-base-content">
 							<IconShare className="w-4 h-4" />
-						</button>
+						</ShareBtn>
 					</div>
 
 					<div className="absolute bottom-0 pb-8 pl-4">
