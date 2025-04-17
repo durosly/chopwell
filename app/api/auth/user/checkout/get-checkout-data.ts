@@ -3,11 +3,16 @@ import "server-only";
 import getCheckoutDataAction from "@/actions/get-checkout-action";
 import { handleError } from "@/lib/handleError";
 
+import { withAuth } from "@/utils/with-user-auth";
+
 async function getCheckoutData() {
 	try {
 		const checkOutResponse = await getCheckoutDataAction();
 		if (checkOutResponse.status === false) {
-			return Response.json({ status: false, message: checkOutResponse.message }, { status: 400 });
+			return Response.json(
+				{ status: false, message: checkOutResponse.message },
+				{ status: 400 }
+			);
 		}
 
 		return Response.json(checkOutResponse);
@@ -17,4 +22,4 @@ async function getCheckoutData() {
 	}
 }
 
-export default getCheckoutData;
+export default withAuth(getCheckoutData);

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { handleError } from "@/lib/handleError";
 import WalletModel from "@/models/wallet";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function getUserBalance() {
 	try {
@@ -22,4 +23,4 @@ async function getUserBalance() {
 	}
 }
 
-export default getUserBalance;
+export default withAuth(getUserBalance);

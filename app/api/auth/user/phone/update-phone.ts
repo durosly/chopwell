@@ -4,6 +4,7 @@ import { handleError } from "@/lib/handleError";
 import UserModel from "@/models/user";
 import { z } from "zod";
 import { phone } from "phone";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function updateUserPhone(request: Request) {
 	try {
@@ -34,4 +35,4 @@ async function updateUserPhone(request: Request) {
 	}
 }
 
-export default updateUserPhone;
+export default withAuth(updateUserPhone);

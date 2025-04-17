@@ -4,6 +4,7 @@ import { handleError } from "@/lib/handleError";
 import TransactionModel from "@/models/transactions";
 import UserModel from "@/models/user";
 import axios from "axios";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function initializeTransaction(request: Request) {
 	try {
@@ -68,4 +69,4 @@ async function initializeTransaction(request: Request) {
 	}
 }
 
-export default initializeTransaction;
+export default withAuth(initializeTransaction);

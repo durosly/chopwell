@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { handleError } from "@/lib/handleError";
 import AddressModel from "@/models/address";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function getUserAddress() {
 	try {
@@ -9,7 +10,9 @@ async function getUserAddress() {
 		if (!userId) {
 			return Response.json({ message: "Unauthorized" }, { status: 401 });
 		}
-		const addresses = await AddressModel.find({ _userId: userId }).populate("_regionId");
+		const addresses = await AddressModel.find({ _userId: userId }).populate(
+			"_regionId"
+		);
 		if (!addresses.length) {
 			return Response.json({ message: "No address found", address: [] });
 		}
@@ -32,4 +35,4 @@ async function getUserAddress() {
 	}
 }
 
-export default getUserAddress;
+export default withAuth(getUserAddress);

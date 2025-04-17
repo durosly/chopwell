@@ -3,6 +3,7 @@ import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
 import UserModel from "@/models/user";
 import { z } from "zod";
+import { withAuth } from "@/utils/with-user-auth";
 
 const nameSchema = z.object({
 	firstname: z
@@ -50,4 +51,4 @@ async function updateUsername(request: Request) {
 	}
 }
 
-export default updateUsername;
+export default withAuth(updateUsername);

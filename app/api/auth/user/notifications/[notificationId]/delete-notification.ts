@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { handleError } from "@/lib/handleError";
 import NotificationModel from "@/models/notifications";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function deleteUserNotification(
 	_: Request,
@@ -25,4 +26,4 @@ async function deleteUserNotification(
 	}
 }
 
-export default deleteUserNotification;
+export default withAuth(deleteUserNotification);

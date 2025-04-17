@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
 import NotificationModel from "@/models/notifications";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function getNotifications() {
 	try {
@@ -23,4 +24,4 @@ async function getNotifications() {
 	}
 }
 
-export default getNotifications;
+export default withAuth(getNotifications);

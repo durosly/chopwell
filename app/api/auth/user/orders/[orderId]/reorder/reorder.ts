@@ -7,6 +7,7 @@ import NotificationModel from "@/models/notifications";
 import OrderModel from "@/models/order";
 import TransactionModel from "@/models/transactions";
 import WalletModel from "@/models/wallet";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function reorder(request: Request, { params }: { params: Promise<{ orderId: string }> }) {
 	try {
@@ -162,4 +163,4 @@ async function reorder(request: Request, { params }: { params: Promise<{ orderId
 	}
 }
 
-export default reorder;
+export default withAuth(reorder);

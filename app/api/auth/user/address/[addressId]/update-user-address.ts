@@ -3,6 +3,7 @@ import { handleError } from "@/lib/handleError";
 import AddressModel from "@/models/address";
 import RegionModel from "@/models/region";
 import addAddressSchema from "@/types/add-address";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function updateUserAddress(
 	request: Request,
@@ -42,4 +43,4 @@ async function updateUserAddress(
 	}
 }
 
-export default updateUserAddress;
+export default withAuth(updateUserAddress);

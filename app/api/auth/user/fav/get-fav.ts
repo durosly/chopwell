@@ -3,11 +3,17 @@ import connectMongo from "@/lib/connectMongo";
 import FavouriteModel from "@/models/favourite";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 import { NextRequest } from "next/server";
+import { handleError } from "@/lib/handleError";
+import { withAuth } from "@/utils/with-user-auth";
 
-async function getFav(req: NextRequest) {
+async function getFav(request: Request | NextRequest) {
 	try {
 		await connectMongo();
-		const searchParams = req.nextUrl.searchParams;
+		const searchParams =
+			request instanceof NextRequest
+				? request.nextUrl.searchParams
+				: new URL(request.url).searchParams;
+
 		let sessionId = "";
 		const full = searchParams.get("full");
 		const session = await auth();
@@ -19,7 +25,9 @@ async function getFav(req: NextRequest) {
 
 		const filter = userId ? { userId } : { sessionId };
 
-		const fav = await FavouriteModel.findOne(filter).populate(full === "true" ? "items" : "");
+		const fav = await FavouriteModel.findOne(filter).populate(
+			full === "true" ? "items" : ""
+		);
 
 		// return empty array as data if no fav found else return fav.items as data
 		if (!fav) return Response.json({ data: [] });
@@ -27,8 +35,9 @@ async function getFav(req: NextRequest) {
 		return Response.json({ data: fav.items });
 	} catch (error) {
 		console.log("Error in add-to-fav", error);
-		return Response.json({ message: "Something went wrong" }, { status: 500 });
+		const message = handleError(error);
+		return Response.json({ message }, { status: 500 });
 	}
 }
 
-export default getFav;
+export default withAuth(getFav);

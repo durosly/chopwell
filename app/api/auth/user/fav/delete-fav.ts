@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import FavouriteModel from "@/models/favourite";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
+import { handleError } from "@/lib/handleError";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function removeFromFav(req: Request) {
 	try {
@@ -29,8 +31,9 @@ async function removeFromFav(req: Request) {
 		return Response.json({ message: "Food item removed from favourite" });
 	} catch (error) {
 		console.log("Error in add-to-fav", error);
-		return Response.json({ message: "Something went wrong" }, { status: 500 });
+		const message = handleError(error);
+		return Response.json({ message }, { status: 500 });
 	}
 }
 
-export default removeFromFav;
+export default withAuth(removeFromFav);

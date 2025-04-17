@@ -2,6 +2,8 @@ import UserModel from "@/models/user";
 import connectMongo from "@/lib/connectMongo";
 import { z } from "zod";
 import { auth } from "@/auth";
+import { handleError } from "@/lib/handleError";
+import { withAuth } from "@/utils/with-user-auth";
 
 const emailSchema = z.object({
 	email: z.string().email("Invalid email address"),
@@ -34,11 +36,9 @@ async function updateEmail(request: Request) {
 
 		return Response.json({ message: "Email updated successfully" });
 	} catch (error) {
-		if (error instanceof z.ZodError) {
-			return Response.json({ error: error.errors[0].message }, { status: 400 });
-		}
-		return Response.json({ error: "Internal server error" }, { status: 500 });
+		const message = handleError(error);
+		return Response.json({ message }, { status: 500 });
 	}
 }
 
-export default updateEmail;
+export default withAuth(updateEmail);

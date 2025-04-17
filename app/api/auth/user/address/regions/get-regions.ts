@@ -1,9 +1,14 @@
 import { handleError } from "@/lib/handleError";
 import RegionModel from "@/models/region";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function getAvailableRegions() {
 	try {
-		const regions = await RegionModel.find({}).select(["_id", "title", "deliveryPrice"]);
+		const regions = await RegionModel.find({}).select([
+			"_id",
+			"title",
+			"deliveryPrice",
+		]);
 		if (!regions) {
 			return Response.json({ message: "No regions found", regions: [] });
 		}
@@ -16,4 +21,4 @@ async function getAvailableRegions() {
 	}
 }
 
-export default getAvailableRegions;
+export default withAuth(getAvailableRegions);

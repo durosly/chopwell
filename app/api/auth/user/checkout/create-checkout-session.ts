@@ -13,6 +13,7 @@ import AddressModel from "@/models/address";
 import CartModel from "@/models/cart";
 import CartItemGroupModel from "@/models/cart-item-group";
 import CartItemModel from "@/models/cart-item";
+import { withAuth } from "@/utils/with-user-auth";
 
 // Validation schema for order data
 const orderDataSchema = z.object({
@@ -200,4 +201,4 @@ async function createCheckoutSession(req: Request) {
 	}
 }
 
-export default createCheckoutSession;
+export default withAuth(createCheckoutSession);

@@ -19,21 +19,17 @@ export default auth((req) => {
 		isLoggedIn &&
 		isAdmin
 	) {
-		// TODO: check if this is an admin user
-		console.log("dashboaord redirect");
 		return Response.redirect(new URL("/dashboard", req.nextUrl));
 	}
 
 	if (pathname.startsWith("/dashboard") && !isAdmin) {
-		// redirect to landing page is user is not an admin
-		console.log("not dashboard");
 		return Response.redirect(new URL("/", req.nextUrl));
 	}
 
 	// if api route but not logged in
-	// if (pathname.startsWith("/api") && !isLoggedIn) {
-	// 	return Response.json({ message: "Unathorized access" }, { status: 401 });
-	// }
+	if (pathname.startsWith("/api/auth/user") && !isLoggedIn) {
+		return Response.json({ message: "Unathorized access" }, { status: 401 });
+	}
 
 	// if admin api but not admin
 	if (pathname.startsWith("/api/admin") && !isAdmin) {

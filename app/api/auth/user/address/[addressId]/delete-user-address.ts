@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { handleError } from "@/lib/handleError";
 import AddressModel from "@/models/address";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function deleteUserAddress(
 	_: Request,
@@ -25,4 +26,4 @@ async function deleteUserAddress(
 	}
 }
 
-export default deleteUserAddress;
+export default withAuth(deleteUserAddress);

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
 import CardModel from "@/models/card";
+import { withAuth } from "@/utils/with-user-auth";
 
 async function getUserSavedCards() {
 	try {
@@ -30,7 +31,10 @@ async function getUserSavedCards() {
 		// ];
 
 		if (!data.length) {
-			return Response.json({ message: "No card found. Please, add new card." }, { status: 404 });
+			return Response.json(
+				{ message: "No card found. Please, add new card." },
+				{ status: 404 }
+			);
 		}
 
 		return Response.json({ message: "Cards found", cards: data });
@@ -40,4 +44,4 @@ async function getUserSavedCards() {
 	}
 }
 
-export default getUserSavedCards;
+export default withAuth(getUserSavedCards);
