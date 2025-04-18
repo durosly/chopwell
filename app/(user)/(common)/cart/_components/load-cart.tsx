@@ -6,12 +6,16 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { LuBadgeAlert } from "react-icons/lu";
+import { LuBadgeAlert, LuCopy, LuMoveHorizontal } from "react-icons/lu";
+import dynamic from "next/dynamic";
+const LoadingCartAnimation = dynamic(() => import("./loading-cart"), {
+	ssr: false,
+	loading: () => <div className="animate-pulse">...</div>,
+});
 import AddNewCartGroupButton from "./add-new-cart-group-btn";
 import GroupDeleteBtn from "./group-delete-btn";
 import GroupTitle from "./group-title";
 import IncreaseItemQuantity from "./increase-item-quantity";
-import LoadingCartAnimation from "./loading-cart";
 import ReduceItemQuantity from "./reduce-item-quantity";
 import RemoveCartItemBtn from "./remove-cart-item-btn";
 
@@ -101,7 +105,7 @@ function LoaCart() {
 												}
 												className="border-b pb-5 last:border-b-0 last:pb-0">
 												<Link
-													href={`/product/${cartItem._id}`}
+													href={`/product/${cartItem.slug}`}
 													className="flex gap-5 items-start mb-2">
 													<div className="relative size-[70px] flex-none aspect-square rounded-md overflow-hidden">
 														<Image
@@ -147,6 +151,18 @@ function LoaCart() {
 																</li>
 																<li>
 																	food
+																</li>
+																<li>
+																	<div>
+																		{/* move cart item to another group */}
+																		<button className="btn btn-ghost btn-square btn-sm">
+																			<LuMoveHorizontal />
+																		</button>
+																		{/* copy cart item to another group */}
+																		<button className="btn btn-ghost btn-square btn-sm">
+																			<LuCopy />
+																		</button>
+																	</div>
 																</li>
 															</ul>
 														</div>

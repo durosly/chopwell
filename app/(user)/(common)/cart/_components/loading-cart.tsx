@@ -17,7 +17,7 @@ function LoadingCartAnimation() {
 			ref={playerRef}
 			size={96}
 			icon={trolleyJump}
-			colors="primary:#000,secondary:#800808"
+			colors="primary:var(--color-primary),secondary:var(--color-secondary)"
 			// @ts-expect-error: not added lordicon type
 			onComplete={() => playerRef.current?.playFromBeginning()}
 		/>
