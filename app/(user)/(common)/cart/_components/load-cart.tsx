@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
-import { LuBadgeAlert, LuCopy, LuMoveHorizontal } from "react-icons/lu";
+import { LuBadgeAlert } from "react-icons/lu";
 import dynamic from "next/dynamic";
 const LoadingCartAnimation = dynamic(() => import("./loading-cart"), {
 	ssr: false,
@@ -18,7 +18,8 @@ import GroupTitle from "./group-title";
 import IncreaseItemQuantity from "./increase-item-quantity";
 import ReduceItemQuantity from "./reduce-item-quantity";
 import RemoveCartItemBtn from "./remove-cart-item-btn";
-
+import DuplicateCartItemButton from "./duplicate-cart-item-button";
+import MoveCartItemButton from "./move-cart-item-button";
 function LoaCart() {
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["cart-full-data"],
@@ -146,23 +147,13 @@ function LoaCart() {
 															</div>
 															<ul className="text-[10px] text-[#3A3939]">
 																<li>
-																	In
+																	{cartItem.available
+																		? "In"
+																		: "Out of"}
 																	stock
 																</li>
 																<li>
 																	food
-																</li>
-																<li>
-																	<div>
-																		{/* move cart item to another group */}
-																		<button className="btn btn-ghost btn-square btn-sm">
-																			<LuMoveHorizontal />
-																		</button>
-																		{/* copy cart item to another group */}
-																		<button className="btn btn-ghost btn-square btn-sm">
-																			<LuCopy />
-																		</button>
-																	</div>
 																</li>
 															</ul>
 														</div>
@@ -207,11 +198,45 @@ function LoaCart() {
 
 												<div className="flex-1">
 													<div className="flex justify-between items-center gap-5">
-														<RemoveCartItemBtn
-															cartItemId={
-																cartItem._id
-															}
-														/>
+														<div className="flex items-center gap-5">
+															<RemoveCartItemBtn
+																cartItemId={
+																	cartItem._id
+																}
+															/>
+															<div>
+																{/* move cart item to another group */}
+																<MoveCartItemButton
+																	group={data.data.map(
+																		(group: {
+																			_id: string;
+																			title: string;
+																		}) => ({
+																			_id: group._id,
+																			title: group.title,
+																		})
+																	)}
+																	cartItemId={
+																		cartItem._id
+																	}
+																/>
+																{/* copy cart item to another group */}
+																<DuplicateCartItemButton
+																	group={data.data.map(
+																		(group: {
+																			_id: string;
+																			title: string;
+																		}) => ({
+																			_id: group._id,
+																			title: group.title,
+																		})
+																	)}
+																	cartItemId={
+																		cartItem._id
+																	}
+																/>
+															</div>
+														</div>
 														<div className="flex items-center gap-5">
 															<ReduceItemQuantity
 																itemId={

@@ -93,6 +93,26 @@ export async function addNewCartGroup() {
 	const response = await axiosInstance.post(`/cart/group`);
 	return response.data;
 }
+export async function moveCartItem({
+	cartItemId,
+	groupId,
+}: {
+	cartItemId: string;
+	groupId: string;
+}) {
+	const response = await axiosInstance.post(`/cart/move-cart-item`, { cartItemId, groupId });
+	return response.data;
+}
+export async function copyCartItem({
+	cartItemId,
+	groupId,
+}: {
+	cartItemId: string;
+	groupId: string;
+}) {
+	const response = await axiosInstance.post(`/cart/copy-cart-item`, { cartItemId, groupId });
+	return response.data;
+}
 
 export async function getCartIds(params?: { full?: boolean }, signal?: AbortSignal) {
 	const response = await axiosInstance("/cart/ids", { params, signal });
