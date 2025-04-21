@@ -10,7 +10,7 @@ import FavBtn from "../../_components/fav-btn";
 import CartBtn from "../../_components/cart-btn";
 import ShareBtn from "./_components/share-btn";
 
-export async function generateMetadata({ params }: { params: { productSlug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ productSlug: string }> }) {
 	const { productSlug } = await params;
 	const product = await FoodModel.findOne({ slug: productSlug });
 
