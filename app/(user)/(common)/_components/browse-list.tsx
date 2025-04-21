@@ -1,6 +1,6 @@
 import IconHeart from "@/icons/heart";
 import IconStar from "@/icons/star";
-import { FoodDocument } from "@/models/food";
+// import { FoodDocument } from "@/models/food";
 import Image from "next/image";
 import { LuPlus } from "react-icons/lu";
 import CartBtn from "./cart-btn";
@@ -14,7 +14,12 @@ import commaNumber from "@/utils/comma-number";
 // 	type: "grid" | "list";
 // };
 
-function BrowseList({ items }: { items: FoodDocument[] }) {
+function BrowseList({
+	items,
+}: {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	items: any[];
+}) {
 	return (
 		<>
 			<LoadFavourites />
