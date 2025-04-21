@@ -2,7 +2,20 @@ import connectMongo from "@/lib/connectMongo";
 import CategoriesDisplay from "./_ccomponents/categories-display";
 import CategoryModel from "@/models/category";
 import SubCategoryModel from "@/models/sub-category";
-import { omit, map } from "lodash";
+import { map } from "lodash";
+import { Document } from "mongoose";
+
+interface CategoryDocument extends Document {
+	_id: string;
+	name: string;
+	cover_image: string;
+}
+
+interface SubCategoryDocument extends Document {
+	_id: string;
+	name: string;
+	cover_image: string;
+}
 
 async function CategoriesPage() {
 	await connectMongo();
@@ -12,21 +25,14 @@ async function CategoriesPage() {
 	for (const category of categories) {
 		const subCategories = await SubCategoryModel.find({ _categoryId: category._id });
 		data.push({
-			...omit(category.toObject(), [
-				"_creatorId",
-				"createdAt",
-				"updatedAt",
-				"slug",
-			]),
-			subcategories: map(subCategories, (subCategory) =>
-				omit(subCategory.toObject(), [
-					"_creatorId",
-					"_categoryId",
-					"createdAt",
-					"updatedAt",
-					"slug",
-				])
-			),
+			_id: (category as CategoryDocument)._id.toString(),
+			name: (category as CategoryDocument).name,
+			cover_image: (category as CategoryDocument).cover_image,
+			subcategories: map(subCategories, (subCategory) => ({
+				_id: (subCategory as SubCategoryDocument)._id.toString(),
+				name: (subCategory as SubCategoryDocument).name,
+				cover_image: (subCategory as SubCategoryDocument).cover_image,
+			})),
 		});
 	}
 
