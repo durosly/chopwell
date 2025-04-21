@@ -1,10 +1,10 @@
 "use client";
 
-import useCheckoutStore from "@/store/checkout-store";
+// import useCheckoutStore from "@/store/checkout-store";
 import { LuCreditCard, LuLandmark, LuLink, LuUser } from "react-icons/lu";
 
 function PaymentMethod() {
-	const { paymentMethod, setPaymentMethod } = useCheckoutStore();
+	// const { paymentMethod, setPaymentMethod } = useCheckoutStore();
 
 	return (
 		<>
@@ -20,8 +20,8 @@ function PaymentMethod() {
 					<input
 						name="payment-method"
 						type="radio"
-						checked={paymentMethod === "card"}
-						onChange={() => setPaymentMethod("card")}
+						// checked={paymentMethod === "card"}
+						// onChange={() => setPaymentMethod("card")}
 						className="radio radio-xs checked:radio-primary ml-auto"
 					/>
 				</label>
@@ -33,8 +33,8 @@ function PaymentMethod() {
 					<input
 						name="payment-method"
 						type="radio"
-						checked={paymentMethod === "virtual-account"}
-						onChange={() => setPaymentMethod("virtual-account")}
+						// checked={paymentMethod === "virtual-account"}
+						// onChange={() => setPaymentMethod("virtual-account")}
 						className="radio radio-xs checked:radio-primary ml-auto"
 					/>
 				</label>
@@ -46,8 +46,8 @@ function PaymentMethod() {
 					<input
 						name="payment-method"
 						type="radio"
-						checked={paymentMethod === "wallet"}
-						onChange={() => setPaymentMethod("wallet")}
+						// checked={paymentMethod === "wallet"}
+						// onChange={() => setPaymentMethod("wallet")}
 						className="radio radio-xs checked:radio-primary ml-auto"
 					/>
 				</label>
@@ -59,8 +59,8 @@ function PaymentMethod() {
 					<input
 						name="payment-method"
 						type="radio"
-						checked={paymentMethod === "pay-for-me"}
-						onChange={() => setPaymentMethod("pay-for-me")}
+						// checked={paymentMethod === "pay-for-me"}
+						// onChange={() => setPaymentMethod("pay-for-me")}
 						className="radio radio-xs checked:radio-primary ml-auto"
 					/>
 				</label>

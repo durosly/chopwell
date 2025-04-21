@@ -2,18 +2,18 @@
 
 import IconCardTick from "@/icons/card-tick";
 import IconDoubleCard from "@/icons/cards";
-import useCheckoutStore from "@/store/checkout-store";
+// import useCheckoutStore from "@/store/checkout-store";
 
 function AddNewCardForm() {
-	const {
-		card: {
-			new: { cardNumber, expiryDate, cvc, saveForFuture },
-		},
-		setNewCardNumber,
-		setNewCardCVV,
-		setNewCardExpiryDate,
-		setNewCardSaveForFuture,
-	} = useCheckoutStore();
+	// const {
+	// 	card: {
+	// 		new: { cardNumber, expiryDate, cvc, saveForFuture },
+	// 	},
+	// 	setNewCardNumber,
+	// 	setNewCardCVV,
+	// 	setNewCardExpiryDate,
+	// 	setNewCardSaveForFuture,
+	// } = useCheckoutStore();
 
 	return (
 		<form className="" action="">
@@ -26,8 +26,8 @@ function AddNewCardForm() {
 						type="text"
 						className="text-xs"
 						placeholder="1234 5678 8908 7654"
-						value={cardNumber}
-						onChange={(e) => setNewCardNumber(e.target.value)}
+						// value={cardNumber}
+						// onChange={(e) => setNewCardNumber(e.target.value)}
 					/>
 
 					<IconDoubleCard className="h-6 w-6 " />
@@ -45,10 +45,10 @@ function AddNewCardForm() {
 						className="input text-xs"
 						placeholder="MM/YY"
 						maxLength={5}
-						value={expiryDate}
-						onChange={(e) =>
-							setNewCardExpiryDate(e.target.value)
-						}
+						// value={expiryDate}
+						// onChange={(e) =>
+						// 	setNewCardExpiryDate(e.target.value)
+						// }
 					/>
 				</fieldset>
 				<fieldset className="fieldset">
@@ -61,10 +61,10 @@ function AddNewCardForm() {
 							className="w-[80%] grow text-xs"
 							placeholder="3 digits"
 							maxLength={3}
-							value={cvc}
-							onChange={(e) =>
-								setNewCardCVV(e.target.value)
-							}
+							// value={cvc}
+							// onChange={(e) =>
+							// 	setNewCardCVV(e.target.value)
+							// }
 						/>
 
 						<IconCardTick className="h-6 w-6 text-dark" />
@@ -80,10 +80,10 @@ function AddNewCardForm() {
 
 					<input
 						type="checkbox"
-						checked={saveForFuture}
-						onChange={() =>
-							setNewCardSaveForFuture(!saveForFuture)
-						}
+						// checked={saveForFuture}
+						// onChange={() =>
+						// 	setNewCardSaveForFuture(!saveForFuture)
+						// }
 						className="toggle toggle-xs checked:toggle-primary"
 					/>
 				</label>

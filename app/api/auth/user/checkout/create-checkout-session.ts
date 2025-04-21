@@ -15,6 +15,24 @@ import CartItemGroupModel from "@/models/cart-item-group";
 import CartItemModel from "@/models/cart-item";
 import { withAuth } from "@/utils/with-user-auth";
 
+interface CartItem {
+	_foodId: string;
+	name: string;
+	price: number;
+	quantity: number;
+	available: boolean;
+}
+
+interface CartGroup {
+	title: string;
+	items: CartItem[];
+}
+
+interface CheckoutData {
+	data: CartGroup[];
+	total: number;
+}
+
 // Validation schema for order data
 const orderDataSchema = z.object({
 	// paymentDetails: z.object({
@@ -69,7 +87,14 @@ async function createCheckoutSession(req: Request) {
 			);
 		}
 
-		const checkoutData = checkoutResponse.data;
+		if (!checkoutResponse.data) {
+			return Response.json(
+				{ message: "No checkout data available" },
+				{ status: 400 }
+			);
+		}
+
+		const checkoutData: CheckoutData = checkoutResponse.data;
 		if (!checkoutData?.data || checkoutData?.data.length === 0) {
 			return Response.json({ message: "Cart is empty" }, { status: 400 });
 		}
@@ -103,7 +128,7 @@ async function createCheckoutSession(req: Request) {
 		}
 
 		// Validate items availability and quantities
-		const itemQuantities = {};
+		const itemQuantities: Record<string, number> = {};
 		for (const group of checkoutData.data) {
 			for (const item of group.items) {
 				if (!item.available) {
@@ -125,6 +150,12 @@ async function createCheckoutSession(req: Request) {
 		console.log(itemQuantities);
 		for (const id of Object.keys(itemQuantities)) {
 			const foodItem = await FoodModel.findById(id);
+			if (!foodItem) {
+				return Response.json(
+					{ message: "Food item not found" },
+					{ status: 404 }
+				);
+			}
 			if (foodItem.number_of_item < itemQuantities[id]) {
 				return Response.json(
 					{

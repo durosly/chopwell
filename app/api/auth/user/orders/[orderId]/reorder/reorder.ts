@@ -33,7 +33,7 @@ async function reorder(request: Request, { params }: { params: Promise<{ orderId
 		}
 
 		// TODO: check if each item is still available
-		const itemQuantities = {};
+		const itemQuantities: Record<string, number> = {};
 		for (const item of order.products) {
 			if (!item._productId.available) {
 				return Response.json(
