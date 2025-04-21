@@ -23,7 +23,7 @@ function CartBtn({ className, children, foodId, activeClassName }: CartBtnProps)
 
 	const { isPending, mutate } = useMutation({
 		mutationFn: ({ foodId }: { foodId: string }) =>
-			inCart ? removeCartItem({ foodId }) : addItemToCart({ foodId }),
+			inCart ? removeCartItem({ cartItemId: foodId }) : addItemToCart({ foodId }),
 		onError: (error) => {
 			const message = handleError(error);
 			toast.error("Cart failed", { description: message });
