@@ -7,6 +7,8 @@ function OtpForm() {
 	const [otp, setOtp] = useState("");
 	const handleChange = (otp: string) => setOtp(otp);
 
+	console.log(otp);
+
 	return (
 		<form className="w-[230px] mx-auto">
 			<fieldset className="fieldset grid-cols-4 justify-center gap-2 mb-2">
