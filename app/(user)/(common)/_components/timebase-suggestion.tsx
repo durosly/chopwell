@@ -1,6 +1,5 @@
 import getFoodItems from "@/actions/get-food-item";
 import IconStar from "@/icons/star";
-import { FoodDocument } from "@/models/food";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,14 +16,18 @@ async function TimebaseSuggestions() {
 	};
 
 	const timeChoice = getTimeChoice();
-	const foodItems: FoodDocument[] = await getFoodItems({
+	const foodItems = await getFoodItems({
 		limit: 6,
 		timeChoice,
 		sortBy: "average_rating",
 		order: "desc",
 	});
 
-	if (!foodItems || !foodItems.length) return null;
+	if (!foodItems) return null;
+
+	// Handle both array and pagination result
+	const items = Array.isArray(foodItems) ? foodItems : foodItems.docs;
+	if (!items || !items.length) return null;
 
 	return (
 		<div className="mb-10">
@@ -38,30 +41,29 @@ async function TimebaseSuggestions() {
 			</div>
 
 			<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 px-5 gap-2">
-				{Array.isArray(foodItems) &&
-					foodItems.map((food: FoodDocument) => (
-						<Link
-							href={`/product/${food._id}`}
-							key={food._id as string}
-							className="block h-[250px] relative rounded-box overflow-hidden group">
-							<div className="badge badge-xs bg-transparent backdrop-blur text-white border-none absolute top-2 left-1 z-10">
-								<IconStar className="w-4 h-4 text-[#FFBB00]" />
-								<span>4.5</span>
-							</div>
-							<Image
-								fill
-								src={food.image}
-								alt={food.name}
-								className="object-cover group-hover:scale-105 transition-transform duration-300"
-								sizes="(min-width: 640px) 250px, calc(100vw - 40px)"
-							/>
-							<div className="flex items-end absolute inset-0 bg-black/40 p-2">
-								<p className="text-xs text-white  group-hover:line-clamp-none line-clamp-2 transition-[line-clamp] duration-300">
-									{food.short_desc}
-								</p>
-							</div>
-						</Link>
-					))}
+				{items.map((food) => (
+					<Link
+						href={`/product/${food._id}`}
+						key={food._id as string}
+						className="block h-[250px] relative rounded-box overflow-hidden group">
+						<div className="badge badge-xs bg-transparent backdrop-blur text-white border-none absolute top-2 left-1 z-10">
+							<IconStar className="w-4 h-4 text-[#FFBB00]" />
+							<span>4.5</span>
+						</div>
+						<Image
+							fill
+							src={food.image}
+							alt={food.name}
+							className="object-cover group-hover:scale-105 transition-transform duration-300"
+							sizes="(min-width: 640px) 250px, calc(100vw - 40px)"
+						/>
+						<div className="flex items-end absolute inset-0 bg-black/40 p-2">
+							<p className="text-xs text-white  group-hover:line-clamp-none line-clamp-2 transition-[line-clamp] duration-300">
+								{food.short_desc}
+							</p>
+						</div>
+					</Link>
+				))}
 			</div>
 		</div>
 	);
