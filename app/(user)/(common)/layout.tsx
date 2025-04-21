@@ -27,7 +27,7 @@ import { auth } from "@/auth";
 import LogoutButton from "@/app/_components/logout-btn";
 import HydrateCartIds from "./_components/hydrate-cart-ids";
 import NotificationCountLoader from "./_components/notification-count-loader";
-
+import PopupCartModal from "./_components/popup-cart-modal";
 async function CommonLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();
 
@@ -191,7 +191,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 							<LoadCart />
 						</HydrateCartIds>
 						{children}
-
+						<PopupCartModal />
 						<BottomNavWrapper />
 						<div className="max-sm:hidden ">
 							<footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
