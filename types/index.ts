@@ -78,3 +78,21 @@ export type Notification = {
 	createdAt: string; // ISO date string
 	updatedAt: string; // ISO date string
 };
+
+export type PopupItems = {
+	[key: string]: {
+		id: string;
+		productId: string;
+		name: string;
+		image: string;
+		price: number;
+		quantity: number;
+		isAvailable: boolean;
+	}[];
+};
+
+export interface PopupCartItemsProps {
+	data: {
+		items: PopupItems;
+	};
+}

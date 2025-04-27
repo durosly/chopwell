@@ -1,5 +1,5 @@
 import { handleError } from "@/lib/handleError";
-import { OrderData } from "@/types";
+import { OrderData, PopupItems } from "@/types";
 import { AddAddressType } from "@/types/add-address";
 import axios from "axios";
 
@@ -125,6 +125,17 @@ export async function getUserSavedCards() {
 }
 export async function getUserWalletBalance() {
 	const response = await axiosInstance("/auth/user/balance");
+	return response.data;
+}
+
+// // Load items from order code
+export async function loadItemsFromOrderCode(orderCode: string) {
+	const response = await axiosInstance(`/orders/${orderCode}/items`);
+	return response.data;
+}
+
+export async function addItemToCartFromOrderCode(data: PopupItems) {
+	const response = await axiosInstance.post(`/cart/add-from-order-code`, data);
 	return response.data;
 }
 
