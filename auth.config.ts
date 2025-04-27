@@ -19,7 +19,10 @@ class InvalidLoginError extends CredentialsSignin {
 
 const nextAuthConfig: NextAuthConfig = {
 	providers: [
-		Google({ clientId: process.env.GOOGLE_CLIENT_ID, clientSecret: process.env.GOOGLE_CLIENT_SECRET }),
+		Google({
+			clientId: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+		}),
 		Credentials({
 			// You can specify which fields should be submitted, by adding keys to the `credentials` object.
 			// e.g. domain, username, password, 2FA token, etc.
@@ -42,9 +45,15 @@ const nextAuthConfig: NextAuthConfig = {
 					throw new InvalidLoginError("Invalid credentials.");
 				}
 
-				if (!user.password) throw new InvalidLoginError("Invalid credentials. You probably used google auth");
+				if (!user.password)
+					throw new InvalidLoginError(
+						"Invalid credentials. You probably used google auth"
+					);
 
-				const valid = await bcrypt.compare(credentials.password as string, user.password);
+				const valid = await bcrypt.compare(
+					credentials.password as string,
+					user.password
+				);
 
 				if (!valid) throw new InvalidLoginError("Invalid credentials.");
 
@@ -150,6 +159,7 @@ const nextAuthConfig: NextAuthConfig = {
 	pages: {
 		signIn: "/login",
 	},
+	trustHost: process.env.NODE_ENV === "production",
 };
 
 export default nextAuthConfig;
