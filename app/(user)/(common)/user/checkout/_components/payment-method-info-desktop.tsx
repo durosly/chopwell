@@ -1,5 +1,3 @@
-"use client";
-
 import PaymentMethodInfo from "./payment-method-info";
 
 function PaymentMethodInfoDesktop() {

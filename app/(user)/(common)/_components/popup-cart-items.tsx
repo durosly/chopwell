@@ -4,33 +4,38 @@ import Image from "next/image";
 import Link from "next/link";
 import commaNumber from "@/utils/comma-number";
 import IconTrash from "@/icons/trash";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { PopupItems } from "@/types";
 import type { PopupCartItemsProps } from "@/types";
 import { addItemToCartFromOrderCode } from "@/api";
-
-// type PopupItems = {
-// 	[key: string]: {
-// 		id: string;
-// 		productId: string;
-// 		name: string;
-// 		image: string;
-// 		price: number;
-// 		quantity: number;
-// 		isAvailable: boolean;
-// 	}[];
-// };
-
-// interface PopupCartItemsProps {
-// 	data: {
-// 		items: PopupItems;
-// 	};
-// }
-
+import { toast } from "sonner";
+import { handleError } from "@/lib/handleError";
 function PopupCartItems({ data }: PopupCartItemsProps) {
+	const queryClient = useQueryClient();
+	const toastRef = useRef<string | number | undefined>(undefined);
 	const { mutate, isPending } = useMutation({
+		onMutate: () => {
+			toastRef.current = toast.loading("Adding items to cart...", {
+				duration: Infinity,
+			});
+		},
+
 		mutationFn: async (data: PopupItems) => addItemToCartFromOrderCode(data),
+		onSuccess: async () => {
+			toast.success("Items added to cart", { id: toastRef.current });
+			await queryClient.invalidateQueries({ queryKey: ["cart"] });
+			if (typeof window !== "undefined") {
+				window.location.reload();
+			}
+		},
+		onError: (error) => {
+			const message = handleError(error);
+			toast.error(message, { id: toastRef.current });
+		},
+		onSettled: () => {
+			setTimeout(() => toast.dismiss(toastRef.current), 5000);
+		},
 	});
 
 	const [items, setItems] = useState<PopupItems>(data.items);

@@ -7,7 +7,7 @@ const nextAuthMiddlewareConfig: NextAuthConfig = {
 	pages: {
 		signIn: "/login",
 	},
-	trustHost: process.env.NODE_ENV === "production",
+	trustHost: true,
 };
 
 export default nextAuthMiddlewareConfig;

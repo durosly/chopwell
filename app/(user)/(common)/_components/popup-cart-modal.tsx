@@ -9,6 +9,7 @@ import PopupCartItemLoader from "./popup-cart-item-loader";
 
 function PopupCartModal() {
 	const containerRef = useRef(null);
+	const [isOpen, setIsOpen] = useState(false);
 	const modalRef = useRef<HTMLDialogElement>(null);
 	const [constraints, setConstraints] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
 
@@ -35,11 +36,15 @@ function PopupCartModal() {
 	}, []);
 
 	function handleOpenModal() {
-		modalRef.current?.showModal();
+		setIsOpen(true);
 	}
 
 	function handleDragEnd() {
-		modalRef.current?.close();
+		setIsOpen(false);
+	}
+
+	function handleCloseModal() {
+		setIsOpen(false);
 	}
 
 	return (
@@ -61,11 +66,16 @@ function PopupCartModal() {
 
 			<dialog
 				ref={modalRef}
-				className="modal modal-bottom sm:modal-middle backdrop-blur-xs">
+				className={cn(
+					"modal modal-bottom sm:modal-middle backdrop-blur-xs",
+					isOpen ? "modal-open" : ""
+				)}>
 				<div className="modal-box">
 					<form method="dialog">
 						{/* if there is a button in form, it will close the modal */}
-						<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+						<button
+							onClick={handleCloseModal}
+							className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
 							✕
 						</button>
 					</form>
