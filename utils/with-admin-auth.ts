@@ -8,7 +8,7 @@ type RouteParams<T = { [key: string]: string }> = {
 	params: Promise<T>;
 };
 
-export function withAuth<
+export function withAdminAuth<
 	TRequest extends Request | NextRequest = Request,
 	TParams extends { [key: string]: string } = { [key: string]: string },
 >(handler: (request: TRequest, context: RouteParams<TParams>) => Promise<Response>) {
@@ -17,6 +17,10 @@ export function withAuth<
 			const session = await auth();
 
 			if (!session?.user?.id) {
+				return Response.json({ message: "Unauthorized" }, { status: 401 });
+			}
+
+			if (session.user.type !== "admin") {
 				return Response.json({ message: "Unauthorized" }, { status: 401 });
 			}
 
