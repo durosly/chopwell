@@ -7,7 +7,8 @@ export default auth((req) => {
 	const isLoggedIn = !!req.auth;
 	const pathname = req.nextUrl.pathname;
 	const isAdmin = req.auth?.user.is_admin;
-	// console.log(req.auth);
+	console.log(req.auth?.user);
+	console.log(isLoggedIn, isAdmin);
 
 	if (!isLoggedIn) {
 		return Response.redirect(new URL(`/login?nextUrl=${pathname}`, req.nextUrl));
