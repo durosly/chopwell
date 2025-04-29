@@ -13,7 +13,7 @@ const categorySchema = new Schema(
 			type: String,
 			default: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAwAB/6Fqk2YAAAAASUVORK5CYII=",
 		},
-		slug: { type: String, required: true, trim: true, unique: true },
+		slug: { type: String, trim: true, unique: true },
 	},
 	{ timestamps: true }
 );

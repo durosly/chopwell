@@ -1,13 +1,10 @@
-import AddCategoryForm from "./_components/add-category-form";
 import CategoryDisplay from "./_components/category";
 
 function CategoryPage() {
 	return (
-		<>
-			<AddCategoryForm />
-
+		<div className="space-y-10">
 			<CategoryDisplay />
-		</>
+		</div>
 	);
 }
 

@@ -8,7 +8,8 @@ import { getCategories } from "@/api";
 import { useState } from "react";
 import { handleError } from "@/lib/handleError";
 import { format } from "date-fns";
-import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
+import { LuArrowLeft, LuArrowRight, LuPlus } from "react-icons/lu";
+import Link from "next/link";
 
 function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDocument> }) {
 	console.log(initialData);
@@ -28,7 +29,16 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 		<div className="card bg-base-100">
 			<div className="card-body">
 				<h2 className="card-title">Categories</h2>
-
+				<div>
+					<Link
+						className="btn btn-primary max-sm:btn-square max-sm:btn-sm"
+						href="/dashboard/categories/new">
+						<LuPlus className="size-5" />
+						<span className="max-sm:hidden">
+							Add new category
+						</span>
+					</Link>
+				</div>
 				<div className="text-right flex font-bold">
 					<div className="w-72 ml-auto pr-5">
 						{isPending ? (

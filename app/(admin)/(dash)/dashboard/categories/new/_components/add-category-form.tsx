@@ -31,8 +31,12 @@ function AddCategoryForm() {
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 
-		if (!categoryName) return toast.error("Error", { description: "Please, enter category name" });
-		if (!categoryCover) return toast.error("Error", { description: "Please, select a category cover image" });
+		if (!categoryName)
+			return toast.error("Error", { description: "Please, enter category name" });
+		if (!categoryCover)
+			return toast.error("Error", {
+				description: "Please, select a category cover image",
+			});
 
 		// Validate file properties
 		const validationResult = fileSchema.safeParse({
@@ -42,22 +46,34 @@ function AddCategoryForm() {
 		});
 
 		if (!validationResult.success) {
-			return toast.error("File upload error", { description: validationResult.error.errors[0].message });
+			return toast.error("File upload error", {
+				description: validationResult.error.errors[0].message,
+			});
 		}
 
-		if (isPending) return toast.error("Error", { description: "An upload is in progress..." });
+		if (isPending)
+			return toast.error("Error", { description: "An upload is in progress..." });
 
 		setIsPending(true);
 		setProgress(0);
 
 		try {
-			toastRef.current = toast.loading("Creating new category...", { duration: Infinity, id: toastRef.current });
+			// get pre-signed link to upload file to s3
+			const { data: presignedUrl } = await axios.get(
+				"/api/admin/categories/presigned-url",
+				{ params: { imgName: categoryCover?.name } }
+			);
+
+			toastRef.current = toast.loading("Creating new category...", {
+				duration: Infinity,
+				id: toastRef.current,
+			});
 
 			const data = new FormData();
 			data.append("categoryCover", categoryCover);
-			data.append("categoryName", categoryName);
+			// data.append("categoryName", categoryName);
 
-			const respnose = await axios.post("/api/admin/categories/new", data, {
+			const uploadResponse = await axios.put(presignedUrl.url, categoryCover, {
 				onUploadProgress: (e) => {
 					if (e.lengthComputable && e.total) {
 						setProgress(Math.round((e.loaded / e.total) * 100));
@@ -65,17 +81,29 @@ function AddCategoryForm() {
 				},
 			});
 
-			if (respnose.status >= 200 && respnose.status <= 299) {
+			if (uploadResponse.status >= 200 && uploadResponse.status <= 299) {
+				const response = await axios.post("/api/admin/categories/new", {
+					name: categoryName,
+					image: presignedUrl.name,
+				});
+
 				queryClient.invalidateQueries({ queryKey: ["categories"] });
-				return toast.success("Success", { description: `New category ${respnose.data.categoryId} has been added`, id: toastRef.current });
+				setCategoryCover(null);
+				setCategoryName("");
+				return toast.success("Success", {
+					description: `New category ${response.data.categoryId} has been added`,
+					id: toastRef.current,
+				});
 			} else {
-				throw new Error(respnose.data.message);
+				throw new Error(uploadResponse.data.message);
 			}
 		} catch (error: unknown) {
+			console.log(error);
 			const message = handleError(error);
-			toast.error("An error occured", { description: message, id: toastRef.current });
-			setCategoryCover(null);
-			setCategoryName("");
+			toast.error("An error occured", {
+				description: message,
+				id: toastRef.current,
+			});
 		} finally {
 			setTimeout(() => toast.dismiss(toastRef.current), 5000);
 			setIsPending(false);
@@ -97,14 +125,14 @@ function AddCategoryForm() {
 						value={categoryName}
 						onChange={(e) => setCategoryName(e.target.value)}
 						placeholder="Category name..."
-						className="input bg-neutral w-full"
+						className="input w-full"
 					/>
 				</div>
 				<div className="form-control mb-3">
 					<input
 						type="file"
 						accept="image/*"
-						className="file-input bg-neutral w-full"
+						className="file-input w-full"
 						onChange={(e) => {
 							const file = e.target.files?.[0];
 							if (file) {
@@ -116,10 +144,15 @@ function AddCategoryForm() {
 
 				{isPending && (
 					<div className="mb-3">
-						<div className="radial-progress" style={progressStyle} role="progressbar">
+						<div
+							className="radial-progress"
+							style={progressStyle}
+							role="progressbar">
 							{progress}%
 						</div>
-						<p className="text-xs text-slate-500 animate-pulse">Uploading image...</p>
+						<p className="text-xs text-slate-500 animate-pulse">
+							Uploading image...
+						</p>
 					</div>
 				)}
 

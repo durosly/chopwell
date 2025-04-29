@@ -21,9 +21,10 @@ async function CategoryDisplay() {
 			}
 		);
 
-		console.log(data);
+		// console.log(data);
+		const objData = JSON.parse(JSON.stringify(data));
 
-		return <CategoryList initialData={data} />;
+		return <CategoryList initialData={objData} />;
 	} catch (error: unknown) {
 		const message = handleError(error);
 		return (
