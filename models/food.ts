@@ -9,8 +9,8 @@ import slugify from "slugify";
 const foodSchema = new mongoose.Schema(
 	{
 		name: String,
-		_categoryIds: [{ type: mongoose.Schema.Types.ObjectId, ref: CategoryModel }],
-		_subCategoryIds: [{ type: mongoose.Schema.Types.ObjectId, ref: SubCategoryModel }],
+		_categoryId: { type: mongoose.Schema.Types.ObjectId, ref: CategoryModel },
+		_subCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: SubCategoryModel },
 		image: { type: String, default: "" },
 		available: { type: Boolean, default: false },
 		price: Number,
@@ -66,8 +66,8 @@ foodSchema.plugin(mongoosePaginate);
 // Define TypeScript interfaces for the schema
 export interface FoodData {
 	name: string;
-	_categoryIds: Types.ObjectId[] | { _id: string; name: string; slug: string }[];
-	_subCategoryIds: Types.ObjectId[] | { _id: string; name: string; slug: string }[];
+	_categoryId: Types.ObjectId | { _id: string; name: string; slug: string };
+	_subCategoryId: Types.ObjectId | { _id: string; name: string; slug: string };
 	image: string;
 	available: boolean;
 	price: number;

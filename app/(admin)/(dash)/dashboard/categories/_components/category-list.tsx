@@ -1,29 +1,29 @@
 "use client";
 import { CategoryDocument } from "@/models/category";
-import { PaginateResult } from "mongoose";
 import Image from "next/image";
 import commaNumber from "comma-number";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getCategories } from "@/api";
+import { getCategories } from "@/api/admin";
 import { useState } from "react";
 import { handleError } from "@/lib/handleError";
 import { format } from "date-fns";
-import { LuArrowLeft, LuArrowRight, LuPlus } from "react-icons/lu";
+import { LuArrowLeft, LuArrowRight, LuEye, LuPlus } from "react-icons/lu";
 import Link from "next/link";
+import DeleteBtn from "./delete-btn";
 
-function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDocument> }) {
-	console.log(initialData);
+function CategoryList() {
 	const [query, setQuery] = useState("");
 	const [page, setPage] = useState(1);
 	const { isPending, isError, error, data, isFetching } = useQuery({
 		queryKey: ["categories", page, query],
 		queryFn: ({ signal }) => getCategories(page, query, signal),
-		initialData,
 		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,
 	});
 
 	const { docs, totalDocs, limit, hasNextPage, hasPrevPage, isPlaceholderData } = data || {};
+
+	type CategoryWithStringId = Omit<CategoryDocument, "_id"> & { _id: string };
 
 	return (
 		<div className="card bg-base-100">
@@ -65,14 +65,18 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 					</div>
 				</form>
 				<div className="overflow-x-auto">
-					<table className="table">
+					<table className="table table-zebra">
 						{/* head */}
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th>Created At/Updated At</th>
-								<th>Created By</th>
-								<th></th>
+								<th className="max-sm:hidden">
+									Created At/Updated At
+								</th>
+								<th className="max-sm:hidden">
+									Created By
+								</th>
+								<th className="max-sm:hidden"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -115,25 +119,30 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 							) : (
 								data?.docs.map(
 									(
-										category: CategoryDocument
+										category: CategoryWithStringId
 									) => (
 										<tr
 											key={
-												category.id
-											}>
+												category._id
+											}
+											className="max-sm:flex max-sm:flex-col">
 											<td>
-												{
-													category.coverImagePlaceholder
-												}
 												<div className="flex items-center gap-3">
 													<div className="avatar">
-														<div className="mask mask-squircle h-12 w-12 relative">
+														<div className="mask mask-squircle size-12 relative">
 															<Image
 																src={
 																	category.cover_image
 																}
-																alt="Avatar Tailwind CSS Component"
+																alt={
+																	category.name
+																}
 																fill
+																sizes="48px"
+																placeholder="blur"
+																blurDataURL={
+																	category.coverImagePlaceholder
+																}
 															/>
 														</div>
 													</div>
@@ -143,7 +152,6 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 																category.name
 															}
 														</div>
-														{/* <div className="text-sm opacity-50">United States</div> */}
 													</div>
 												</div>
 											</td>
@@ -164,7 +172,11 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 													)}
 												</span>
 											</td>
-											<td>
+											<td className="max-sm:text-sm">
+												<span className="sm:hidden mr-1 font-bold">
+													Created
+													By:
+												</span>
 												{typeof category._creatorId ===
 													"object" &&
 												"firstname" in
@@ -174,51 +186,22 @@ function CategoryList({ initialData }: { initialData: PaginateResult<CategoryDoc
 															.firstname
 													: "Admin Control"}
 											</td>
-											<th>
-												<button className="btn btn-xs btn-error">
-													Delete
-												</button>
+											<th className="space-x-2 ">
+												<DeleteBtn
+													categoryId={
+														category._id
+													}
+												/>
+												<Link
+													className="btn btn-xs btn-square"
+													href={`/dashboard/categories/${category._id}`}>
+													<LuEye />
+												</Link>
 											</th>
 										</tr>
 									)
 								)
 							)}
-							{/* row 1 */}
-							<tr>
-								<td>
-									<div className="flex items-center gap-3">
-										<div className="avatar">
-											<div className="mask mask-squircle h-12 w-12 relative">
-												<Image
-													src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-													alt="Avatar Tailwind CSS Component"
-													fill
-												/>
-											</div>
-										</div>
-										<div>
-											<div className="font-bold">
-												Hart
-												Hagerty
-											</div>
-											{/* <div className="text-sm opacity-50">United States</div> */}
-										</div>
-									</div>
-								</td>
-								<td>
-									12th Feburary, 2025
-									<br />
-									<span className="badge badge-ghost badge-sm">
-										12th Feburary, 2025
-									</span>
-								</td>
-								<td>Admin Control</td>
-								<th>
-									<button className="btn btn-xs btn-error">
-										Delete
-									</button>
-								</th>
-							</tr>
 						</tbody>
 					</table>
 				</div>
