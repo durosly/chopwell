@@ -15,14 +15,6 @@ axiosInstance.interceptors.response.use(
 	}
 );
 
-export async function getCategories(page: number, query: string, signal: AbortSignal) {
-	const response = await axiosInstance("/admin/categories", {
-		params: { page, query },
-		signal,
-	});
-	return response.data;
-}
-
 // Favoutite API
 export async function addItemToFavourite({ foodId }: { foodId: string }, signal?: AbortSignal) {
 	const response = await axiosInstance.post("/auth/user/fav", { foodId }, { signal });
