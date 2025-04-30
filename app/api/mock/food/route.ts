@@ -43,8 +43,8 @@ async function createMockFood() {
 		const newFoodItems = Array.from({ length: count }, () => {
 			return {
 				name: faker.commerce.productName(),
-				_categoryIds: [faker.helpers.arrayElement(categoryIds)], // Assign random category ID
-				_subCategoryIds: [faker.helpers.arrayElement(subCategoryIds)], // Assign random sub-category ID
+				_categoryId: faker.helpers.arrayElement(categoryIds), // Assign random category ID
+				_subCategoryId: faker.helpers.arrayElement(subCategoryIds), // Assign random sub-category ID
 				image: faker.helpers.arrayElement(photosData),
 				available: faker.datatype.boolean(),
 				price: faker.number.int({ min: 1000, max: 10000 }),
