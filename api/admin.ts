@@ -26,3 +26,22 @@ export async function deleteCategory(categoryId: string) {
 
 	return response.data;
 }
+
+export async function getSubCategoriesByCategoryId(
+	categoryId: string,
+	page: number,
+	query: string,
+	signal: AbortSignal
+) {
+	const response = await axiosInstance.get(`/categories/${categoryId}/subcategories`, {
+		params: { page, query },
+		signal,
+	});
+	return response.data;
+}
+
+export async function deleteSubCategory(subCategoryId: string) {
+	const response = await axiosInstance.delete(`/subcategories/${subCategoryId}`);
+
+	return response.data;
+}
