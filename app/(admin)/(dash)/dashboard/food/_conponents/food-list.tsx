@@ -82,11 +82,11 @@ function FoodList() {
 									src={food.image}
 									alt={food.name}
 									fill
-									// TODO: Add blur data url
-									// placeholder="blur"
-									// blurDataURL={
-									// 	food.coverImagePlaceholder
-									// }
+									{...(food.coverImagePlaceholder && {
+										placeholder: "blur",
+										blurDataURL:
+											food.coverImagePlaceholder,
+									})}
 									className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
 								/>
 								{!food.available && (
