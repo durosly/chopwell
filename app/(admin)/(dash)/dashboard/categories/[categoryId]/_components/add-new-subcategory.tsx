@@ -61,10 +61,9 @@ function AddNewSubcategory({ categoryId }: { categoryId: string }) {
 
 		try {
 			// get pre-signed link to upload file to s3
-			const { data: presignedUrl } = await axios.get(
-				"/api/admin/categories/presigned-url",
-				{ params: { imgName: categoryCover?.name } }
-			);
+			const { data: presignedUrl } = await axios.get("/api/admin/presigned-url", {
+				params: { imgName: categoryCover?.name },
+			});
 
 			toastRef.current = toast.loading("Creating new subcategory...", {
 				duration: Infinity,
