@@ -1,4 +1,5 @@
 import { handleError } from "@/lib/handleError";
+import { FoodFormData } from "@/schema/admin-create-food-schema";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -71,5 +72,10 @@ export async function getFoods({
 		params: { page, query, category, subCategory },
 		signal,
 	});
+	return response.data;
+}
+
+export async function createFood(data: FoodFormData) {
+	const response = await axiosInstance.post("/foods", data);
 	return response.data;
 }
