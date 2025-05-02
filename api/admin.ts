@@ -45,3 +45,31 @@ export async function deleteSubCategory(subCategoryId: string) {
 
 	return response.data;
 }
+
+export async function getCategorization() {
+	const response = await axiosInstance("/categorization");
+
+	return response.data;
+}
+
+// food
+
+export async function getFoods({
+	page,
+	query,
+	category,
+	subCategory,
+	signal,
+}: {
+	page: number;
+	query?: string;
+	category?: string;
+	subCategory?: string;
+	signal: AbortSignal;
+}) {
+	const response = await axiosInstance("/foods", {
+		params: { page, query, category, subCategory },
+		signal,
+	});
+	return response.data;
+}

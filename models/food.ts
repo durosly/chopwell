@@ -12,6 +12,10 @@ const foodSchema = new mongoose.Schema(
 		_categoryId: { type: mongoose.Schema.Types.ObjectId, ref: CategoryModel },
 		_subCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: SubCategoryModel },
 		image: { type: String, default: "" },
+		coverImagePlaceholder: {
+			type: String,
+			default: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAwAB/6Fqk2YAAAAASUVORK5CYII=",
+		},
 		available: { type: Boolean, default: false },
 		price: Number,
 		short_desc: String,
@@ -69,6 +73,7 @@ export interface FoodData {
 	_categoryId: Types.ObjectId | { _id: string; name: string; slug: string };
 	_subCategoryId: Types.ObjectId | { _id: string; name: string; slug: string };
 	image: string;
+	coverImagePlaceholder: string;
 	available: boolean;
 	price: number;
 	short_desc: string;
