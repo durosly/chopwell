@@ -5,7 +5,7 @@ import BasicInfoForm from "./_components/BasicInfoForm";
 import CategoryTypeForm from "./_components/CategoryTypeForm";
 import AvailabilityForm from "./_components/AvailabilityForm";
 import ImageUploadForm from "./_components/ImageUploadForm";
-
+import DeleteFoodBtn from "./_components/delete-btn";
 async function FoodDetailsPage({ params }: { params: Promise<{ foodId: string }> }) {
 	const { foodId } = await params;
 	await connectMongo();
@@ -64,6 +64,8 @@ async function FoodDetailsPage({ params }: { params: Promise<{ foodId: string }>
 					<ImageUploadForm food={foodData} />
 				</div>
 			</div>
+
+			<DeleteFoodBtn foodId={foodId} />
 		</div>
 	);
 }

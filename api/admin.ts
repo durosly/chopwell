@@ -110,3 +110,8 @@ export async function updateFoodImage(foodId: string, data: { image: string }) {
 	const response = await axiosInstance.put(`/foods/${foodId}/image`, data);
 	return response.data;
 }
+
+export async function deleteFood(foodId: string) {
+	const response = await axiosInstance.delete(`/foods/${foodId}`);
+	return response.data;
+}
