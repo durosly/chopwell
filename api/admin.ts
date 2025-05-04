@@ -1,6 +1,9 @@
 import { handleError } from "@/lib/handleError";
 import { FoodFormData } from "@/schema/admin-create-food-schema";
+import { AdminUpdateFoodBaseInfoSchema } from "@/schema/admin-update-food-base-info-schema";
+import { AdminUpdateFoodAvailabilityType } from "@/schema/admin-update-food-availability-schema";
 import axios from "axios";
+import { AdminUpdateFoodCategoryType } from "@/schema/admin-update-food-category-schema";
 
 const axiosInstance = axios.create({
 	baseURL: "/api/admin",
@@ -77,5 +80,33 @@ export async function getFoods({
 
 export async function createFood(data: FoodFormData) {
 	const response = await axiosInstance.post("/foods", data);
+	return response.data;
+}
+
+export async function updateFood(foodId: string, data: FoodFormData) {
+	const response = await axiosInstance.put(`/foods/${foodId}`, data);
+	return response.data;
+}
+
+export async function updateFoodBaseInfo(foodId: string, data: AdminUpdateFoodBaseInfoSchema) {
+	const response = await axiosInstance.put(`/foods/${foodId}/base-info`, data);
+	return response.data;
+}
+
+export async function updateFoodAvailability(
+	foodId: string,
+	data: AdminUpdateFoodAvailabilityType
+) {
+	const response = await axiosInstance.put(`/foods/${foodId}/availability`, data);
+	return response.data;
+}
+
+export async function updateFoodCategory(foodId: string, data: AdminUpdateFoodCategoryType) {
+	const response = await axiosInstance.put(`/foods/${foodId}/category`, data);
+	return response.data;
+}
+
+export async function updateFoodImage(foodId: string, data: { image: string }) {
+	const response = await axiosInstance.put(`/foods/${foodId}/image`, data);
 	return response.data;
 }

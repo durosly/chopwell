@@ -88,6 +88,7 @@ export interface FoodData {
 		| Types.ObjectId[]
 		| { _id: string; _creatorId: string; title: string; emoji: string }[];
 	slug: string;
+	unit: string;
 }
 
 export interface FoodDocument extends Document, FoodData {

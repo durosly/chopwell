@@ -96,3 +96,5 @@ export interface PopupCartItemsProps {
 		items: PopupItems;
 	};
 }
+
+export type ToastRef = string | number | undefined;

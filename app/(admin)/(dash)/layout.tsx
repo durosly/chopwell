@@ -14,6 +14,7 @@ import {
 	LuNetwork,
 } from "react-icons/lu";
 import BreadCrump from "./dashboard/_components/bread-crump";
+import "easymde/dist/easymde.min.css";
 
 function AdminDashboardLayout({
 	children,
