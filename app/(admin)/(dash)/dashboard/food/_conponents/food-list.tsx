@@ -87,6 +87,7 @@ function FoodList() {
 										blurDataURL:
 											food.coverImagePlaceholder,
 									})}
+									sizes="192px"
 									className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
 								/>
 								{!food.available && (

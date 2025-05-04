@@ -156,6 +156,7 @@ export default function ImageUploadForm({ food }: ImageUploadFormProps) {
 									alt="Preview"
 									className="w-full h-full object-cover rounded-lg"
 									fill
+									sizes="256px"
 								/>
 							</div>
 							<p className="text-xs">
@@ -176,6 +177,7 @@ export default function ImageUploadForm({ food }: ImageUploadFormProps) {
 									blurDataURL={
 										food.coverImagePlaceholder
 									}
+									sizes="256px"
 								/>
 							</div>
 						</div>
