@@ -115,3 +115,16 @@ export async function deleteFood(foodId: string) {
 	const response = await axiosInstance.delete(`/foods/${foodId}`);
 	return response.data;
 }
+
+// orders
+
+export async function getOrders(params: {
+	search: string;
+	status: string;
+	dateFrom: string;
+	dateTo: string;
+	page: number;
+}) {
+	const response = await axiosInstance.get("/orders", { params });
+	return response.data;
+}
