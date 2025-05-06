@@ -1,22 +1,15 @@
 "use client";
-import {
-	LuArrowRight,
-	LuArrowLeft,
-	LuCircleCheck,
-	LuCircleX,
-	LuClock,
-	LuLoader,
-	LuInfo,
-} from "react-icons/lu";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/api/admin";
 import { handleError } from "@/lib/handleError";
-import commaNumber from "@/utils/comma-number";
-import { format } from "date-fns";
 import { OrderDocument } from "@/models/order";
+import commaNumber from "@/utils/comma-number";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { Types } from "mongoose";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { LuArrowLeft, LuArrowRight, LuCircleX, LuInfo } from "react-icons/lu";
+import getStatusIcon from "../../_components/get-status-icon";
 
 function OrderList() {
 	const searchParams = useSearchParams();
@@ -32,23 +25,6 @@ function OrderList() {
 		queryKey: ["orders", search, status, dateFrom, dateTo, page],
 		queryFn: () => getOrders({ search, status, dateFrom, dateTo, page }),
 	});
-
-	const getStatusIcon = (status: string) => {
-		switch (status) {
-			case "pending":
-				return <LuClock className="w-3 h-3" />;
-			case "preparing":
-				return <LuLoader className="w-3 h-3 animate-spin" />;
-			case "delivering":
-				return <LuLoader className="w-3 h-3 animate-spin" />;
-			case "successful":
-				return <LuCircleCheck className="w-3 h-3" />;
-			case "cancelled":
-				return <LuCircleX className="w-3 h-3" />;
-			default:
-				return null;
-		}
-	};
 
 	const updatePage = (newPage: number) => {
 		const params = new URLSearchParams(searchParams.toString());
@@ -120,7 +96,7 @@ function OrderList() {
 								<td className="font-medium">
 									<Link
 										className="link link-primary"
-										href={`/admin/orders/${order._id}`}>
+										href={`/dashboard/orders/${order._id}`}>
 										#{order.code}
 									</Link>
 								</td>

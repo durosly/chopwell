@@ -128,3 +128,8 @@ export async function getOrders(params: {
 	const response = await axiosInstance.get("/orders", { params });
 	return response.data;
 }
+
+export async function updateOrderStatus(orderId: string, status: string) {
+	const response = await axiosInstance.put(`/orders/${orderId}/status`, { status });
+	return response.data;
+}

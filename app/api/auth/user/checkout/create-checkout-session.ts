@@ -43,6 +43,7 @@ interface DeliveryAddress {
 		title: string;
 		deliveryPrice: number;
 	};
+	deliveryPrice: number;
 }
 
 // Validation schema for order data
@@ -134,6 +135,7 @@ async function createCheckoutSession(req: Request) {
 					location: address.location,
 					landmark: address.landmark,
 					_regionId: address._regionId._id,
+					deliveryPrice: Number(deliveryPrice),
 				};
 			}
 		}
@@ -210,6 +212,7 @@ async function createCheckoutSession(req: Request) {
 			totalPrice: checkoutTotal,
 			...(reqData.shipping.method === "delivery" && {
 				delivery_address: deliveryAddress,
+				deliveryPrice: deliveryAddress?.deliveryPrice,
 			}),
 		});
 
