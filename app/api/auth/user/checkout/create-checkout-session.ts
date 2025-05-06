@@ -14,6 +14,7 @@ import CartModel from "@/models/cart";
 import CartItemGroupModel from "@/models/cart-item-group";
 import CartItemModel from "@/models/cart-item";
 import { withAuth } from "@/utils/with-user-auth";
+import { after } from "next/server";
 
 interface CartItem {
 	_foodId: string;
@@ -21,6 +22,7 @@ interface CartItem {
 	price: number;
 	quantity: number;
 	available: boolean;
+	unit: string;
 }
 
 interface CartGroup {
@@ -33,27 +35,34 @@ interface CheckoutData {
 	total: number;
 }
 
+interface DeliveryAddress {
+	location: string;
+	landmark: string;
+	_regionId: {
+		_id: string;
+		title: string;
+		deliveryPrice: number;
+	};
+}
+
 // Validation schema for order data
 const orderDataSchema = z.object({
-	// paymentDetails: z.object({
-	// 	method: z.enum(["card", "wallet", "virtual-account", "pay-for-me"]),
-	// 	card: z.object({
-	// 		options: z.enum(["existing", "new"]),
-	// 		existing: z.string().optional(),
-	// 		new: z
-	// 			.object({
-	// 				cardNumber: z.string(),
-	// 				expiryDate: z.string(),
-	// 				cvc: z.string(),
-	// 				saveForFuture: z.boolean(),
-	// 			})
-	// 			.optional(),
-	// 	}),
-	// }),
-	shipping: z.object({
-		method: z.enum(["delivery", "pickup"]),
-		address: z.any().optional(),
-	}),
+	shipping: z
+		.object({
+			method: z.enum(["delivery", "pickup"]),
+			address: z.string().optional(),
+		})
+		.refine(
+			(data) => {
+				if (data.method === "delivery" && !data.address) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: "Delivery address is required for delivery orders",
+			}
+		),
 });
 
 async function createCheckoutSession(req: Request) {
@@ -112,6 +121,7 @@ async function createCheckoutSession(req: Request) {
 
 		// Get request data
 		const reqData = validationResult.data;
+		let deliveryAddress: DeliveryAddress | undefined;
 
 		if (reqData.shipping.method === "delivery") {
 			const userAddressId = reqData.shipping.address;
@@ -120,6 +130,11 @@ async function createCheckoutSession(req: Request) {
 			if (address) {
 				const deliveryPrice = address._regionId.deliveryPrice;
 				checkoutTotal += Number(deliveryPrice);
+				deliveryAddress = {
+					location: address.location,
+					landmark: address.landmark,
+					_regionId: address._regionId._id,
+				};
 			}
 		}
 
@@ -147,7 +162,7 @@ async function createCheckoutSession(req: Request) {
 		}
 		// Connect to MongoDB
 		await connectMongo();
-		console.log(itemQuantities);
+
 		for (const id of Object.keys(itemQuantities)) {
 			const foodItem = await FoodModel.findById(id);
 			if (!foodItem) {
@@ -189,9 +204,13 @@ async function createCheckoutSession(req: Request) {
 					price: item.price.toString(),
 					quantity: item.quantity,
 					label: group.title,
+					unit: item.unit,
 				}))
 			),
 			totalPrice: checkoutTotal,
+			...(reqData.shipping.method === "delivery" && {
+				delivery_address: deliveryAddress,
+			}),
 		});
 
 		await order.save();
@@ -208,21 +227,30 @@ async function createCheckoutSession(req: Request) {
 
 		const message = "Checkout process complete";
 
-		// Notificaition
-		await NotificationModel.create({
-			_userId: userId,
-			title: "Checkout complete",
-			description: "Your order is been processed",
-			link: `/user/orders/${order.id}`,
-			linkDescription: "view order",
-		});
-		// Transaction
-		await TransactionModel.create({
-			_userId: userId,
-			type: "purchase",
-			amount: checkoutTotal,
-			description: "Purchase items #" + order.code,
-			status: "success",
+		after(() => {
+			console.log("Checkout process completed");
+			async function notification() {
+				// Notificaition
+				await NotificationModel.create({
+					_userId: userId,
+					title: "Checkout complete",
+					description: "Your order is been processed",
+					link: `/user/orders/${order.id}`,
+					linkDescription: "view order",
+				});
+				// Transaction
+				await TransactionModel.create({
+					_userId: userId,
+					type: "purchase",
+					amount: checkoutTotal,
+					description: "Purchase items #" + order.code,
+					status: "success",
+				});
+
+				// TODO: trigger push.js notification to notify admin
+			}
+
+			notification();
 		});
 
 		return Response.json({ message, orderId: order._id });

@@ -14,6 +14,8 @@ import ShowSummaryModal from "./_components/show-summary-modal-btn";
 async function CartPage() {
 	const cart = await getCartDataAction();
 
+	console.log(cart.data);
+
 	if (cart.status === false) {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-14 h-[40vh]">
@@ -62,7 +64,9 @@ async function CartPage() {
 						<ShowSummaryModal />
 					</div>
 
-					<Link className="flex gap-2 items-center" href="/cart">
+					<Link
+						className="flex gap-2 items-center"
+						href="/user/checkout">
 						Checkout{" "}
 						<IconArrowLeft className="w-5 h-5 rotate-180" />
 					</Link>

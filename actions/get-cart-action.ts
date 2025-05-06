@@ -9,6 +9,36 @@ import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 import CartItemGroupModel from "@/models/cart-item-group";
 import CartItemModel from "@/models/cart-item";
 
+interface PromoData {
+	_id: string;
+	title: string;
+	precentageDiscount: number;
+	startDate: Date;
+	endDate: Date;
+}
+
+interface CartGroupData {
+	_id: string;
+	title: string;
+	items: Array<{
+		_id: string;
+		quantity: number;
+		price: number;
+		discountedPrice: number;
+		_foodId: string;
+		name: string;
+		available: boolean;
+		slug: string;
+		image: string;
+		preparation_time: number;
+		promo: PromoData | null;
+		category: string;
+		unit: string;
+	}>;
+	total: number;
+	percentage: number;
+}
+
 async function getCartDataAction() {
 	await connectMongo();
 
@@ -35,7 +65,7 @@ async function getCartDataAction() {
 		subtotal: 0,
 		discount: 0,
 		delivery: 0,
-		data: [],
+		data: [] as CartGroupData[],
 	};
 
 	const cartGroup = await CartItemGroupModel.find({ cartId: cart._id }).sort({
@@ -60,8 +90,11 @@ async function getCartDataAction() {
 		});
 
 		for (const item of cartItems) {
-			const food = await FoodModel.findById(item.foodId).populate("_categoryIds");
-			if (!food) continue;
+			const food = await FoodModel.findById(item.foodId).populate("_categoryId");
+			if (!food) {
+				await CartItemModel.findByIdAndDelete(item.id);
+				continue;
+			}
 
 			const price = food.price;
 			const promo = await PromoModel.findOne({
@@ -86,25 +119,31 @@ async function getCartDataAction() {
 				available: food.available,
 				slug: food.slug,
 				image: food.image,
+				unit: food.unit,
 				preparation_time: food.preparation_time,
 				promo: promo,
-				category: food._categoryIds
-					// @ts-expect-error: not specified types
-					.map((category) => category.name)
-					.join(", "),
+				category:
+					typeof food._categoryId === "object" &&
+					"name" in food._categoryId
+						? food._categoryId.name
+						: "",
 			});
 
 			groupData.total += food.price * item.quantity;
 		}
 
-		// @ts-expect-error: not specified types
 		cartData.data.push(groupData);
 		cartData.subtotal += groupData.total;
 	}
 
+	if (cartData.data.length === 0) {
+		return { message: "Cart is empty", status: false };
+	} else if (cartData.data.length === 1 && cartData.data[0].items.length === 0) {
+		return { message: "Cart is empty", status: false };
+	}
+
 	// calculate percentage of each group
 	cartData.data.forEach((group) => {
-		// @ts-expect-error: not specified types
 		group.percentage = (group.total / cartData.subtotal) * 100;
 	});
 

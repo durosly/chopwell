@@ -2,8 +2,8 @@ import mongoose, { Document, PaginateModel, Types } from "mongoose";
 import { customAlphabet } from "nanoid";
 import UserModel from "./user";
 import FoodModel from "./food";
-import AddressModel from "./address";
 import mongoosePaginate from "mongoose-paginate-v2";
+import RegionModel from "./region";
 
 const orderSchema = new mongoose.Schema(
 	{
@@ -23,13 +23,18 @@ const orderSchema = new mongoose.Schema(
 		products: [
 			{
 				_productId: { type: mongoose.Types.ObjectId, ref: FoodModel },
+				unit: String,
 				price: String,
 				quantity: Number,
 				hasReview: { type: Boolean, default: false },
 				label: String,
 			},
 		],
-		_addressId: { type: mongoose.Types.ObjectId, ref: AddressModel },
+		delivery_address: {
+			location: String,
+			landmark: String,
+			_regionId: { type: mongoose.Types.ObjectId, ref: RegionModel },
+		},
 		totalPrice: Number,
 		deliveryPrice: Number,
 		seen: { type: Boolean, default: false },
@@ -74,17 +79,13 @@ export interface OrderData {
 		quantity: number;
 		hasReview: boolean;
 		label: string;
+		unit: string;
 	};
-	_addressId:
-		| Types.ObjectId
-		| {
-				_id: string;
-				address: string;
-				city: string;
-				state: string;
-				zip: string;
-				country: string;
-		  };
+	delivery_address: {
+		location: string;
+		landmark: string;
+		_regionId: Types.ObjectId | { _id: string; name: string };
+	};
 	totalPrice: number;
 	deliveryPrice: number;
 	seen: boolean;
