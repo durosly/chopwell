@@ -9,6 +9,14 @@ import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import ReOrderBtn from "./_components/re-order-btn";
+import pluralize from "pluralize";
+
+type PopulatedProduct = {
+	_id: string;
+	name: string;
+	price: number;
+	image: string;
+};
 
 async function OrderPage() {
 	const session = await auth();
@@ -20,6 +28,8 @@ async function OrderPage() {
 		.populate("products._productId")
 		.sort("-createdAt")
 		.limit(10);
+
+	console.log(orders);
 
 	const statusClass = {
 		pending: "badge-neutral",
@@ -98,15 +108,19 @@ async function OrderPage() {
 									<div className="relative w-20 h-20 rounded-xl overflow-hidden">
 										<Image
 											src={
-												order
-													.products[0]
-													._productId
+												(
+													order
+														.products[0]
+														._productId as PopulatedProduct
+												)
 													.image
 											}
 											alt={
-												order
-													.products[0]
-													._productId
+												(
+													order
+														.products[0]
+														._productId as PopulatedProduct
+												)
 													.name
 											}
 											fill
@@ -118,9 +132,11 @@ async function OrderPage() {
 									<div className="flex-1">
 										<h3 className="text-lg font-medium">
 											{
-												order
-													.products[0]
-													._productId
+												(
+													order
+														.products[0]
+														._productId as PopulatedProduct
+												)
 													.name
 											}
 										</h3>
@@ -131,12 +147,22 @@ async function OrderPage() {
 														.products[0]
 														.quantity
 												}{" "}
-												items
-												×{" "}
-												{commaNumber(
+												{pluralize(
+													order
+														?.products[0]
+														?.unit ||
+														"piece",
 													order
 														.products[0]
-														.price
+														.quantity
+												)}
+												×{" "}
+												{commaNumber(
+													Number(
+														order
+															.products[0]
+															.price
+													)
 												)}
 											</p>
 										</div>

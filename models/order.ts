@@ -74,13 +74,15 @@ export interface OrderData {
 	status: "pending" | "preparing" | "delivering" | "successful";
 	payment_status: boolean;
 	products: {
-		_productId: Types.ObjectId | { _id: string; name: string; price: number };
+		_productId:
+			| Types.ObjectId
+			| { _id: string; name: string; price: number; image: string };
 		price: string;
 		quantity: number;
 		hasReview: boolean;
 		label: string;
 		unit: string;
-	};
+	}[];
 	delivery_address: {
 		location: string;
 		landmark: string;
