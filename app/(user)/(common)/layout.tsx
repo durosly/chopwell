@@ -11,7 +11,7 @@ import {
 	LuLayoutGrid,
 	LuOctagonAlert,
 	LuShieldAlert,
-	LuShoppingCart,
+	// LuShoppingCart,
 	LuUserCheck,
 	LuX,
 } from "react-icons/lu";
@@ -21,7 +21,7 @@ import IconTruck from "@/icons/truck";
 import IconNotification from "@/icons/notification";
 import IconWallet from "@/icons/wallet";
 import IconCart from "@/icons/cart";
-import CartCount from "./_components/cart-count";
+// import CartCount from "./_components/cart-count";
 import LoadCart from "./_components/load-cart";
 import BottomNavWrapper from "./_components/bottom-nav-wrapper";
 import { auth } from "@/auth";
@@ -91,12 +91,12 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 										</li>
 									</ul>
 								</div>
-								<Link
+								{/* <Link
 									className="relative text-primary-content"
 									href="/cart">
 									<LuShoppingCart className="w-6 h-6" />
 									<CartCount />
-								</Link>
+								</Link> */}
 								{session?.user ? (
 									<div className="dropdown dropdown-end">
 										<div
@@ -148,7 +148,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 											</li>
 											<li>
 												<Link
-													href={`/favourites`}>
+													href={`/user/favourites`}>
 													<IconHeart className="w-6 h-6" />{" "}
 													Favourites
 												</Link>

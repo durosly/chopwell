@@ -2,6 +2,7 @@ import NavLink from "@/app/_components/nav-link";
 import IconCart from "@/icons/cart";
 import IconDiscover from "@/icons/discover";
 import IconHeart from "@/icons/heart";
+import IconTruck from "@/icons/truck";
 import IconUser from "@/icons/user";
 
 function BottomNav() {
@@ -37,6 +38,15 @@ function BottomNav() {
 					<IconHeart className="size-[1.2em]" />
 					<span className="docker-label text-xs capitalize">
 						Favourites
+					</span>
+				</NavLink>
+				<NavLink
+					className=""
+					activeClassName="text-primary dock-active"
+					path={"/user/orders"}>
+					<IconTruck className="size-[1.2em]" />
+					<span className="docker-label text-xs capitalize">
+						Orders
 					</span>
 				</NavLink>
 
