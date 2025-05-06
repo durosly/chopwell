@@ -1,18 +1,25 @@
 import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
 import OrderModel from "@/models/order";
+import { ObjectId } from "mongodb";
 
-type CartItem = {
+type ProductInfo = {
 	_id: string;
-	_productId: {
-		_id: string;
-		name: string;
-		image: string;
-		isAvailable: boolean;
-	};
+	name: string;
 	price: number;
-	label: string;
+	image: string;
+	available: boolean;
+	number_of_item: number;
+};
+
+type OrderProduct = {
+	_id: string;
+	_productId: ObjectId | ProductInfo;
+	price: string;
 	quantity: number;
+	hasReview: boolean;
+	label: string;
+	unit: string;
 };
 
 async function getItemsFromOrderCode(
@@ -29,39 +36,40 @@ async function getItemsFromOrderCode(
 		if (!order) {
 			return Response.json({ message: "Order not found" }, { status: 404 });
 		}
-		const items = order.products;
-		const cartItems = items.map((item: CartItem) => ({
-			id: item._id,
-			productId: item._productId._id,
-			name: item._productId.name,
-			price: item.price,
-			quantity: item.quantity,
-			label: item.label,
-			image: item._productId.image,
-			isAvailable: item._productId.isAvailable,
-		}));
+		const items = order.products as OrderProduct[];
+		const cartItems = items.map((item: OrderProduct) => {
+			const productInfo = item._productId as ProductInfo;
+			return {
+				id: item._id,
+				productId: productInfo._id,
+				name: productInfo.name,
+				price: item.price,
+				quantity: item.quantity,
+				label: item.label,
+				image: productInfo.image,
+				isAvailable: productInfo.available,
+			};
+		});
 
 		// Create a map to track unique labels and their new cart labels
 		const labelMap = new Map<string, string>();
 		let cartCounter = 1;
 
 		// Replace original labels with sequential cart labels
-		const anonymizedCartItems = cartItems.map((item: CartItem) => {
+		const anonymizedCartItems = cartItems.map((item) => {
+			const newLabel = `cart${cartCounter}`;
 			if (!labelMap.has(item.label)) {
-				labelMap.set(item.label, `cart${cartCounter}`);
+				labelMap.set(item.label, newLabel);
 				cartCounter++;
 			}
 			return {
 				...item,
-				label: labelMap.get(item.label),
+				label: labelMap.get(item.label) || newLabel,
 			};
 		});
 
 		// group cart items by label
-		const groupedCartItems = Object.groupBy(
-			anonymizedCartItems,
-			(item: CartItem) => item.label
-		);
+		const groupedCartItems = Object.groupBy(anonymizedCartItems, (item) => item.label);
 
 		console.log(groupedCartItems);
 
