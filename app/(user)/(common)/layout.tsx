@@ -8,6 +8,7 @@ import {
 	LuChevronDown,
 	LuHandshake,
 	LuLayers,
+	LuLayoutGrid,
 	LuOctagonAlert,
 	LuShieldAlert,
 	LuShoppingCart,
@@ -158,6 +159,16 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 													Orders
 												</Link>
 											</li>
+											{session
+												.user
+												.is_admin && (
+												<li>
+													<Link href="/dashboard">
+														<LuLayoutGrid className="w-6 h-6" />
+														Dashboard
+													</Link>
+												</li>
+											)}
 											<li className="mt-2">
 												<LogoutButton className="btn btn-sm btn-error">
 													Logout
