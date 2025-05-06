@@ -41,10 +41,11 @@ type PopulatedOrder = Omit<OrderData, "_userId" | "products" | "delivery_address
 	updatedAt: Date;
 };
 
-async function OrderDetailsPage({ params }: { params: { orderId: string } }) {
+async function OrderDetailsPage({ params }: { params: Promise<{ orderId: string }> }) {
+	const { orderId } = await params;
 	await connectMongo();
 
-	const order = (await OrderModel.findById(params.orderId)
+	const order = (await OrderModel.findById(orderId)
 		.populate("_userId", "firstname lastname email phone")
 		.populate("products._productId", "name image price")
 		.populate("delivery_address._regionId", "title deliveryPrice")
