@@ -14,11 +14,50 @@ import commaNumber from "@/utils/comma-number";
 import pluralize from "pluralize";
 import BackButton from "@/app/_components/back-button";
 import ReOrderBtn from "../_components/re-order-btn";
+import { Document } from "mongoose";
+
+interface OrderProduct {
+	_productId: {
+		id: string;
+		name: string;
+		image: string;
+	};
+	price: string;
+	quantity: number;
+	unit?: string;
+	label: string;
+}
+
+interface Order extends Document {
+	id: string;
+	code: string;
+	status: "pending" | "preparing" | "delivering" | "successful";
+	products: OrderProduct[];
+	totalPrice: number;
+}
 
 async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }) {
 	const { orderId } = await params;
 	await connectMongo();
-	const order = await OrderModel.findById(orderId).populate("products._productId");
+	const order = (await OrderModel.findById(orderId).populate(
+		"products._productId"
+	)) as Order | null;
+
+	if (!order) {
+		return (
+			<div className="max-w-4xl mx-auto px-4 py-6">
+				<div className="text-center">
+					<h2 className="text-2xl font-semibold mb-4">
+						Order Not Found
+					</h2>
+					<p className="text-gray-600">
+						The order you&apos;re looking for doesn&apos;t
+						exist.
+					</p>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="max-w-4xl mx-auto px-4 py-6">
@@ -160,6 +199,8 @@ async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }
 							};
 							price: string;
 							quantity: number;
+							unit?: string;
+							label: string;
 						}) => (
 							<li key={product._productId.id}>
 								<Link
@@ -193,7 +234,8 @@ async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }
 											</h3>
 											<p className="text-sm text-gray-600 whitespace-nowrap">
 												{pluralize(
-													"piece",
+													product?.unit ||
+														"piece",
 													product.quantity,
 													true
 												)}
