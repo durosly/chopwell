@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { PaginateModel } from "mongoose";
 import bcrypt from "bcryptjs";
-
+import mongoosePaginate from "mongoose-paginate-v2";
 const userSchema = new mongoose.Schema(
 	{
 		firstname: String,
@@ -21,6 +21,8 @@ const userSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 );
+
+userSchema.plugin(mongoosePaginate);
 
 // userSchema.plugin(bcrypt())
 userSchema.pre("save", function (next) {
@@ -43,6 +45,28 @@ userSchema.pre("save", function (next) {
 	});
 });
 
-const UserModel = mongoose.models?.User || mongoose.model("User", userSchema);
+export interface UserData {
+	firstname: string;
+	lastname: string;
+	email: string;
+	password: string;
+	phone: string;
+	is_admin: boolean;
+	emailVerifed: Date;
+	phoneVerified: Date;
+	type: "admin" | "customer" | "employee";
+	auth_method: "auth" | "google-auth";
+	disabled: boolean;
+}
+
+export interface UserDocument extends Document, UserData {
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+// Define the model with pagination support
+const UserModel: PaginateModel<UserDocument> =
+	(mongoose.models?.User as PaginateModel<UserDocument>) ||
+	mongoose.model<UserDocument, PaginateModel<UserDocument>>("User", userSchema);
 
 export default UserModel;

@@ -133,3 +133,33 @@ export async function updateOrderStatus(orderId: string, status: string) {
 	const response = await axiosInstance.put(`/orders/${orderId}/status`, { status });
 	return response.data;
 }
+
+export async function getUsers({
+	page,
+	query,
+	signal,
+}: {
+	page: number;
+	query?: string;
+	signal: AbortSignal;
+}) {
+	const response = await axiosInstance("/users", {
+		params: { page, query },
+		signal,
+	});
+	return response.data;
+}
+
+export async function updateUserStatus({
+	userId,
+	disabled,
+}: {
+	userId: string;
+	disabled: boolean;
+}) {
+	const response = await axiosInstance.patch(`/users/${userId}/status`, {
+		disabled,
+	});
+
+	return response.data;
+}

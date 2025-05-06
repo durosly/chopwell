@@ -12,6 +12,7 @@ import {
 	LuLogOut,
 	LuMenu,
 	LuNetwork,
+	LuUsers,
 } from "react-icons/lu";
 import BreadCrump from "./dashboard/_components/bread-crump";
 import "easymde/dist/easymde.min.css";
@@ -159,6 +160,15 @@ function AdminDashboardLayout({
 								activeClassName="font-bold">
 								<LuGrid2X2Check className="h-5 w-5" />
 								Categories
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								path="/dashboard/customers"
+								className="flex gap-2 items-center"
+								activeClassName="font-bold">
+								<LuUsers className="h-5 w-5" />
+								Customers
 							</NavLink>
 						</li>
 						<li>
