@@ -22,7 +22,10 @@ const orderSchema = new mongoose.Schema(
 		payment_status: { type: Boolean, default: false },
 		products: [
 			{
-				_productId: { type: mongoose.Types.ObjectId, ref: FoodModel },
+				_productId: {
+					type: mongoose.Types.ObjectId,
+					ref: FoodModel,
+				},
 				unit: String,
 				price: String,
 				quantity: Number,
@@ -76,7 +79,14 @@ export interface OrderData {
 	products: {
 		_productId:
 			| Types.ObjectId
-			| { _id: string; name: string; price: number; image: string };
+			| {
+					_id: string;
+					name: string;
+					price: number;
+					image: string;
+					available: boolean;
+					number_of_item: number;
+			  };
 		price: string;
 		quantity: number;
 		hasReview: boolean;

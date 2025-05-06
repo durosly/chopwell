@@ -35,7 +35,7 @@ async function reorder(request: Request, { params }: { params: Promise<{ orderId
 		// TODO: check if each item is still available
 		const itemQuantities: Record<string, number> = {};
 		for (const item of order.products) {
-			if (!item._productId.available) {
+			if ("available" in item._productId && !item._productId.available) {
 				return Response.json(
 					{
 						message: `${item._productId.name} is no longer available`,
@@ -44,19 +44,28 @@ async function reorder(request: Request, { params }: { params: Promise<{ orderId
 				);
 			}
 
-			if (itemQuantities[item._productId.id]) {
-				itemQuantities[item._productId.id] += item.quantity;
+			if (itemQuantities[item._productId._id.toString()]) {
+				itemQuantities[item._productId._id.toString()] += item.quantity;
 			} else {
-				itemQuantities[item._productId.id] = item.quantity;
+				itemQuantities[item._productId._id.toString()] = item.quantity;
 			}
 		}
 
 		// TODO: check if each item quantity in current order is still available
 		for (const item of order.products) {
-			if (itemQuantities[item._productId.id] > item._productId.quantity) {
+			if (
+				itemQuantities[item._productId._id.toString()] >
+				("number_of_item" in item._productId
+					? item._productId.number_of_item
+					: 0)
+			) {
 				return Response.json(
 					{
-						message: `${item._productId.name} is no longer available`,
+						message: `${
+							"name" in item._productId
+								? item._productId.name
+								: "Item"
+						} is no longer available`,
 					},
 					{ status: 404 }
 				);
@@ -92,8 +101,12 @@ async function reorder(request: Request, { params }: { params: Promise<{ orderId
 		// TODO: calculate total price
 		let totalPrice = 0;
 		for (const item of order.products) {
-			totalPrice += item._productId.price * item.quantity;
-			item.price = item._productId.price;
+			totalPrice +=
+				("price" in item._productId ? item._productId.price : 0) *
+				item.quantity;
+			item.price = (
+				"price" in item._productId ? item._productId.price : 0
+			).toString();
 		}
 		totalPrice += deliveryPrice;
 
