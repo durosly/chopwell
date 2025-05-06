@@ -50,6 +50,7 @@ async function getOrders(request: NextRequest) {
 		const orders = await OrderModel.paginate(query, {
 			page,
 			limit: 10,
+			sort: { createdAt: -1 },
 			populate: { path: "_userId", select: "firstname lastname" },
 		});
 
