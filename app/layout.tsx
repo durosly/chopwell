@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
 import ToastWrapper from "./_components/toast-wrapper";
 import QueryWrapper from "./_components/query-wrapper";
-import NextTopLoader from "nextjs-toploader";
+import NextTopLoaderWrapper from "./_components/next-top-loader-wrapper";
 // import ReactScan from "./_components/react-scan";
 const inter = Inter({
 	variable: "--font-inter",
@@ -26,7 +26,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.variable} antialiased`}>
-				<NextTopLoader color="var(--color-secondary)" />
+				<NextTopLoaderWrapper />
 				{/* <ReactScan /> */}
 				<QueryWrapper>
 					{children}
