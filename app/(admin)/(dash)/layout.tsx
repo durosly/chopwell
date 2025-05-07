@@ -129,6 +129,7 @@ function AdminDashboardLayout({
 						<li>
 							<NavLink
 								path="/dashboard"
+								exact
 								className="flex gap-2 items-center"
 								activeClassName="font-bold">
 								<LuLayoutGrid className="h-5 w-5" />

@@ -9,15 +9,17 @@ type PropType = {
 	path: string;
 	className?: string | undefined;
 	activeClassName?: string | undefined;
+	exact?: boolean;
 } & PropsWithChildren;
 
-function NavLink({ path, children, className, activeClassName }: PropType) {
+function NavLink({ path, children, className, activeClassName, exact }: PropType) {
 	const pathname = usePathname();
+	const active = exact ? pathname === path : pathname.startsWith(path);
 
 	return (
 		<Link
 			// className={`${className} ${pathname === path ? activeClassName : ""}`}
-			className={cn(className, pathname === path ? activeClassName : "")}
+			className={cn(className, active ? activeClassName : "")}
 			href={path}>
 			{children}
 		</Link>
