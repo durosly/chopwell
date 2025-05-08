@@ -163,3 +163,28 @@ export async function updateUserStatus({
 
 	return response.data;
 }
+
+// analytics
+
+export async function getUsersAnalytics(params: { dateFrom: string; dateTo: string }) {
+	const response = await axiosInstance.get("/analytics/users", { params });
+	return response.data;
+}
+
+export async function getOrdersAnalytics(params: {
+	startDate: string;
+	endDate: string;
+	status?: string;
+}) {
+	const response = await axiosInstance.get("/analytics/orders", { params });
+	return response.data;
+}
+
+export async function getDepositsAnalytics(params: {
+	startDate: string;
+	endDate: string;
+	status?: string;
+}) {
+	const response = await axiosInstance.get("/analytics/deposits", { params });
+	return response.data;
+}

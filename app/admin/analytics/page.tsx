@@ -1,9 +1,9 @@
 import { Suspense } from "react";
-import OrdersAnalytics from "./_components/analytics/OrdersAnalytics";
-import UsersAnalytics from "./_components/analytics/UsersAnalytics";
-import DepositsAnalytics from "./_components/analytics/DepositsAnalytics";
+import OrdersAnalytics from "@/app/_components/analytics/OrdersAnalytics";
+import UsersAnalytics from "@/app/_components/analytics/UsersAnalytics";
+import DepositsAnalytics from "@/app/_components/analytics/DepositsAnalytics";
 
-function AdminDashboard() {
+export default function AnalyticsPage() {
 	return (
 		<div className="container mx-auto p-4 space-y-8">
 			<h1 className="text-3xl font-bold mb-8">Analytics Dashboard</h1>
@@ -37,5 +37,3 @@ function AdminDashboard() {
 		</div>
 	);
 }
-
-export default AdminDashboard;
