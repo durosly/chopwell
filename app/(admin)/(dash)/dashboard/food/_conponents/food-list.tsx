@@ -2,14 +2,14 @@
 import { getFoods } from "@/api/admin";
 import { handleError } from "@/lib/handleError";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { LuArrowLeft, LuArrowRight } from "react-icons/lu";
 import FilterForm from "./filter-form";
 import commaNumber from "@/utils/comma-number";
 import Image from "next/image";
 import { format } from "date-fns";
-import Link from "next/link";
 import { FoodDocument } from "@/models/food";
+import { useRouter } from "nextjs-toploader/app";
 
 type PopulatedFoodDocument = Omit<FoodDocument, "_categoryId" | "_creatorId"> & {
 	_id: string;
@@ -71,86 +71,97 @@ function FoodList() {
 					<span className="text-error">No foods found</span>
 				</div>
 			) : (
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-					{docs?.map((food: PopulatedFoodDocument) => (
-						<Link
-							href={`/dashboard/food/${food._id}`}
-							key={food._id}
-							className="card bg-base-100 group">
-							<figure className="relative h-48">
-								<Image
-									src={food.image}
-									alt={food.name}
-									fill
-									{...(food.coverImagePlaceholder && {
-										placeholder: "blur",
-										blurDataURL:
-											food.coverImagePlaceholder,
-									})}
-									sizes="192px"
-									className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-								/>
-								{!food.available && (
-									<div className="badge badge-error absolute top-2 right-2">
-										Unavailable
-									</div>
-								)}
-							</figure>
-							<div className="card-body p-4">
-								<h3 className="card-title">
-									{food.name}
-								</h3>
-								<div className="flex justify-between items-center mb-2">
-									<span className="text-base-content/70">
-										{food?._categoryId
-											?.name ||
-											"No category"}
-									</span>
-									<span className="font-bold">
-										{commaNumber(
-											food.price
-										)}
-									</span>
-								</div>
-								<div className="flex flex-wrap justify-between items-center text-sm gap-5">
-									<div className="flex items-center gap-1">
-										<span className="text-base-content/70">
-											Rating:
-										</span>
-										<span className="font-semibold">
+				<div className="overflow-x-auto">
+					<table className="table table-zebra">
+						<thead>
+							<tr>
+								<th>Image</th>
+								<th>Name</th>
+								<th>Category</th>
+								<th>Price</th>
+								<th>Rating</th>
+								<th>Created By</th>
+								<th>Created At</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							{docs?.map(
+								(food: PopulatedFoodDocument) => (
+									<tr
+										key={food._id}
+										className="hover:bg-base-200 cursor-pointer"
+										onClick={() =>
+											router.push(
+												`/dashboard/food/${food._id}`
+											)
+										}>
+										<td>
+											<div className="relative w-16 h-16">
+												<Image
+													src={
+														food.image
+													}
+													alt={
+														food.name
+													}
+													fill
+													{...(food.coverImagePlaceholder && {
+														placeholder:
+															"blur",
+														blurDataURL:
+															food.coverImagePlaceholder,
+													})}
+													sizes="64px"
+													className="object-cover rounded-lg"
+												/>
+											</div>
+										</td>
+										<td className="font-medium">
+											{food.name}
+										</td>
+										<td>
+											{food
+												?._categoryId
+												?.name ||
+												"No category"}
+										</td>
+										<td className="font-bold">
+											{commaNumber(
+												food.price
+											)}
+										</td>
+										<td>
 											{
 												food.average_rating
 											}
-										</span>
-									</div>
-									<div className="flex items-center gap-1">
-										<span className="text-base-content/70">
-											Created by:
-										</span>
-										<span className="font-semibold">
+										</td>
+										<td>
 											{food
 												?._creatorId
 												?.firstname ||
 												"Admin Control"}
-										</span>
-									</div>
-									<div className="flex items-center gap-1">
-										<span className="text-base-content/70">
-											Created at:
-										</span>
-										<span className="font-semibold text-primary">
+										</td>
+										<td className="text-primary">
 											{format(
 												new Date(
 													food.createdAt
 												),
 												"PPP"
 											)}
-										</span>
-									</div>
-								</div>
-							</div>
-						</Link>
-					))}
+										</td>
+										<td>
+											{!food.available && (
+												<div className="badge badge-error">
+													Unavailable
+												</div>
+											)}
+										</td>
+									</tr>
+								)
+							)}
+						</tbody>
+					</table>
 				</div>
 			)}
 
