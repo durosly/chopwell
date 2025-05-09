@@ -32,7 +32,7 @@ export default function CategoryTypeForm({ food }: CategoryTypeFormProps) {
 		resolver: zodResolver(adminUpdateFoodCategorySchema),
 		defaultValues: {
 			_categoryId: food._categoryId.toString(),
-			_subCategoryId: food._subCategoryId.toString(),
+			_subCategoryId: food._subCategoryId ? food._subCategoryId.toString() : "",
 			type: food.type,
 			timeChoice: food.timeChoice,
 		},

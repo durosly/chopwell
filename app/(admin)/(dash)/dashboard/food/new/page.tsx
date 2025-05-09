@@ -3,13 +3,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+
 import { toast } from "sonner";
 import { createFood, getCategorization } from "@/api/admin";
 import { useState, useEffect, useRef } from "react";
 import { handleError } from "@/lib/handleError";
 import { foodFormSchema } from "@/schema/admin-create-food-schema";
 import { FoodFormData } from "@/schema/admin-create-food-schema";
+import { useRouter } from "nextjs-toploader/app";
 
 function AddNewFoodPage() {
 	const router = useRouter();
@@ -37,13 +38,13 @@ function AddNewFoodPage() {
 		onMutate: () => {
 			toastRef.current = toast.loading("Creating food item...");
 		},
-		onSuccess: () => {
+		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ["foods"] });
 			toast.success("Food item created successfully", {
 				id: toastRef.current,
 			});
 			reset();
-			router.push("/dashboard/food");
+			router.push(`/dashboard/food/${data.foodId}`);
 		},
 		onError: (error) => {
 			toast.error(handleError(error), {
@@ -102,7 +103,7 @@ function AddNewFoodPage() {
 					<select
 						className={`select select-bordered w-full ${errors._categoryId ? "select-error" : ""}`}
 						{...register("_categoryId")}>
-						<option value="">Select a category</option>
+						<option value="">- Select a category -</option>
 						{categories.map(
 							(category: {
 								_id: string;
@@ -131,7 +132,7 @@ function AddNewFoodPage() {
 					<select
 						className={`select select-bordered w-full ${errors._subCategoryId ? "select-error" : ""}`}
 						{...register("_subCategoryId")}>
-						<option value="">Select a sub-category</option>
+						<option value="">- Select a sub-category -</option>
 						{/* Sub-categories will be populated dynamically */}
 						{subcategories
 							.filter(
@@ -206,6 +207,7 @@ function AddNewFoodPage() {
 					<select
 						className={`select select-bordered w-full ${errors.timeChoice ? "select-error" : ""}`}
 						{...register("timeChoice")}>
+						<option value="">- Select a time choice -</option>
 						<option value="breakfast">Breakfast</option>
 						<option value="lunch">Lunch</option>
 						<option value="dinner">Dinner</option>
@@ -224,6 +226,7 @@ function AddNewFoodPage() {
 					<select
 						className={`select select-bordered w-full ${errors.type ? "select-error" : ""}`}
 						{...register("type")}>
+						<option value="">- Select a type -</option>
 						<option value="food">Food</option>
 						<option value="drink">Drink</option>
 						<option value="combo">Combo</option>

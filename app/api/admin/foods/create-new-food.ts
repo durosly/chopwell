@@ -13,18 +13,16 @@ async function createNewFoodItem(request: Request) {
 		const validatedBody = foodFormSchema.safeParse(body);
 
 		if (!validatedBody.success) {
+			console.log(validatedBody.error.errors);
 			return Response.json(
 				{ message: validatedBody.error.errors[0].message },
 				{ status: 400 }
 			);
 		}
 
-		const { name, _categoryId, _subCategoryId, price, short_desc, timeChoice, type } =
-			validatedBody.data;
-
 		await connectMongo();
 
-		const defaultImage = process.env.NEXT_PUBLIC_URL + "/images/default.png";
+		const defaultImage = process.env.NEXT_PUBLIC_URL + "/images/default.jpg";
 
 		const { base64 } = await getImage(defaultImage);
 
@@ -32,19 +30,16 @@ async function createNewFoodItem(request: Request) {
 		const creator = session?.user.id;
 
 		const food = await FoodModel.create({
-			name: name.toLowerCase(),
-			_categoryId,
-			_subCategoryId,
-			price,
-			short_desc,
-			timeChoice,
-			type,
+			...validatedBody.data,
 			image: defaultImage,
 			coverImagePlaceholder: base64,
 			_creatorId: creator,
 		});
 
-		return Response.json({ food }, { status: 201 });
+		return Response.json(
+			{ message: "Food created successfully", foodId: food._id },
+			{ status: 201 }
+		);
 	} catch (error) {
 		const message = handleError(error);
 		return Response.json({ message }, { status: 500 });

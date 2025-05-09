@@ -10,7 +10,12 @@ const foodSchema = new mongoose.Schema(
 	{
 		name: String,
 		_categoryId: { type: mongoose.Schema.Types.ObjectId, ref: CategoryModel },
-		_subCategoryId: { type: mongoose.Schema.Types.ObjectId, ref: SubCategoryModel },
+		_subCategoryId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: SubCategoryModel,
+			default: null,
+			set: (val: string | null) => (val === "" || val === null ? null : val),
+		},
 		image: { type: String, default: "" },
 		coverImagePlaceholder: {
 			type: String,
@@ -24,10 +29,10 @@ const foodSchema = new mongoose.Schema(
 		_creatorId: { type: mongoose.Schema.Types.ObjectId, ref: UserModel },
 		timeChoice: {
 			type: String,
-			enum: ["breakfast", "lunch", "dinner"],
-			default: "breakfast",
+			enum: ["breakfast", "lunch", "dinner", ""],
+			default: "",
 		},
-		type: { type: String, enum: ["food", "drink", "combo"], default: "food" },
+		type: { type: String, enum: ["food", "drink", "combo", ""], default: "" },
 		average_rating: { type: Number, default: 0 },
 		preparation_time: { type: Number, default: 1 }, // in minutes
 		_tagIds: [{ type: mongoose.Schema.Types.ObjectId, ref: TagsModel }],
