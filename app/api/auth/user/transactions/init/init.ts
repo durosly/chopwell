@@ -26,9 +26,13 @@ async function initializeTransaction(request: Request) {
 
 		const session = await auth();
 		const userId = session?.user.id;
+		await connectMongo();
+
 		const user = await UserModel.findById(userId);
 
-		await connectMongo();
+		if (!user) {
+			return Response.json({ message: "User not found" }, { status: 404 });
+		}
 
 		const newTransaction = await TransactionModel.create({
 			amount,
@@ -41,7 +45,7 @@ async function initializeTransaction(request: Request) {
 			"https://api.paystack.co/transaction/initialize",
 			{
 				amount: amount * 100, // Paystack expects amount in kobo
-				email: user.email,
+				email: user.email || `${user.firstname}@chopwell.com`,
 				reference: newTransaction.id,
 				metadata: {
 					transaction_id: newTransaction.id,
@@ -50,6 +54,11 @@ async function initializeTransaction(request: Request) {
 							display_name: "Customer Name",
 							variable_name: "customer_name",
 							value: session?.user.name,
+						},
+						{
+							display_name: "Phone Number",
+							variable_name: "phone_number",
+							value: user.phone || "Not provided",
 						},
 					],
 				},
