@@ -17,6 +17,7 @@ import {
 } from "react-icons/lu";
 import BreadCrump from "./dashboard/_components/bread-crump";
 import "easymde/dist/easymde.min.css";
+import LogoutButton from "@/app/_components/logout-btn";
 
 function AdminDashboardLayout({
 	children,
@@ -192,10 +193,10 @@ function AdminDashboardLayout({
 							</NavLink>
 						</li>
 						<li>
-							<button className="btn btn-sm btn-error">
+							<LogoutButton className="btn btn-sm btn-error">
 								<LuLogOut className="w-5 h-5" />
 								Logout
-							</button>
+							</LogoutButton>
 						</li>
 					</ul>
 				</div>
