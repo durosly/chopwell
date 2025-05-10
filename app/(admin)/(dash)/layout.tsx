@@ -5,6 +5,7 @@ import React from "react";
 import {
 	LuBell,
 	LuBox,
+	LuChartLine,
 	LuConciergeBell,
 	LuCookingPot,
 	LuGrid2X2Check,
@@ -179,6 +180,15 @@ function AdminDashboardLayout({
 								activeClassName="font-bold">
 								<LuNetwork className="h-5 w-5" />
 								Employees
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								path="/dashboard/transactions"
+								className="flex gap-2 items-center"
+								activeClassName="font-bold">
+								<LuChartLine className="h-5 w-5" />
+								Transactions
 							</NavLink>
 						</li>
 						<li>
