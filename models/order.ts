@@ -46,8 +46,8 @@ const orderSchema = new mongoose.Schema(
 );
 
 // Create a generator with uppercase, lowercase, and numbers
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-const generateCode = customAlphabet(alphabet, 6);
+const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+const generateCode = customAlphabet(alphabet, 5);
 
 // Apply pagination plugin
 orderSchema.plugin(mongoosePaginate);

@@ -30,7 +30,7 @@ async function getItemsFromOrderCode(
 		const { orderCode } = await params;
 
 		await connectMongo();
-		const order = await OrderModel.findOne({ code: orderCode }).populate(
+		const order = await OrderModel.findOne({ code: orderCode.toLowerCase() }).populate(
 			"products._productId"
 		);
 		if (!order) {
