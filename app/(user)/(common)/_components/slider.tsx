@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useRef } from "react";
 import Slider from "react-slick";
 
 const settings = {
@@ -9,50 +10,87 @@ const settings = {
 	speed: 500,
 	slidesToShow: 1,
 	slidesToScroll: 1,
-
-	// className: "w-full h-[calc(100vh_-_200px)] aspect-video rounded-2xl overflow-hidden mb-4",
-	// appendDots: (dots: ReactNode) => (
-	// 	<div className="flex w-[80%] justify-center h-2 bg-[#DDDCDC] mx-auto rounded-full overflow-hidden">
-	// 		{dots}
-	// 	</div>
-	// ),
-
-	// customPaging: () => <a className="bg-dark flex-1">&nbsp;</a>,
+	autoplay: true,
+	autoplaySpeed: 5000,
+	className: "w-full rounded-2xl ",
 };
 
 const dummyImages = [
-	"https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp",
-	"https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp",
-	"https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp",
-	"https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp",
+	"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+	"https://images.unsplash.com/photo-1565958011703-44f9829ba187?q=80&w=1530&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+	"https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+	"https://images.unsplash.com/photo-1512149177596-f817c7ef5d4c?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
 function ImageSlider() {
+	const sliderRef = useRef<Slider>(null);
+	const next = () => {
+		sliderRef.current?.slickNext();
+	};
+	const previous = () => {
+		sliderRef.current?.slickPrev();
+	};
+
 	return (
-		<>
-			<div className="mb-10 flex-1">
-				<Slider
-					{...settings}
-					// className="w-full h-[calc(100vh_-_200px)] aspect-video rounded-2xl overflow-hidden mb-4"
-				>
-					{dummyImages.map((img, i) => (
-						<div key={i} className="px-4">
-							<div className="relative w-full h-full max-h-[400px] aspect-video rounded-2xl overflow-hidden">
-								<Image
-									src={img}
-									// width={300}
-									// height={220}
-									className="object-cover"
-									fill
-									alt=""
-									sizes="(min-width: 1480px) 1485px, calc(106.47vw - 68px)"
-								/>
+		<div className="w-full">
+			<div className="relative w-full">
+				<button
+					onClick={previous}
+					className="absolute left-4 top-1/2 z-10 -translate-y-1/2 size-10 flex justify-center items-center cursor-pointer rounded-full bg-base-100/50 hover:bg-base-100/80 transition-colors duration-300"
+					aria-label="Previous slide">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						strokeWidth={2}
+						stroke="currentColor"
+						className="w-6 h-6">
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M15.75 19.5L8.25 12l7.5-7.5"
+						/>
+					</svg>
+				</button>
+				<button
+					onClick={next}
+					className="absolute right-4 top-1/2 z-10 -translate-y-1/2 size-10 flex justify-center items-center cursor-pointer rounded-full bg-base-100/50 hover:bg-base-100/80 transition-colors duration-300"
+					aria-label="Next slide">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						strokeWidth={2}
+						stroke="currentColor"
+						className="w-6 h-6">
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M8.25 4.5l7.5 7.5-7.5 7.5"
+						/>
+					</svg>
+				</button>
+				<div className="relative">
+					<Slider ref={sliderRef} {...settings}>
+						{dummyImages.map((img, i) => (
+							<div key={i} className="px-2 sm:px-4">
+								<div className="relative w-full h-[350px] rounded-2xl overflow-hidden">
+									<Image
+										src={img}
+										className="object-cover transition-transform duration-500 hover:scale-105"
+										fill
+										alt="Featured promotion"
+										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+										priority={i === 0}
+									/>
+									<div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+								</div>
 							</div>
-						</div>
-					))}
-				</Slider>
+						))}
+					</Slider>
+				</div>
 			</div>
-		</>
+		</div>
 	);
 }
 
