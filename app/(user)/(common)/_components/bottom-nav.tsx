@@ -11,10 +11,7 @@ function BottomNav() {
 			<div className="mt-20 sm:hidden">&nbsp;</div>
 
 			<div className="dock sm:hidden">
-				<NavLink
-					className=""
-					activeClassName="text-primary dock-active"
-					path="/">
+				<NavLink exact activeClassName="text-primary dock-active" path="/">
 					<IconDiscover className="size-[1.2em]" />
 					<span className="docker-label text-xs capitalize">
 						discover
@@ -22,7 +19,6 @@ function BottomNav() {
 				</NavLink>
 
 				<NavLink
-					className=""
 					activeClassName="text-primary dock-active"
 					path={"/browse"}>
 					<IconCart className="size-[1.2em]" />
@@ -32,7 +28,6 @@ function BottomNav() {
 				</NavLink>
 
 				<NavLink
-					className=""
 					activeClassName="text-primary dock-active"
 					path={"/user/favourites"}>
 					<IconHeart className="size-[1.2em]" />
@@ -41,7 +36,6 @@ function BottomNav() {
 					</span>
 				</NavLink>
 				<NavLink
-					className=""
 					activeClassName="text-primary dock-active"
 					path={"/user/orders"}>
 					<IconTruck className="size-[1.2em]" />
@@ -50,10 +44,7 @@ function BottomNav() {
 					</span>
 				</NavLink>
 
-				<NavLink
-					className=""
-					activeClassName="text-primary dock-active"
-					path="/user">
+				<NavLink activeClassName="text-primary dock-active" path="/user">
 					<IconUser className="size-[1.2em]" />
 					<span className="docker-label text-xs capitalize">Me</span>
 				</NavLink>
