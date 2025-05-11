@@ -1,45 +1,12 @@
 import connectMongo from "@/lib/connectMongo";
-import OrderModel, { OrderData } from "@/models/order";
+import OrderModel from "@/models/order";
 import { notFound } from "next/navigation";
 import OrderStatusManager from "./_components/order-status-manager";
 import Image from "next/image";
 import commaNumber from "@/utils/comma-number";
 import getStatusIcon from "../../_components/get-status-icon";
-
-type PopulatedOrder = Omit<OrderData, "_userId" | "products" | "delivery_address"> & {
-	_id: string;
-	_userId: {
-		_id: string;
-		firstname: string;
-		lastname: string;
-		email: string;
-		phone: string;
-	};
-	products: Array<{
-		_productId: {
-			_id: string;
-			name: string;
-			image: string;
-			price: number;
-		};
-		price: string;
-		quantity: number;
-		hasReview: boolean;
-		label: string;
-		unit: string;
-	}>;
-	delivery_address: {
-		location: string;
-		landmark: string;
-		_regionId: {
-			_id: string;
-			title: string;
-			deliveryPrice: number;
-		};
-	};
-	createdAt: Date;
-	updatedAt: Date;
-};
+import ReceiptActions from "./_components/ReceiptActions";
+import { PopulatedOrder } from "./types";
 
 async function OrderDetailsPage({ params }: { params: Promise<{ orderId: string }> }) {
 	const { orderId } = await params;
@@ -59,6 +26,7 @@ async function OrderDetailsPage({ params }: { params: Promise<{ orderId: string 
 		<div className="mb-5 space-y-6">
 			<div className="flex justify-between items-center">
 				<h1 className="card-title text-2xl">Order #{order.code}</h1>
+				<ReceiptActions order={JSON.parse(JSON.stringify(order))} />
 			</div>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
