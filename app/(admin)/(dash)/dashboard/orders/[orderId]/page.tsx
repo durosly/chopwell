@@ -147,32 +147,23 @@ async function OrderDetailsPage({ params }: { params: Promise<{ orderId: string 
 									<span className="font-medium">
 										Location:
 									</span>{" "}
-									{
-										order
-											.delivery_address
-											.location
-									}
+									{order.delivery_address
+										?.location || "N/A"}
 								</p>
 								<p>
 									<span className="font-medium">
 										Landmark:
 									</span>{" "}
-									{
-										order
-											.delivery_address
-											.landmark
-									}
+									{order.delivery_address
+										?.landmark || "N/A"}
 								</p>
 								<p>
 									<span className="font-medium">
 										Region:
 									</span>{" "}
-									{
-										order
-											.delivery_address
-											._regionId
-											.title
-									}
+									{order.delivery_address
+										?._regionId
+										?.title || "N/A"}
 								</p>
 								<p>
 									<span className="font-medium">
