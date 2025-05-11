@@ -50,6 +50,7 @@ function UserLoginForm() {
 			} else {
 				router.push("/");
 			}
+			router.refresh();
 		},
 		onSettled: () => {
 			setTimeout(() => toast.dismiss(toastRef.current), 5000);

@@ -8,6 +8,7 @@ import UserModel from "./models/user";
 import { UserType } from "./types";
 import connectMongo from "./lib/connectMongo";
 import handleCartMerge from "./actions/handle-cart-merge";
+import { revalidatePath } from "next/cache";
 
 class InvalidLoginError extends CredentialsSignin {
 	// code = "Invalid identifier or password"
@@ -91,6 +92,8 @@ const nextAuthConfig: NextAuthConfig = {
 
 			// TODO: user background job to speedup application
 			await handleCartMerge(user.email as string);
+
+			revalidatePath("/");
 
 			return true;
 		},
