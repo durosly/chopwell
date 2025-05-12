@@ -11,6 +11,7 @@ import {
 	LuGrid2X2Check,
 	LuLayoutGrid,
 	LuLogOut,
+	LuMap,
 	LuMenu,
 	LuNetwork,
 	LuUsers,
@@ -190,6 +191,15 @@ function AdminDashboardLayout({
 								activeClassName="font-bold">
 								<LuChartLine className="h-5 w-5" />
 								Transactions
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								path="/dashboard/region"
+								className="flex gap-2 items-center"
+								activeClassName="font-bold">
+								<LuMap className="h-5 w-5" />
+								Region
 							</NavLink>
 						</li>
 						<li>

@@ -4,6 +4,7 @@ import { AdminUpdateFoodBaseInfoSchema } from "@/schema/admin-update-food-base-i
 import { AdminUpdateFoodAvailabilityType } from "@/schema/admin-update-food-availability-schema";
 import axios from "axios";
 import { AdminUpdateFoodCategoryType } from "@/schema/admin-update-food-category-schema";
+import { Region } from "@/types";
 
 const axiosInstance = axios.create({
 	baseURL: "/api/admin",
@@ -186,5 +187,32 @@ export async function getDepositsAnalytics(params: {
 	status?: string;
 }) {
 	const response = await axiosInstance.get("/analytics/deposits", { params });
+	return response.data;
+}
+
+// Address and regions
+
+export async function getRegions() {
+	const response = await axiosInstance.get("/regions");
+	return response.data;
+}
+
+export async function createRegion(data: Omit<Region, "_id">) {
+	const response = await axiosInstance.post("/regions", data);
+	return response.data;
+}
+
+export async function updateRegion(regionId: string, data: Omit<Region, "_id">) {
+	const response = await axiosInstance.put(`/regions/${regionId}`, data);
+	return response.data;
+}
+
+export async function deleteRegion(regionId: string) {
+	const response = await axiosInstance.delete(`/regions/${regionId}`);
+	return response.data;
+}
+
+export async function getRegionAnalytics() {
+	const response = await axiosInstance.get("/regions/analytics");
 	return response.data;
 }

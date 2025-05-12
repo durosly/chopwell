@@ -98,3 +98,16 @@ export interface PopupCartItemsProps {
 }
 
 export type ToastRef = string | number | undefined;
+
+// Region and region analytics
+export interface Region {
+	_id: string;
+	title: string;
+	deliveryPrice: number;
+}
+
+export interface RegionAnalytics {
+	_id: string;
+	title: string;
+	count: number;
+}
