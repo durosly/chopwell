@@ -1,9 +1,10 @@
 import NavLink from "@/app/_components/nav-link";
-import IconCart from "@/icons/cart";
+// import IconCart from "@/icons/cart";
 import IconDiscover from "@/icons/discover";
 import IconHeart from "@/icons/heart";
 import IconTruck from "@/icons/truck";
 import IconUser from "@/icons/user";
+import { LuLayoutList } from "react-icons/lu";
 
 function BottomNav() {
 	return (
@@ -13,19 +14,28 @@ function BottomNav() {
 			<div className="dock sm:hidden">
 				<NavLink exact activeClassName="text-primary dock-active" path="/">
 					<IconDiscover className="size-[1.2em]" />
-					<span className="docker-label text-xs capitalize">
+					<span className="docker-label text-xs capitalize text-transparent">
 						discover
 					</span>
 				</NavLink>
-
 				<NavLink
+					exact
+					activeClassName="text-primary dock-active"
+					path="/categories">
+					<LuLayoutList className="size-[1.2em]" />
+					<span className="docker-label text-xs capitalize">
+						AZ Menu
+					</span>
+				</NavLink>
+
+				{/* <NavLink
 					activeClassName="text-primary dock-active"
 					path={"/browse"}>
 					<IconCart className="size-[1.2em]" />
 					<span className="docker-label text-xs capitalize">
 						Browse
 					</span>
-				</NavLink>
+				</NavLink> */}
 
 				<NavLink
 					activeClassName="text-primary dock-active"
