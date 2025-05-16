@@ -22,9 +22,10 @@ async function AccountFormType({ params }: { params: Promise<{ type: string }> }
 		_id: address.id,
 		landmark: address.landmark,
 		location: address.location,
-		region: address._regionId.id, // Store only the region ID
+		region: address._regionId.id, // Store only the region ID here
 		deliveryPrice: address._regionId.deliveryPrice,
 		title: address._regionId.title,
+		default: address.default,
 	};
 
 	return (
