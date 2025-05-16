@@ -15,7 +15,7 @@ async function getCheckoutDataAction() {
 
 		// reshape cart data to match checkout data requirement
 
-		console.log(cartData);
+		// console.log(cartData);
 
 		return { status: true, data: cartData };
 	} catch (error) {

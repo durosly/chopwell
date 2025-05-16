@@ -1,10 +1,14 @@
 import {
 	addItemToCart,
+	addItemToCartFromOrderCode,
 	addNewCartGroup,
+	bookOrder,
 	clearCart,
 	copyCartItem,
+	createCheckoutSession,
 	deleteCartGroup,
 	getCart,
+	loadItemsFromOrderCode,
 	moveCartItem,
 	removeCartItem,
 	updateCartGroupTitle,
@@ -12,6 +16,7 @@ import {
 } from "@/api";
 import { handleError } from "@/lib/handleError";
 import { getQueryClient } from "@/lib/query-client";
+import type { PopupItems } from "@/types";
 import { ToastRef } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -36,7 +41,8 @@ export const useGetUserCart = () => {
 
 type ClearCartProps = { onSuccess?: () => void; onError?: (error: Error) => void };
 
-export const useClearCart = ({ onSuccess, onError }: ClearCartProps) => {
+export const useClearCart = (params?: ClearCartProps) => {
+	const { onSuccess, onError } = params || {};
 	return useMutation({
 		onMutate: () => {
 			toastRef = toast.loading("Clearing cart...", { duration: Infinity });
@@ -332,3 +338,122 @@ export function useCartItemQuatityUpdate({
 		},
 	});
 }
+
+export const useLoadCartFromOrderCode = (params?: {
+	onSuccess?: () => void;
+	onError?: (error: Error) => void;
+}) => {
+	const { onSuccess, onError } = params || {};
+	return useMutation({
+		onMutate: () => {
+			toastRef = toast.loading("Loading items...", {
+				duration: Infinity,
+			});
+		},
+		mutationFn: async (orderCode: string) => loadItemsFromOrderCode(orderCode),
+		onSuccess: () => {
+			toast.success("Items loaded successfully", { id: toastRef });
+			if (onSuccess) onSuccess();
+		},
+		onError: (error) => {
+			const message = handleError(error);
+			toast.error("Failed to load items", { description: message, id: toastRef });
+			if (onError) onError(error);
+		},
+		onSettled: () => {
+			setTimeout(() => toast.dismiss(toastRef), 5000);
+		},
+	});
+};
+
+export const useAddItemToCartFromOrderCode = () => {
+	return useMutation({
+		onMutate: () => {
+			toastRef = toast.loading("Adding items to cart...", {
+				duration: Infinity,
+			});
+		},
+
+		mutationFn: async (data: PopupItems) => addItemToCartFromOrderCode(data),
+		onSuccess: async () => {
+			toast.success("Items added to cart", { id: toastRef });
+			updateQueries(["cart", "cart-full-data"]);
+		},
+		onError: (error) => {
+			const message = handleError(error);
+			toast.error(message, { id: toastRef });
+		},
+		onSettled: () => {
+			setTimeout(() => toast.dismiss(toastRef), 5000);
+		},
+	});
+};
+
+export const usePayOrder = (params?: {
+	onSuccess?: (newOrderCode?: string) => void;
+	onError?: (error: Error) => void;
+}) => {
+	const { onSuccess, onError } = params || {};
+	return useMutation({
+		mutationFn: async () => createCheckoutSession(),
+		onMutate: () => {
+			toastRef = toast.loading("Processing checkout...", { duration: Infinity });
+		},
+		onError: (error) => {
+			const message = handleError(error);
+			toast.error("Failed to process checkout", {
+				description: message,
+				id: toastRef,
+			});
+			if (onError) onError(error);
+		},
+		onSuccess: (response) => {
+			toast.success("Checkout successful", {
+				description: response.message,
+				id: toastRef,
+			});
+			updateQueries(["cart", "cart-full-data"]);
+			if (onSuccess) onSuccess(response.orderCode);
+		},
+		onSettled: () => {
+			setTimeout(() => {
+				toast.dismiss(toastRef);
+			}, 5000);
+		},
+	});
+};
+
+export const useBookOrder = (params?: {
+	onSuccess?: (newOrderCode?: string) => void;
+	onError?: (error: Error) => void;
+}) => {
+	const { onSuccess, onError } = params || {};
+
+	return useMutation({
+		mutationFn: async () => bookOrder(),
+		onMutate: () => {
+			toastRef = toast.loading("Booking order...", { duration: Infinity });
+		},
+		onError: (error) => {
+			const message = handleError(error);
+			toast.error("Failed to book order", {
+				description: message,
+				id: toastRef,
+			});
+			if (onError) onError(error);
+		},
+		onSuccess: (response) => {
+			toast.success("Order booked successfully", {
+				description: response.message,
+				id: toastRef,
+			});
+			updateQueries(["cart", "cart-full-data"]);
+			if (onSuccess) onSuccess(response.orderCode);
+		},
+		onSettled: () => {
+			setTimeout(() => {
+				toast.dismiss(toastRef);
+			}, 5000);
+		},
+	});
+};

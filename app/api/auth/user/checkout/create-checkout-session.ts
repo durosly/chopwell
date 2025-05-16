@@ -3,7 +3,6 @@ import { handleError } from "@/lib/handleError";
 import { auth } from "@/auth";
 import connectMongo from "@/lib/connectMongo";
 import OrderModel from "@/models/order";
-import { z } from "zod";
 import UserModel from "@/models/user";
 import WalletModel from "@/models/wallet";
 import FoodModel from "@/models/food";
@@ -35,40 +34,40 @@ interface CheckoutData {
 	total: number;
 }
 
-interface DeliveryAddress {
-	location: string;
-	landmark: string;
-	_regionId: {
-		_id: string;
-		title: string;
-		deliveryPrice: number;
-	};
-	deliveryPrice: number;
-}
+// interface DeliveryAddress {
+// 	location: string;
+// 	landmark: string;
+// 	_regionId: {
+// 		_id: string;
+// 		title: string;
+// 		deliveryPrice: number;
+// 	};
+// 	deliveryPrice: number;
+// }
 
 // Validation schema for order data
-const orderDataSchema = z.object({
-	shipping: z
-		.object({
-			method: z.enum(["delivery", "pickup"]),
-			address: z.string().optional(),
-		})
-		.refine(
-			(data) => {
-				if (data.method === "delivery" && !data.address) {
-					return false;
-				}
-				return true;
-			},
-			{
-				message: "Delivery address is required for delivery orders",
-			}
-		),
-});
+// const orderDataSchema = z.object({
+// 	shipping: z
+// 		.object({
+// 			method: z.enum(["delivery", "pickup"]),
+// 			address: z.string().optional(),
+// 		})
+// 		.refine(
+// 			(data) => {
+// 				if (data.method === "delivery" && !data.address) {
+// 					return false;
+// 				}
+// 				return true;
+// 			},
+// 			{
+// 				message: "Delivery address is required for delivery orders",
+// 			}
+// 		),
+// });
 
-async function createCheckoutSession(req: Request) {
+async function createCheckoutSession() {
 	try {
-		const data = await req.json();
+		// const data = await req.json();
 		const session = await auth();
 		const userId = session?.user.id;
 
@@ -77,16 +76,16 @@ async function createCheckoutSession(req: Request) {
 		}
 
 		// Validate order data
-		const validationResult = orderDataSchema.safeParse(data);
-		if (!validationResult.success) {
-			return Response.json(
-				{
-					message: "Invalid order data",
-					errors: validationResult.error.errors,
-				},
-				{ status: 400 }
-			);
-		}
+		// const validationResult = orderDataSchema.safeParse(data);
+		// if (!validationResult.success) {
+		// 	return Response.json(
+		// 		{
+		// 			message: "Invalid order data",
+		// 			errors: validationResult.error.errors,
+		// 		},
+		// 		{ status: 400 }
+		// 	);
+		// }
 
 		// Get cart data
 		const checkoutResponse = await getCheckoutDataAction();
@@ -121,24 +120,38 @@ async function createCheckoutSession(req: Request) {
 		let checkoutTotal = checkoutData.total;
 
 		// Get request data
-		const reqData = validationResult.data;
-		let deliveryAddress: DeliveryAddress | undefined;
+		// const reqData = validationResult.data;
+		const address = await AddressModel.findOne({
+			_userId: user.id,
+			default: true,
+		}).populate("_regionId");
 
-		if (reqData.shipping.method === "delivery") {
-			const userAddressId = reqData.shipping.address;
-			const address =
-				await AddressModel.findById(userAddressId).populate("_regionId");
-			if (address) {
-				const deliveryPrice = address._regionId.deliveryPrice;
-				checkoutTotal += Number(deliveryPrice);
-				deliveryAddress = {
-					location: address.location,
-					landmark: address.landmark,
-					_regionId: address._regionId._id,
-					deliveryPrice: Number(deliveryPrice),
-				};
-			}
+		if (!address) {
+			return Response.json(
+				{ message: "No default address found" },
+				{ status: 400 }
+			);
 		}
+
+		if (!address._regionId) {
+			return Response.json(
+				{
+					message: "Region for current default address is no longer available",
+				},
+				{ status: 400 }
+			);
+		}
+
+		// let deliveryAddress: DeliveryAddress | undefined;
+
+		const deliveryPrice = address._regionId.deliveryPrice;
+		checkoutTotal += Number(deliveryPrice);
+		const deliveryAddress = {
+			location: address.location,
+			landmark: address.landmark,
+			_regionId: address._regionId._id,
+			deliveryPrice: Number(deliveryPrice),
+		};
 
 		if (!wallet || checkoutTotal > wallet.balance) {
 			return Response.json({ message: "Balance is too low" }, { status: 400 });
@@ -196,7 +209,8 @@ async function createCheckoutSession(req: Request) {
 		// Create order
 		const order = new OrderModel({
 			_userId: userId,
-			method_of_delivery: reqData.shipping.method,
+			method_of_delivery: "delivery",
+			type: "purchase",
 			method_of_payment: "balance",
 			status: "pending",
 			payment_status: true,
@@ -210,10 +224,8 @@ async function createCheckoutSession(req: Request) {
 				}))
 			),
 			totalPrice: checkoutTotal,
-			...(reqData.shipping.method === "delivery" && {
-				delivery_address: deliveryAddress,
-				deliveryPrice: deliveryAddress?.deliveryPrice,
-			}),
+			delivery_address: deliveryAddress,
+			deliveryPrice: deliveryAddress?.deliveryPrice,
 		});
 
 		await order.save();
@@ -256,7 +268,11 @@ async function createCheckoutSession(req: Request) {
 			notification();
 		});
 
-		return Response.json({ message, orderId: order._id });
+		return Response.json({
+			message,
+			orderId: order._id,
+			orderCode: order.code.toUpperCase(),
+		});
 	} catch (error) {
 		const message = handleError(error);
 		return Response.json({ message }, { status: 500 });

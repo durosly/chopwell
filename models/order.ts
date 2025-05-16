@@ -7,8 +7,9 @@ import RegionModel from "./region";
 
 const orderSchema = new mongoose.Schema(
 	{
-		_userId: { type: mongoose.Types.ObjectId, ref: UserModel },
+		_userId: { type: mongoose.Types.ObjectId, ref: UserModel, default: null },
 		code: { type: String, unique: true },
+		type: { type: String, enum: ["purchase", "generated"], default: "purchase" },
 		method_of_delivery: {
 			type: String,
 			enum: ["delivery", "pickup"],

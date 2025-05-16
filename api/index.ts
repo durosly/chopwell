@@ -1,5 +1,5 @@
 import { handleError } from "@/lib/handleError";
-import { OrderData, PopupItems } from "@/types";
+import { PopupItems } from "@/types";
 import { AddAddressType } from "@/types/add-address";
 import axios from "axios";
 
@@ -130,6 +130,10 @@ export async function addItemToCartFromOrderCode(data: PopupItems) {
 	const response = await axiosInstance.post(`/cart/add-from-order-code`, data);
 	return response.data;
 }
+export async function bookOrder() {
+	const response = await axiosInstance.post(`/orders/book`);
+	return response.data;
+}
 
 // Regions and address
 export async function getUserAddress() {
@@ -166,8 +170,8 @@ export async function getCheckoutData() {
 	return response.data;
 }
 
-export async function createCheckoutSession(data: OrderData) {
-	const response = await axiosInstance.post("/auth/user/checkout", data);
+export async function createCheckoutSession() {
+	const response = await axiosInstance.post("/auth/user/checkout");
 	return response.data;
 }
 
