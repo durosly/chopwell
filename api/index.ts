@@ -155,6 +155,11 @@ export async function deleteUserAddress(id: string) {
 	return response.data;
 }
 
+export async function makeAddressDefault(addressId: string) {
+	const response = await axiosInstance.put(`/auth/user/address/${addressId}/default`);
+	return response.data;
+}
+
 // Checkout API
 export async function getCheckoutData() {
 	const response = await axiosInstance("/checkout");

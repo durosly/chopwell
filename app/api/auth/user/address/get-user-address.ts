@@ -25,9 +25,16 @@ async function getUserAddress() {
 			region: address._regionId._id, // Store only the region ID
 			deliveryPrice: address._regionId.deliveryPrice,
 			title: address._regionId.title,
+			default: address.default,
 		}));
 
-		return Response.json({ message: "Address found", address: formattedAddresses });
+		const defaultAddress = formattedAddresses.find((address) => address.default);
+
+		return Response.json({
+			message: "Address found",
+			address: formattedAddresses,
+			defaultAddress,
+		});
 	} catch (error) {
 		console.error(error);
 		const message = handleError(error);

@@ -1,31 +1,26 @@
 "use client";
-import { getCart } from "@/api";
+import { useGetUserCart } from "@/hooks/useCart";
 import { handleError } from "@/lib/handleError";
 import commaNumber from "@/utils/comma-number";
-import { useQuery } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import { LuBadgeAlert } from "react-icons/lu";
-import dynamic from "next/dynamic";
+import AddNewCartGroupButton from "./add-new-cart-group-btn";
+import DuplicateCartItemButton from "./duplicate-cart-item-button";
+import GroupDeleteBtn from "./group-delete-btn";
+import GroupTitle from "./group-title";
+import IncreaseItemQuantity from "./increase-item-quantity";
+import MoveCartItemButton from "./move-cart-item-button";
+import ReduceItemQuantity from "./reduce-item-quantity";
+import RemoveCartItemBtn from "./remove-cart-item-btn";
 const LoadingCartAnimation = dynamic(() => import("./loading-cart"), {
 	ssr: false,
 	loading: () => <div className="animate-pulse">...</div>,
 });
-import AddNewCartGroupButton from "./add-new-cart-group-btn";
-import GroupDeleteBtn from "./group-delete-btn";
-import GroupTitle from "./group-title";
-import IncreaseItemQuantity from "./increase-item-quantity";
-import ReduceItemQuantity from "./reduce-item-quantity";
-import RemoveCartItemBtn from "./remove-cart-item-btn";
-import DuplicateCartItemButton from "./duplicate-cart-item-button";
-import MoveCartItemButton from "./move-cart-item-button";
 function LoaCart() {
-	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ["cart-full-data"],
-		queryFn: () => getCart(),
-		refetchOnWindowFocus: false,
-	});
+	const { data, isLoading, isError, error } = useGetUserCart();
 
 	if (isLoading) {
 		return (

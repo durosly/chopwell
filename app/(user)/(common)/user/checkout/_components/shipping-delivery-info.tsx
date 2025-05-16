@@ -1,19 +1,17 @@
 "use client";
 
-import { getUserAddress } from "@/api";
+import { useUserAddress } from "@/hooks/useAddress";
 import { handleError } from "@/lib/handleError";
 import useCheckoutStore from "@/store/checkout-store";
-import { useQuery } from "@tanstack/react-query";
+import { FormattedAddress } from "@/types";
+import commaNumber from "@/utils/comma-number";
 import { useRef } from "react";
 import { LuBadgeAlert } from "react-icons/lu";
 import ShippingDeliveryAddressModal from "./shipping-delivery-address-modal";
-import { FormattedAddress } from "@/types";
-import commaNumber from "@/utils/comma-number";
-
 function ShippingDeliveryInfo() {
 	const modalRef = useRef<HTMLDialogElement>(null);
 	const { address: selectedAddress, setAddress } = useCheckoutStore();
-	const { isPending, isLoading, isError, data, error } = useQuery({ queryKey: ["user-address"], queryFn: () => getUserAddress() });
+	const { isPending, isLoading, isError, data, error } = useUserAddress();
 
 	if (isPending) {
 		return (
@@ -21,11 +19,19 @@ function ShippingDeliveryInfo() {
 				<h3 className="text-gray-500 text-xs mb-2">Loading...</h3>
 				<div className="flex flex-col gap-4">
 					{Array.from({ length: 3 }).map((_, i) => (
-						<div key={i} className="flex items-center flex-1 py-2 px-4 border rounded-box">
-							<div className="size-6 rounded-full skeleton">&nbsp;</div>
+						<div
+							key={i}
+							className="flex items-center flex-1 py-2 px-4 border rounded-box">
+							<div className="size-6 rounded-full skeleton">
+								&nbsp;
+							</div>
 							<div className="flex-1">
-								<p className="font-bold truncate max-w-[400px] mb-2 skeleton">&nbsp;</p>
-								<p className="h-3 w-10 opacity-50 skeleton">&nbsp;</p>
+								<p className="font-bold truncate max-w-[400px] mb-2 skeleton">
+									&nbsp;
+								</p>
+								<p className="h-3 w-10 opacity-50 skeleton">
+									&nbsp;
+								</p>
 							</div>
 						</div>
 					))}
@@ -54,7 +60,10 @@ function ShippingDeliveryInfo() {
 				{data?.address.length === 0 ? (
 					<div>
 						<h3 className="font-bold">Notice</h3>
-						<p>You have not entered an address for your location</p>
+						<p>
+							You have not entered an address for your
+							location
+						</p>
 					</div>
 				) : (
 					data.address.map((address: FormattedAddress) => (
@@ -64,24 +73,43 @@ function ShippingDeliveryInfo() {
 							<input
 								name="address"
 								type="radio"
-								checked={selectedAddress === address._id}
-								onChange={() => setAddress({ address: address._id, deliveryFee: address.deliveryPrice })}
+								checked={
+									selectedAddress ===
+									address._id
+								}
+								onChange={() =>
+									setAddress({
+										address: address._id,
+										deliveryFee:
+											address.deliveryPrice,
+									})
+								}
 								className="radio radio-xs checked:radio-primary"
 							/>
 							{/* <LuBox className="size-6" /> */}
 							<div>
 								<p className="font-bold break-words max-w-[400px]">
-									({address.title}) {address.location} {!!address.landmark && ` -- ${address.landmark}`}
+									({address.title}){" "}
+									{address.location}{" "}
+									{!!address.landmark &&
+										` -- ${address.landmark}`}
 								</p>
 								<p className="text-xs opacity-50">
-									Delivery fee: {address.deliveryPrice > 0 ? commaNumber(address.deliveryPrice) : "Free"}
+									Delivery fee:{" "}
+									{address.deliveryPrice > 0
+										? commaNumber(
+												address.deliveryPrice
+											)
+										: "Free"}
 								</p>
 							</div>
 						</label>
 					))
 				)}
 			</fieldset>
-			<button className="btn btn-neutral btn-block" onClick={() => modalRef.current?.showModal()}>
+			<button
+				className="btn btn-neutral btn-block"
+				onClick={() => modalRef.current?.showModal()}>
 				Add new address
 			</button>
 			<ShippingDeliveryAddressModal modalRef={modalRef} />

@@ -8,6 +8,7 @@ const addressSchema = new mongoose.Schema(
 		location: String,
 		landmark: String,
 		_regionId: { type: mongoose.Types.ObjectId, ref: RegionModel },
+		default: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 );

@@ -1,10 +1,8 @@
 "use client";
-import { clearCart } from "@/api";
+import { useClearCart } from "@/hooks/useCart";
 import IconTrash from "@/icons/trash";
 import { handleError } from "@/lib/handleError";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
-import { toast } from "sonner";
 
 function ClearCartBtn() {
 	const ref = useRef<HTMLDialogElement>(null);
@@ -15,27 +13,11 @@ function ClearCartBtn() {
 		}
 	}
 
-	const queryClient = useQueryClient();
-
-	const { isPending, mutate, isError, error } = useMutation({
-		mutationFn: () => {
-			return clearCart();
-		},
+	const { isPending, mutate, isError, error } = useClearCart({
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["cart-full-data"] });
-			queryClient.invalidateQueries({ queryKey: ["cart"] });
-
 			if (ref.current) {
 				ref.current.close();
 			}
-
-			toast.success("Success", {
-				description: `Cart cleared successfully`,
-			});
-		},
-		onError: (error) => {
-			const message = handleError(error);
-			toast.error("Something went wrong", { description: message });
 		},
 	});
 

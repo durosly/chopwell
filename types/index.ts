@@ -7,6 +7,7 @@ export type FormattedAddress = {
 	region: string;
 	deliveryPrice: number;
 	title: string;
+	default: boolean;
 };
 
 // Represents an individual item in the cart
@@ -21,6 +22,7 @@ export interface CartItem {
 	preparation_time: number;
 	promo: string | null;
 	category: string;
+	unit: string;
 }
 
 // Represents a cart containing multiple items

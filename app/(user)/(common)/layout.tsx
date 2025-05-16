@@ -22,6 +22,7 @@ import IconNotification from "@/icons/notification";
 import IconWallet from "@/icons/wallet";
 // import IconCart from "@/icons/cart";
 // import CartCount from "./_components/cart-count";
+import { SessionProvider } from "next-auth/react";
 import LoadCart from "./_components/load-cart";
 import BottomNavWrapper from "./_components/bottom-nav-wrapper";
 import { auth } from "@/auth";
@@ -33,7 +34,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();
 
 	return (
-		<>
+		<SessionProvider>
 			{/* <header className="bg-primary flex items-center justify-between gap-5 px-2 py-1"></header> */}
 
 			<div className="max-w-[1400px] w-full mx-auto">
@@ -340,7 +341,7 @@ async function CommonLayout({ children }: { children: React.ReactNode }) {
 					</div>
 				</div>
 			</div> */}
-		</>
+		</SessionProvider>
 	);
 }
 

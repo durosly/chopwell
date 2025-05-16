@@ -65,6 +65,8 @@ function PopupCartItemLoader() {
 							</motion.div>
 						)}
 					</AnimatePresence>
+
+					<h3 className="font-bold text-lg">Shopping Cart</h3>
 					<form
 						onSubmit={handleSubmit}
 						className="flex max-sm:flex-col gap-2">

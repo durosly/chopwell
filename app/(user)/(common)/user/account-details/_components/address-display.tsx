@@ -1,18 +1,15 @@
 "use client";
 
-import { getUserAddress } from "@/api";
+import { useUserAddress } from "@/hooks/useAddress";
 import IconArrowLeft from "@/icons/arrow-left";
 import { handleError } from "@/lib/handleError";
 import { FormattedAddress } from "@/types";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { LuBadgeAlert } from "react-icons/lu";
+import MakeAddressDefaultBtn from "./make-address-default-btn";
 
 function AddressDisplay() {
-	const { isPending, isLoading, isError, data, error } = useQuery({
-		queryKey: ["user-address"],
-		queryFn: () => getUserAddress(),
-	});
+	const { isPending, isLoading, isError, data, error } = useUserAddress();
 
 	if (isPending) {
 		return (
@@ -105,6 +102,17 @@ function AddressDisplay() {
 								<IconArrowLeft className="flex-shrink-0 w-5 h-5 rotate-180" />
 							</div>
 						</Link>
+						<div className="flex justify-end px-4 pb-3">
+							{address.default ? (
+								<span className="text-xs text-gray-500 italic">
+									Default
+								</span>
+							) : (
+								<MakeAddressDefaultBtn
+									addressId={address._id}
+								/>
+							)}
+						</div>
 					</li>
 				))
 			)}

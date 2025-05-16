@@ -1,13 +1,20 @@
 "use client";
-
+import { useSession } from "next-auth/react";
 import CartCount from "@/app/(user)/(common)/_components/cart-count";
 import { cn } from "@/utils/cn";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { LuShoppingCart } from "react-icons/lu";
+import { LuChevronDown, LuShoppingCart, LuX } from "react-icons/lu";
 import PopupCartItemLoader from "./popup-cart-item-loader";
+import Link from "next/link";
+import PopupCartListing from "./popup-cart-listing";
+import DisplayUserBalance from "./display-user-balance";
+import useCartStore from "@/store/cart-store";
+import pluralize from "pluralize";
 
 function PopupCartModal() {
+	const { data: session } = useSession();
+	const { cart } = useCartStore();
 	const containerRef = useRef(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const modalRef = useRef<HTMLDialogElement>(null);
@@ -63,31 +70,73 @@ function PopupCartModal() {
 				<LuShoppingCart className="h-6 w-6" />
 				<CartCount />
 			</motion.button>
+			{isOpen && (
+				<dialog
+					ref={modalRef}
+					className={cn(
+						"modal modal-bottom sm:modal-middle backdrop-blur-xs",
+						isOpen ? "modal-open" : ""
+					)}>
+					<div className="modal-box">
+						<form method="dialog">
+							{/* if there is a button in form, it will close the modal */}
+							<button
+								onClick={handleCloseModal}
+								className="absolute right-2 top-2 max-sm:right-1/2 max-sm:translate-x-1/2 cursor-pointer">
+								<LuX className="size-5 max-sm:hidden" />
 
-			<dialog
-				ref={modalRef}
-				className={cn(
-					"modal modal-bottom sm:modal-middle backdrop-blur-xs",
-					isOpen ? "modal-open" : ""
-				)}>
-				<div className="modal-box">
-					<form method="dialog">
-						{/* if there is a button in form, it will close the modal */}
-						<button
-							onClick={handleCloseModal}
-							className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-							✕
-						</button>
+								<LuChevronDown className="size-8 sm:hidden" />
+							</button>
+						</form>
+						<div className="flex justify-between gap-5 mb-4 mt-2">
+							<div className="join">
+								<span
+									className={cn(
+										"badge badge-sm badge-square join-item",
+										cart.length > 0
+											? "badge-primary"
+											: "badge-neutral"
+									)}>
+									{cart.length}
+								</span>
+								<span className="badge badge-sm badge-dash join-item">
+									{pluralize(
+										"item",
+										cart.length
+									)}
+								</span>
+							</div>
+							{session ? (
+								<>
+									<p className="text-sm font-bold">
+										<DisplayUserBalance />
+									</p>
+								</>
+							) : (
+								<div className="flex items-center gap-2 text-sm">
+									<Link href="/signup">
+										Register
+									</Link>
+									|
+									<Link href="/login">
+										Login
+									</Link>
+								</div>
+							)}
+						</div>
+						{cart.length > 0 ? (
+							<>
+								<PopupCartListing />
+							</>
+						) : (
+							<PopupCartItemLoader />
+						)}
+					</div>
+					<form method="dialog" className="modal-backdrop">
+						<button onClick={handleCloseModal}>close</button>
 					</form>
-					<h3 className="font-bold text-lg">Shopping Cart</h3>
-					<PopupCartItemLoader />
-					{/* <p className="py-4">Your cart items will appear here</p> */}
-					{/* <div className="modal-action"></div> */}
-				</div>
-				<form method="dialog" className="modal-backdrop">
-					<button>close</button>
-				</form>
-			</dialog>
+				</dialog>
+			)}
 		</>
 	);
 }

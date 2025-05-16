@@ -36,6 +36,15 @@ async function updateCartItem(req: Request, { params }: { params: Params }) {
 			);
 		}
 
+		if (quantity > 10) {
+			return Response.json(
+				{
+					message: "We cannot server more than 10 items at the moment. Please, contact admin for bulk orders.",
+				},
+				{ status: 400 }
+			);
+		}
+
 		const filter = userId ? { userId } : { sessionId };
 
 		const cart = await CartModel.findOne(filter);

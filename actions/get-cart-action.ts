@@ -8,6 +8,7 @@ import PromoModel from "@/models/promo";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
 import CartItemGroupModel from "@/models/cart-item-group";
 import CartItemModel from "@/models/cart-item";
+import AddressModel from "@/models/address";
 
 interface PromoData {
 	_id: string;
@@ -123,6 +124,7 @@ async function getCartDataAction() {
 				preparation_time: food.preparation_time,
 				promo: promo,
 				category:
+					!!food._categoryId &&
 					typeof food._categoryId === "object" &&
 					"name" in food._categoryId
 						? food._categoryId.name
@@ -140,6 +142,16 @@ async function getCartDataAction() {
 		return { message: "Cart is empty", status: false };
 	} else if (cartData.data.length === 1 && cartData.data[0].items.length === 0) {
 		return { message: "Cart is empty", status: false };
+	}
+
+	// add default address to cart data
+	const defaultAddress = await AddressModel.findOne({
+		_userId: userId,
+		default: true,
+	}).populate("_regionId");
+
+	if (defaultAddress) {
+		cartData.delivery = defaultAddress._regionId?.deliveryPrice || 0;
 	}
 
 	// calculate percentage of each group
