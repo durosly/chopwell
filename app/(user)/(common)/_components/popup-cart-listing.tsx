@@ -6,13 +6,13 @@ import CartDisplay from "./popup/cart-display";
 import { useClearCart } from "@/hooks/useCart";
 import PopupCartSummary from "./popup/popup-cart-summary";
 import UserAddressHandler from "./popup/user-address-handler";
+import PayOrderBtn from "./popup/pay-order-btn";
+import BookOrderBtn from "./popup/book-order-btn";
 
 function PopupCartListing() {
 	const { data: session } = useSession();
 
-	const { mutate: clearCart, isPending: isClearingCart } = useClearCart({
-		onSuccess: () => {},
-	});
+	const { mutate: clearCart, isPending: isClearingCart } = useClearCart();
 
 	return (
 		<div>
@@ -47,11 +47,8 @@ function PopupCartListing() {
 				<PopupCartSummary />
 			</div>
 			<div className="flex justify-between join">
-				<button className="btn btn-lg join-item">Book Order</button>
-				<button className="btn btn-lg btn-primary flex-1 flex-col gap-0 join-item">
-					<span>Place Order</span>
-					<span className="text-[10px]">About to pay N2500</span>
-				</button>
+				<BookOrderBtn />
+				<PayOrderBtn />
 			</div>
 		</div>
 	);

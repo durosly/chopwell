@@ -1,34 +1,19 @@
 "use client";
 
-import { loadItemsFromOrderCode } from "@/api";
+import { useLoadCartFromOrderCode } from "@/hooks/useCart";
 import { handleError } from "@/lib/handleError";
-import { useMutation } from "@tanstack/react-query";
-import { useRef, useState, useEffect } from "react";
-import { toast } from "sonner";
 import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
 import PopupCartItems from "./popup-cart-items";
 
 function PopupCartItemLoader() {
 	const [orderCode, setOrderCode] = useState("");
-	const toastRef = useRef<string | number | undefined>(undefined);
-	const { mutate, isPending, isError, error, reset, data, isSuccess } = useMutation({
-		onMutate: () => {
-			toastRef.current = toast.loading("Loading items...", {
-				duration: Infinity,
-			});
-		},
-		mutationFn: async () => loadItemsFromOrderCode(orderCode),
-		onSuccess: () => {
-			setOrderCode("");
-			toast.success("Items loaded successfully", { id: toastRef.current });
-		},
-		onError: () => {
-			toast.error("Failed to load items", { id: toastRef.current });
-		},
-		onSettled: () => {
-			setTimeout(() => toast.dismiss(toastRef.current), 5000);
-		},
-	});
+	const { mutate, isPending, isError, error, reset, data, isSuccess } =
+		useLoadCartFromOrderCode({
+			onSuccess: () => {
+				setOrderCode("");
+			},
+		});
 
 	useEffect(() => {
 		if (isError) {
@@ -38,7 +23,7 @@ function PopupCartItemLoader() {
 
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		mutate();
+		mutate(orderCode);
 	}
 	return (
 		<>

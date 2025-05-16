@@ -24,7 +24,6 @@ interface CartGroupData {
 
 function CartDisplay() {
 	const { data, isPending, isError, error, isFetching } = useGetUserCart();
-	console.log(data);
 
 	if (isPending) {
 		return (
@@ -249,11 +248,9 @@ function CartDisplay() {
 				))}
 			</ul>
 			{isFetching && (
-				<div className="card">
-					<div className="card-body">
-						<h2 className="card-title">Updating cart</h2>
-						<span className="loading loading-spinner"></span>
-					</div>
+				<div className="flex items-center gap-2">
+					<span className="text-sm">Updating cart</span>
+					<span className="loading loading-spinner"></span>
 				</div>
 			)}
 		</div>

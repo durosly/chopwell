@@ -26,6 +26,7 @@ interface OrderProduct {
 	quantity: number;
 	unit?: string;
 	label: string;
+	id: string;
 }
 
 interface Order extends Document {
@@ -192,6 +193,7 @@ async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }
 				<ul className="space-y-6 mb-6">
 					{order.products.map(
 						(product: {
+							id: string;
 							_productId: {
 								id: string;
 								name: string;
@@ -202,7 +204,7 @@ async function OrderDetails({ params }: { params: Promise<{ orderId: string }> }
 							unit?: string;
 							label: string;
 						}) => (
-							<li key={product._productId.id}>
+							<li key={product.id}>
 								<Link
 									href={`/product/${product._productId.id}`}
 									className="block hover:bg-gray-50 rounded-lg p-3 transition-colors">
