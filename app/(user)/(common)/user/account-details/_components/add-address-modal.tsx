@@ -1,20 +1,18 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import ShippingDeliveryAddressModal from "../../checkout/_components/shipping-delivery-address-modal";
 
 function AddNewUserAddress() {
-	const modalRef = useRef<HTMLDialogElement>(null);
+	const [isOpen, setIsOpen] = useState(false);
 
 	return (
 		<>
-			<button
-				onClick={() => modalRef.current?.showModal()}
-				className="btn btn-block">
+			<button onClick={() => setIsOpen(true)} className="btn btn-block">
 				+ Add new address +
 			</button>
 
-			<ShippingDeliveryAddressModal modalRef={modalRef} />
+			{isOpen && <ShippingDeliveryAddressModal setIsOpen={setIsOpen} />}
 		</>
 	);
 }

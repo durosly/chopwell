@@ -17,7 +17,7 @@ interface CartState {
 const useCartStore = create<CartState>((set, get) => ({
 	cart: [],
 	cartModal: false,
-	orderCode: "123ed",
+	orderCode: "",
 	setOrderCode: (code: string) => set({ orderCode: code }),
 	openCartModal: () => set({ cartModal: true }),
 	closeCartModal: () => set({ cartModal: false, orderCode: "" }),

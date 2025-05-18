@@ -3,7 +3,7 @@
 import { getUserAddress } from "@/api";
 import { handleError } from "@/lib/handleError";
 import { useQuery } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { LuBadgeAlert } from "react-icons/lu";
 import ShippingDeliveryAddressModal from "../../checkout/_components/shipping-delivery-address-modal";
 import { FormattedAddress } from "@/types";
@@ -17,7 +17,7 @@ function AddressModal({
 	setIsOpen: (isOpen: boolean) => void;
 	mutate: (addressId: string) => void;
 }) {
-	const modalRef = useRef<HTMLDialogElement>(null);
+	const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 	const [option, setOption] = useState<"yes" | "no" | "">("");
 	const [selectedAddress, setSelectedAddress] = useState<string>("");
 	const { isPending, isError, data, error } = useQuery({
@@ -204,16 +204,20 @@ function AddressModal({
 									</button>
 								)}
 
-								<ShippingDeliveryAddressModal
-									modalRef={modalRef}
-								/>
+								{isAddressModalOpen && (
+									<ShippingDeliveryAddressModal
+										setIsOpen={
+											setIsAddressModalOpen
+										}
+									/>
+								)}
 							</>
 						)}
 						<div className="mt-5 flex flex-wrap gap-2">
 							<button
 								className="btn btn-neutral"
 								onClick={() =>
-									modalRef.current?.showModal()
+									setIsAddressModalOpen(true)
 								}>
 								Add new address
 							</button>

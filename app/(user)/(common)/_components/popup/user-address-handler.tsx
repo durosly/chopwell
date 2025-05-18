@@ -5,9 +5,11 @@ import { handleError } from "@/lib/handleError";
 import { FormattedAddress } from "@/types";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import ShippingDeliveryAddressModal from "../../user/checkout/_components/shipping-delivery-address-modal";
 
 function UserAddressHandler() {
 	const popupRef = useRef<HTMLDivElement>(null);
+	const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
 	const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
 	const { isPending, isError, data, error } = useUserAddress();
@@ -23,6 +25,13 @@ function UserAddressHandler() {
 
 		await makeAddressDefault(selectedAddress);
 		setSelectedAddress(null);
+	}
+
+	function handleShowAddressModal() {
+		if (popupRef.current?.hidePopover) {
+			popupRef.current.hidePopover();
+		}
+		setIsAddressModalOpen(true);
 	}
 
 	if (isPending) {
@@ -111,9 +120,23 @@ function UserAddressHandler() {
 							isUpdatingDefaultAddress || !selectedAddress
 						}
 						onClick={handleMakeAddressDefault}
-						className="btn btn-sm btn-primary">
+						className="btn btn-sm btn-primary btn-block">
 						Make Default
 					</button>
+
+					<div className="mt-2">
+						<button
+							onClick={handleShowAddressModal}
+							className="btn btn-sm">
+							+ Add New Address
+						</button>
+					</div>
+
+					{isAddressModalOpen && (
+						<ShippingDeliveryAddressModal
+							setIsOpen={setIsAddressModalOpen}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

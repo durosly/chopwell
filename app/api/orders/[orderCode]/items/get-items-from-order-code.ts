@@ -57,7 +57,7 @@ async function getItemsFromOrderCode(
 
 		// Replace original labels with sequential cart labels
 		const anonymizedCartItems = cartItems.map((item) => {
-			const newLabel = `cart${cartCounter}`;
+			const newLabel = `order label ${cartCounter}`;
 			if (!labelMap.has(item.label)) {
 				labelMap.set(item.label, newLabel);
 				cartCounter++;
