@@ -392,8 +392,9 @@ export const useAddItemToCartFromOrderCode = () => {
 export const usePayOrder = (params?: {
 	onSuccess?: (newOrderCode?: string) => void;
 	onError?: (error: Error) => void;
+	action?: { label: string; onClick: () => void };
 }) => {
-	const { onSuccess, onError } = params || {};
+	const { onSuccess, onError, action } = params || {};
 	return useMutation({
 		mutationFn: async () => createCheckoutSession(),
 		onMutate: () => {
@@ -401,9 +402,17 @@ export const usePayOrder = (params?: {
 		},
 		onError: (error) => {
 			const message = handleError(error);
+
+			let showAction = false;
+
+			if (message.includes("Balance is too low")) {
+				showAction = true;
+			}
+
 			toast.error("Failed to process checkout", {
 				description: message,
 				id: toastRef,
+				action: showAction ? action : undefined,
 			});
 			if (onError) onError(error);
 		},
@@ -436,6 +445,7 @@ export const useBookOrder = (params?: {
 		},
 		onError: (error) => {
 			const message = handleError(error);
+
 			toast.error("Failed to book order", {
 				description: message,
 				id: toastRef,

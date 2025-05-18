@@ -22,6 +22,10 @@ function PayOrderBtn() {
 				setOrderCode(newOrderCode);
 			}
 		},
+		action: {
+			label: "Fund Account",
+			onClick: () => router.push("/user/wallet/top-up"),
+		},
 	});
 
 	const handlePayOrder = () => {
