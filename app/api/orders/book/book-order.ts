@@ -8,7 +8,6 @@ import CartItemGroupModel from "@/models/cart-item-group";
 import FoodModel from "@/models/food";
 import OrderModel from "@/models/order";
 import getAnonymousSessionId from "@/utils/get-anonymous-session-id";
-import { withAuth } from "@/utils/with-user-auth";
 
 interface CartItem {
 	_foodId: string;
@@ -129,4 +128,4 @@ async function bookOder() {
 	}
 }
 
-export default withAuth(bookOder);
+export default bookOder;
