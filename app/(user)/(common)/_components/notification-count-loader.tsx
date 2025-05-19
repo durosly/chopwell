@@ -9,7 +9,11 @@ async function NotificationCountLoader() {
 	const userId = session?.user.id;
 	const notifications = await NotificationModel.find({ _userId: userId, isRead: false });
 
-	return <NotificationCountHandler initialCount={notifications.length} />;
+	if (!userId) {
+		return null;
+	}
+
+	return <NotificationCountHandler initialCount={notifications.length} userId={userId} />;
 }
 
 export default NotificationCountLoader;

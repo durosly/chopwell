@@ -14,6 +14,7 @@ import CartItemGroupModel from "@/models/cart-item-group";
 import CartItemModel from "@/models/cart-item";
 import { withAuth } from "@/utils/with-user-auth";
 import { after } from "next/server";
+import pusherServer from "@/lib/pusher-server";
 
 interface CartItem {
 	_foodId: string;
@@ -263,6 +264,20 @@ async function createCheckoutSession() {
 				});
 
 				// TODO: trigger push.js notification to notify admin
+				pusherServer.trigger(`private-notifications-admin`, "new-order", {
+					orderId: order.id,
+					orderCode: order.code,
+					orderTotal: order.totalPrice,
+					username: user?.firstname + " " + user?.lastname,
+				});
+
+				pusherServer.trigger(
+					`private-notifications-${userId}`,
+					"notification-count",
+					{
+						count: 1,
+					}
+				);
 			}
 
 			notification();

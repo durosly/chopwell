@@ -1,11 +1,13 @@
 import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
+import pusherServer from "@/lib/pusher-server";
 import NotificationModel from "@/models/notifications";
 import TransactionModel from "@/models/transactions";
 import WalletModel from "@/models/wallet";
 import commaNumber from "@/utils/comma-number";
 import crypto from "crypto";
 import { headers } from "next/headers";
+import { after } from "next/server";
 
 async function handleDepositWebhook(request: Request) {
 	try {
@@ -50,10 +52,16 @@ async function handleDepositWebhook(request: Request) {
 				linkDescription: "view balance",
 			});
 
-			// TODO: use pusher.js to notify user
+			after(async () => {
+				pusherServer.trigger(
+					`private-notifications-${transaction._userId}`,
+					"notification-count",
+					{
+						count: 1,
+					}
+				);
+			});
 		}
-
-		console.log(body);
 
 		return Response.json({ message: "Done" });
 	} catch (error) {

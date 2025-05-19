@@ -1,5 +1,6 @@
 import connectMongo from "@/lib/connectMongo";
 import { handleError } from "@/lib/handleError";
+import pusherServer from "@/lib/pusher-server";
 import NotificationModel from "@/models/notifications";
 import OrderModel from "@/models/order";
 import TransactionModel from "@/models/transactions";
@@ -65,6 +66,15 @@ async function updateStatus(
 					type: "refund",
 					description: `Refund for order ${order.code}`,
 				});
+
+				// trigger notification to user
+				pusherServer.trigger(
+					`private-notifications-${order._userId}`,
+					"notification-count",
+					{
+						count: 1,
+					}
+				);
 			}
 
 			if (status === "cancelled") {

@@ -19,6 +19,7 @@ import {
 import BreadCrump from "./dashboard/_components/bread-crump";
 import "easymde/dist/easymde.min.css";
 import LogoutButton from "@/app/_components/logout-btn";
+import OrderNotifications from "./dashboard/_components/order-notifications";
 
 function AdminDashboardLayout({
 	children,
@@ -113,6 +114,7 @@ function AdminDashboardLayout({
 					</div>
 				</div>
 				<main className="px-4 py-2">
+					<OrderNotifications />
 					<BreadCrump />
 					<div className="mt-10">{children}</div>
 				</main>
