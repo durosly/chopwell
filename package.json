@@ -10,6 +10,8 @@
 		"email-dev": "email dev -p 5000"
 	},
 	"dependencies": {
+		"@arcjet/inspect": "^1.0.0-beta.7",
+		"@arcjet/next": "^1.0.0-beta.7",
 		"@aws-sdk/client-s3": "^3.723.0",
 		"@aws-sdk/s3-request-presigner": "^3.797.0",
 		"@faker-js/faker": "^9.5.0",
