@@ -1,4 +1,3 @@
-import Link from "next/link";
 import CategorySelection from "./_components/category-selection";
 import DiscountPromo from "./_components/discount-promo";
 import Recommendation from "./_components/recommendation";
@@ -7,23 +6,13 @@ import SaveBeforeLate from "./_components/save-before-late";
 import ImageSlider from "./_components/slider";
 import TimebaseSuggestions from "./_components/timebase-suggestion";
 import { LuShoppingBag, LuSoup, LuTag, LuTruck } from "react-icons/lu";
+import LandingSidebarWrapper from "./_components/sidebar/wrapper";
 
 export default function Home() {
 	return (
 		<main className="mx-auto px-4 py-8">
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-				<nav className="max-md:hidden bg-white rounded-2xl p-6 shadow-sm">
-					<h2 className="text-xl font-semibold mb-4">Categories</h2>
-					<ul className="space-y-3" aria-label="categories">
-						<li>
-							<Link
-								href="/browse?category="
-								className="block p-3 rounded-lg hover:bg-gray-50 transition-colors">
-								Food
-							</Link>
-						</li>
-					</ul>
-				</nav>
+				<LandingSidebarWrapper />
 				<div className="md:col-span-2">
 					<ImageSlider />
 				</div>
